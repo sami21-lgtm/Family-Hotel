@@ -5,12 +5,13 @@ import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, setDoc, u
 // 1. FIREBASE CONFIGURATION
 // ------------------------------------------------------------------
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyCjHk05Mjd1hwizLr08SAFHs867BBRbtf8",
+  authDomain: "grand-palace-hotel-dac38.firebaseapp.com",
+  projectId: "grand-palace-hotel-dac38",
+  storageBucket: "grand-palace-hotel-dac38.firebasestorage.app",
+  messagingSenderId: "49149127790",
+  appId: "1:49149127790:web:130fcb29b6819e9297ca7f",
+  measurementId: "G-N5GVZK1HQ5"
 };
 
 const app = initializeApp(firebaseConfig);
