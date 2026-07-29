@@ -12,29 +12,6 @@
 </head>
 <body>
 
-    <!-- Login Modal -->
-    <div id="loginModal" class="login-modal">
-        <div class="login-card">
-            <!-- Custom Login Background Class added below -->
-            <div class="login-header custom-login-bg">
-                <i class="fa-solid fa-crown logo-icon" aria-hidden="true"></i>
-                <h2>GRAND PALACE</h2>
-                <p>Resort & Spa Management System</p>
-            </div>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="username"><i class="fa-solid fa-user" aria-hidden="true"></i> Admin Username</label>
-                    <input type="text" id="username" value="admin" autocomplete="username" required>
-                </div>
-                <div class="form-group">
-                    <label for="password"><i class="fa-solid fa-lock" aria-hidden="true"></i> Password</label>
-                    <input type="password" id="password" value="123456" autocomplete="current-password" required>
-                </div>
-                <button type="submit" class="btn-primary-block">Access System</button>
-            </form>
-        </div>
-    </div>
-
     <!-- Main App Container -->
     <div id="appContainer" class="app-container">
         
@@ -86,9 +63,6 @@
                         <small class="admin-role">Owner & Admin</small>
                     </div>
                 </div>
-                <button class="logout-btn" onclick="logout()" title="Logout" aria-label="Logout">
-                    <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
-                </button>
             </div>
         </aside>
 
@@ -377,6 +351,11 @@
                 <div class="cards-grid" id="servicesCardsGrid"></div>
             </section>
 
+            <!-- System Footer with Developer Credit -->
+            <footer style="text-align: center; margin-top: 40px; padding: 20px 10px; font-size: 12px; color: #888888; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <p style="margin: 0;">Developed by Md Emtiaz Hossain Sami, Dept of Software Engineering, Daffodil International University</p>
+            </footer>
+
         </main>
     </div>
 
@@ -404,6 +383,6 @@
         </button>
     </div>
 
-    <script type="module" src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
