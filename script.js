@@ -5,13 +5,13 @@ import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, setDoc, u
 // 1. FIREBASE CONFIGURATION
 // ------------------------------------------------------------------
 const firebaseConfig = {
-  apiKey: "AIzaSyCjHk05Mjd1hwizLr08SAFHs867BBRbtf8",
-  authDomain: "grand-palace-hotel-dac38.firebaseapp.com",
-  projectId: "grand-palace-hotel-dac38",
-  storageBucket: "grand-palace-hotel-dac38.firebasestorage.app",
-  messagingSenderId: "49149127790",
-  appId: "1:49149127790:web:130fcb29b6819e9297ca7f",
-  measurementId: "G-N5GVZK1HQ5"
+    apiKey: "AIzaSyCjHk05Mjd1hwizLr08SAFHs867BBRbtf8",
+    authDomain: "grand-palace-hotel-dac38.firebaseapp.com",
+    projectId: "grand-palace-hotel-dac38",
+    storageBucket: "grand-palace-hotel-dac38.firebasestorage.app",
+    messagingSenderId: "49149127790",
+    appId: "1:49149127790:web:130fcb29b6819e9297ca7f",
+    measurementId: "G-N5GVZK1HQ5"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -66,7 +66,7 @@ function startLiveClock() {
         }
     }
     updateClock();
-    setInterval(updateClock, 1000); // রিয়েল-টাইম সেকেন্ড কাউন্টডাউন
+    setInterval(updateClock, 1000); // রিয়েল-টাইম সেকেন্ড কাউন্টডাউন
 }
 
 // ------------------------------------------------------------------
@@ -135,7 +135,7 @@ function initRealtimeSync() {
 // 6. INITIALIZATION & NAVIGATION
 // ------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
-    startLiveClock(); // লাইভ ঘড়ি স্টার্ট
+    startLiveClock(); // লাইভ ঘড়ি স্টার্ট
     
     const checkInEl = document.getElementById('checkIn');
     const checkOutEl = document.getElementById('checkOut');
@@ -156,15 +156,19 @@ const loginForm = document.getElementById('loginForm');
 if (loginForm) {
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        document.getElementById('loginModal').style.display = 'none';
-        document.getElementById('appContainer').style.display = 'flex';
+        const loginModal = document.getElementById('loginModal');
+        const appContainer = document.getElementById('appContainer');
+        if (loginModal) loginModal.style.display = 'none';
+        if (appContainer) appContainer.style.display = 'flex';
         showToast("Welcome back, MD. EMTIAZ HOSSAIN SAMI!");
     });
 }
 
 function logout() {
-    document.getElementById('appContainer').style.display = 'none';
-    document.getElementById('loginModal').style.display = 'flex';
+    const loginModal = document.getElementById('loginModal');
+    const appContainer = document.getElementById('appContainer');
+    if (appContainer) appContainer.style.display = 'none';
+    if (loginModal) loginModal.style.display = 'flex';
     showToast("Logged out successfully", "warning");
 }
 
@@ -281,7 +285,7 @@ function renderRoomCards() {
                                 style="flex:1; padding: 8px; border-radius: 6px; border: none; background: #3B82F6; color:#fff; font-size:0.8rem; cursor:pointer;">
                             Mark ${isOccupied ? 'Available' : 'Occupied'}
                         </button>
-                        <label class="btn-file-upload" style="flex:1; text-align:center; padding: 8px; background: #e2e8f0; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">
+                        <label class="btn-file-upload" style="flex:1; text-align:center; padding: 8px; background: #e2e8f0; border-radius: 6px; cursor: pointer; font-size: 0.8rem; color:#333;">
                             <i class="fa-solid fa-camera"></i> Change Photo
                             <input type="file" accept="image/*" style="display:none;" onchange="changeItemPhoto(event, 'room', ${index})">
                         </label>
@@ -320,7 +324,7 @@ function renderServicesCards() {
                         <p style="font-size:0.85rem; color:#64748b; margin:0;">${srv.desc}</p>
                     </div>
                     <div style="margin-top: 15px;">
-                        <label class="btn-file-upload" style="display:block; text-align:center; padding: 8px; background: #e2e8f0; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">
+                        <label class="btn-file-upload" style="display:block; text-align:center; padding: 8px; background: #e2e8f0; border-radius: 6px; cursor: pointer; font-size: 0.8rem; color:#333;">
                             <i class="fa-solid fa-camera"></i> Change Service Photo
                             <input type="file" accept="image/*" style="display:none;" onchange="changeItemPhoto(event, 'service', ${index})">
                         </label>
@@ -518,7 +522,7 @@ function renderFullBookingsTable(filteredData = null) {
                 <td>${res.room} (${res.nights} Night)</td>
                 <td>
                     <div style="margin-bottom: 5px;">
-                        <select onchange="updateBookingStatus('${res.docId}', this.value)" style="padding:4px 8px; border-radius:6px; font-weight:bold; border: 1px solid #cbd5e1;">
+                        <select onchange="updateBookingStatus('${res.docId}', this.value)" style="padding:4px 8px; border-radius:6px; font-weight:bold; border: 1px solid #cbd5e1; background:#0f172a; color:#fff;">
                             <option value="Confirmed" ${res.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
                             <option value="Checked-In" ${res.status === 'Checked-In' ? 'selected' : ''}>Checked-In</option>
                             <option value="Checked-Out" ${res.status === 'Checked-Out' ? 'selected' : ''}>Checked-Out</option>
