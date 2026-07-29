@@ -74,15 +74,18 @@
                 </a>
             </nav>
 
+            <!-- Sidebar Footer with Owner Profile -->
             <div class="sidebar-footer">
                 <div class="user-info">
-                    <i class="fa-solid fa-user-shield"></i>
+                    <img src="YOUR_PHOTO_URL_HERE.jpg" alt="Owner Photo" class="owner-avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+                    <i class="fa-solid fa-circle-user logo-icon" style="display:none; font-size: 2.2rem; color: #d4af37;"></i>
+                    
                     <div>
-                        <strong>Admin Manager</strong>
-                        <small>Online Session</small>
+                        <strong>আপনার নাম</strong>
+                        <small class="owner-badge">Owner</small>
                     </div>
                 </div>
-                <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i></button>
+                <button class="logout-btn" onclick="logout()" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
         </aside>
 
@@ -422,5 +425,7 @@
     </div>
 
   <script type="module" src="script.js"></script>
+</body>
+</html>
 </body>
 </html>
