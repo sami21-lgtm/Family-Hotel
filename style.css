@@ -45,12 +45,12 @@ body {
 /* Custom Hero Background */
 .custom-hero-bg {
     background: linear-gradient(to right, rgba(0, 0, 0, 0.88) 35%, rgba(0, 0, 0, 0.25)), 
-                url('premium_photo-1661964071015-d97428970584.jpg) center/cover no-repeat !important;
+                url('premium_photo-1661964071015-d97428970584(1).jpg) center/cover no-repeat !important;
 }
 
 .custom-login-bg {
     background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.85)), 
-                url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat !important;
+                url('premium_photo-1661964071015-d97428970584(1).jpg') center/cover no-repeat !important;
 }
 
 /* Hero Banner Layout */
