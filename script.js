@@ -1,4 +1,5 @@
-// Image preview via file upload
+let reservationDatabase = JSON.parse(localStorage.getItem('hotel_reservations')) || [];
+
 function previewFile() {
     const preview = document.getElementById('previewImg');
     const fileInput = document.getElementById('imageUpload');
@@ -13,62 +14,56 @@ function previewFile() {
     }
 }
 
-// Image preview via URL Input
 function updateImageFromUrl() {
     const urlInput = document.getElementById('imgUrlInput').value;
     const preview = document.getElementById('previewImg');
-    
+
     if (urlInput.trim() !== "") {
-        preview.src = urlInput; 
+        preview.src = urlInput;
     } else {
-        alert("Please enter a valid image URL!");
+        alert("⚠️ Please enter a valid image URL!");
     }
 }
 
-// Reset Form & Image
 function resetForm() {
     document.getElementById('reservationForm').reset();
     document.getElementById('previewImg').src = "https://via.placeholder.com/180x190?text=Guest+Photo";
 }
 
-// Submit Form to Node.js Backend API
-document.getElementById('reservationForm').addEventListener('submit', async function(e) {
+document.getElementById('reservationForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    
+
     const saveBtn = document.getElementById('saveBtn');
-    saveBtn.innerText = "Processing...";
+    saveBtn.innerText = "Saving...";
     saveBtn.disabled = true;
 
-    // Build Form Data payload
-    const formData = new FormData(this);
-
-    // Selected Food Packages Collect
     const selectedFoods = [];
     document.querySelectorAll('input[name="foodMenu"]:checked').forEach((checkbox) => {
         selectedFoods.push(checkbox.value);
     });
-    formData.append('selectedFoods', JSON.stringify(selectedFoods));
 
-    try {
-        // Post Request to Server
-        const response = await fetch('http://localhost:5000/api/reservations', {
-            method: 'POST',
-            body: formData
-        });
+    const newReservation = {
+        id: 'GPH-' + Math.floor(100000 + Math.random() * 900000),
+        firstName: document.getElementById('fName').value,
+        lastName: document.getElementById('lName').value,
+        middleName: document.getElementById('mName').value || '',
+        address: document.getElementById('address').value,
+        contact: document.getElementById('contact').value,
+        email: document.getElementById('guestEmail').value,
+        roomType: document.getElementById('roomType').value,
+        foodPackages: selectedFoods,
+        photoUrl: document.getElementById('previewImg').src,
+        registeredAt: new Date().toLocaleString()
+    };
 
-        const result = await response.json();
+    reservationDatabase.push(newReservation);
+    localStorage.setItem('hotel_reservations', JSON.stringify(reservationDatabase));
 
-        if (response.ok) {
-            alert(`🎉 REGISTRATION SUCCESSFUL!\n\nBooking ID: ${result.booking.id}\nGuest: ${result.booking.firstName} ${result.booking.lastName}\nRoom: ${result.booking.roomType}\nMeals: ${selectedFoods.length > 0 ? selectedFoods.join(', ') : 'None'}`);
-            resetForm();
-        } else {
-            alert("❌ Error: " + result.message);
-        }
-    } catch (error) {
-        alert("⚠️ Backend Server connection failed! Please ensure 'node server.js' is running.");
-        console.error("Fetch Error:", error);
-    } finally {
-        saveBtn.innerText = "Complete Booking";
-        saveBtn.disabled = false;
-    }
+    console.log("Updated Reservation Database:", reservationDatabase);
+
+    alert(`🎉 REGISTRATION SUCCESSFUL!\n\nBooking ID: ${newReservation.id}\nGuest: ${newReservation.firstName} ${newReservation.lastName}\nRoom: ${newReservation.roomType}\nMeals: ${selectedFoods.length > 0 ? selectedFoods.join(', ') : 'None'}`);
+
+    resetForm();
+    saveBtn.innerText = "Complete Booking";
+    saveBtn.disabled = false;
 });
