@@ -77,7 +77,6 @@
             <!-- Sidebar Footer (Updated Owner & Admin Profile) -->
             <div class="sidebar-footer">
                 <div class="user-info" style="display: flex; align-items: center; gap: 10px;">
-                   
                     <img src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="Owner" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #d4af37; flex-shrink: 0;" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Emtiaz+Sami&background=d4af37&color=fff';">
                     <div>
                         <strong style="display: block; font-size: 0.82rem; color: #ffffff; white-space: nowrap;">MD. EMTIAZ HOSSAIN SAMI</strong>
@@ -104,7 +103,7 @@
                 </div>
                 <div class="topbar-actions">
                     <div class="badge-status"><span class="pulse"></span> Live Sync</div>
-                    <div class="date-display" id="currentDateDisplay">Wed Jul 29 2026</div>
+                    <div class="date-display" id="currentDateDisplay">Loading clock...</div>
                 </div>
             </header>
 
@@ -135,9 +134,9 @@
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon green"><i class="fa-solid fa-dollar-sign"></i></div>
+                        <div class="stat-icon green"><i class="fa-solid fa-money-bill-wave"></i></div>
                         <div>
-                            <h3 id="statRevenue">$0</h3>
+                            <h3 id="statRevenue">৳0</h3>
                             <p>Total Revenue</p>
                         </div>
                     </div>
@@ -251,11 +250,14 @@
                         <div class="form-group">
                             <label>Room Category *</label>
                             <select id="roomTypeSelect" onchange="calculateBilling()" class="custom-select">
-                                <option value="Single Bed Room|80">Single Bed Room ($80 / night)</option>
-                                <option value="Standard Double Bed Room|140">Standard Double Bed Room ($140 / night)</option>
-                                <option value="Deluxe Double Room|220">Deluxe Double Room ($220 / night)</option>
-                                <option value="Ultra-Luxurious Presidential Suite|550">Ultra-Luxurious Presidential Suite ($550 / night)</option>
-                                <option value="Royal Villa with Private Pool|1000">Royal Villa with Private Pool ($1,000 / night)</option>
+                                <option value="Single Standard Room|800">Single Standard Room — ৳800 / night</option>
+                                <option value="Single Executive Room|1000">Single Executive Room — ৳1,000 / night</option>
+                                <option value="Deluxe Double Room|5000">Deluxe Double Room — ৳5,000 / night</option>
+                                <option value="Super Deluxe Double Room|7500">Super Deluxe Double Room — ৳7,500 / night</option>
+                                <option value="Executive Double Ocean View|10000">Executive Double Ocean View — ৳10,000 / night</option>
+                                <option value="Royal Family Suite|20000">Royal Family Suite — ৳20,000 / night</option>
+                                <option value="Ultra-Luxurious Presidential VIP Suite|35000">Ultra-Luxurious Presidential VIP Suite — ৳35,000 / night</option>
+                                <option value="Royal Palace Villa with Private Pool|50000">Royal Palace Villa with Private Pool — ৳50,000 / night</option>
                             </select>
                         </div>
                     </div>
@@ -264,31 +266,31 @@
                         <h3 class="card-title"><i class="fa-solid fa-utensils"></i> Cuisine Options</h3>
                         <div class="checkbox-group">
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value=" Bengali Traditional Feast" data-price="30" onchange="calculateBilling()">
+                                <input type="checkbox" name="foodMenu" value="Bengali Traditional Feast" data-price="500" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong>🇧🇩 Bengali Traditional Feast</strong>
-                                    <span>Kacchi Biryani, Hilsha & Sweets (+$30/day)</span>
+                                    <span>Kacchi Biryani, Hilsha & Sweets (+৳500/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value=" Authentic Thai Gourmet" data-price="45" onchange="calculateBilling()">
+                                <input type="checkbox" name="foodMenu" value="Authentic Thai Gourmet" data-price="800" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong>🇹🇭 Authentic Thai Gourmet</strong>
-                                    <span>Tom Yum Goong & Pad Thai (+$45/day)</span>
+                                    <span>Tom Yum Goong & Pad Thai (+৳800/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value=" Spanish Seafood Paella" data-price="55" onchange="calculateBilling()">
+                                <input type="checkbox" name="foodMenu" value="Spanish Seafood Paella" data-price="1000" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong>🇪🇸 Spanish Seafood Paella</strong>
-                                    <span>Seafood Paella & Tapas (+$55/day)</span>
+                                    <span>Seafood Paella & Tapas (+৳1,000/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value=" International Buffet" data-price="65" onchange="calculateBilling()">
+                                <input type="checkbox" name="foodMenu" value="International Buffet" data-price="1200" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong>🌐 International Continental Buffet</strong>
-                                    <span>Unlimited 5-Star Buffet (+$65/day)</span>
+                                    <span>Unlimited 5-Star Buffet (+৳1,200/day)</span>
                                 </div>
                             </label>
                         </div>
@@ -296,17 +298,17 @@
                         <h3 class="card-title mt-20"><i class="fa-solid fa-clock"></i> Pool & Gym Slots</h3>
                         <div class="checkbox-group">
                             <label class="checkbox-card">
-                                <input type="checkbox" name="amenities" value="Morning Pool Pass (06:00 AM - 11:00 AM)" data-price="20" onchange="calculateBilling()">
+                                <input type="checkbox" name="amenities" value="Morning Pool Pass (06:00 AM - 11:00 AM)" data-price="300" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong><i class="fa-solid fa-water"></i> Morning Swimming Pool Pass</strong>
-                                    <span>06:00 AM - 11:00 AM (+$20/day)</span>
+                                    <span>06:00 AM - 11:00 AM (+৳300/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="amenities" value="Night Infinity Pool Pass (04:00 PM - 10:00 PM)" data-price="35" onchange="calculateBilling()">
+                                <input type="checkbox" name="amenities" value="Night Infinity Pool Pass (04:00 PM - 10:00 PM)" data-price="500" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong><i class="fa-solid fa-person-swimming"></i> Night Infinity Pool Pass</strong>
-                                    <span>04:00 PM - 10:00 PM (+$35/day)</span>
+                                    <span>04:00 PM - 10:00 PM (+৳500/day)</span>
                                 </div>
                             </label>
                         </div>
@@ -319,16 +321,16 @@
                             </div>
                             <div class="invoice-row">
                                 <span>Room Charge:</span>
-                                <span id="billRoom">$80</span>
+                                <span id="billRoom">৳800</span>
                             </div>
                             <div class="invoice-row">
                                 <span>Services:</span>
-                                <span id="billServices">$0</span>
+                                <span id="billServices">৳0</span>
                             </div>
                             <hr class="divider">
                             <div class="invoice-row total-row">
                                 <span>Grand Total Amount:</span>
-                                <strong id="billTotal">$80</strong>
+                                <strong id="billTotal">৳800</strong>
                             </div>
                         </div>
 
