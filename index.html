@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Grand Palace Resort & Spa Management System - Luxury Stay & Hospitality Management">
+    <meta name="theme-color" content="#d4af37">
     <title>Grand Palace | Luxury Resort & Spa</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
@@ -14,18 +16,18 @@
     <div id="loginModal" class="login-modal">
         <div class="login-card">
             <div class="login-header" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=80') center/cover no-repeat; padding: 30px; border-radius: 12px 12px 0 0; color: #fff; text-align: center;">
-                <i class="fa-solid fa-crown logo-icon" style="font-size: 2.5rem; color: #d4af37; margin-bottom: 10px;"></i>
+                <i class="fa-solid fa-crown logo-icon" aria-hidden="true" style="font-size: 2.5rem; color: #d4af37; margin-bottom: 10px;"></i>
                 <h2 style="margin: 0; font-family: 'Playfair Display', serif;">GRAND PALACE</h2>
                 <p style="margin: 5px 0 0; font-size: 0.9rem; opacity: 0.9;">Resort & Spa Management System</p>
             </div>
             <form id="loginForm" style="padding: 20px;">
                 <div class="form-group">
-                    <label><i class="fa-solid fa-user"></i> Admin Username</label>
-                    <input type="text" id="username" value="admin" required>
+                    <label for="username"><i class="fa-solid fa-user" aria-hidden="true"></i> Admin Username</label>
+                    <input type="text" id="username" value="admin" autocomplete="username" required>
                 </div>
                 <div class="form-group">
-                    <label><i class="fa-solid fa-lock"></i> Password</label>
-                    <input type="password" id="password" value="123456" required>
+                    <label for="password"><i class="fa-solid fa-lock" aria-hidden="true"></i> Password</label>
+                    <input type="password" id="password" value="123456" autocomplete="current-password" required>
                 </div>
                 <button type="submit" class="btn-primary-block">Access System</button>
             </form>
@@ -38,18 +40,18 @@
         <!-- Mobile Top Bar -->
         <header class="mobile-top-bar">
             <div class="mobile-brand">
-                <i class="fa-solid fa-crown"></i>
+                <i class="fa-solid fa-crown" aria-hidden="true"></i>
                 <span>GRAND PALACE</span>
             </div>
-            <button class="menu-toggle" id="menuToggleBtn" onclick="toggleMobileSidebar()">
-                <i class="fa-solid fa-bars"></i>
+            <button class="menu-toggle" id="menuToggleBtn" onclick="toggleMobileSidebar()" aria-label="Toggle Menu">
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
             </button>
         </header>
 
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
             <div class="brand-desktop">
-                <i class="fa-solid fa-hotel brand-icon"></i>
+                <i class="fa-solid fa-hotel brand-icon" aria-hidden="true"></i>
                 <div>
                     <h2>GRAND PALACE</h2>
                     <span>RESORT & SPA</span>
@@ -58,33 +60,33 @@
 
             <nav class="nav-menu">
                 <a href="#" class="nav-item active" onclick="switchTab('dashboard')">
-                    <i class="fa-solid fa-chart-line"></i> <span>Dashboard</span>
+                    <i class="fa-solid fa-chart-line" aria-hidden="true"></i> <span>Dashboard</span>
                 </a>
                 <a href="#" class="nav-item" onclick="switchTab('rooms')">
-                    <i class="fa-solid fa-bed"></i> <span>Rooms & Custom Photos</span>
+                    <i class="fa-solid fa-bed" aria-hidden="true"></i> <span>Rooms & Custom Photos</span>
                 </a>
                 <a href="#" class="nav-item" onclick="switchTab('booking')">
-                    <i class="fa-solid fa-calendar-plus"></i> <span>New Booking</span>
+                    <i class="fa-solid fa-calendar-plus" aria-hidden="true"></i> <span>New Booking</span>
                 </a>
                 <a href="#" class="nav-item" onclick="switchTab('guests')">
-                    <i class="fa-solid fa-users"></i> <span>Guest Directory</span>
+                    <i class="fa-solid fa-users" aria-hidden="true"></i> <span>Guest Directory</span>
                 </a>
                 <a href="#" class="nav-item" onclick="switchTab('services')">
-                    <i class="fa-solid fa-utensils"></i> <span>Food, Pool & Gym</span>
+                    <i class="fa-solid fa-utensils" aria-hidden="true"></i> <span>Food, Pool & Gym</span>
                 </a>
             </nav>
 
             <!-- Sidebar Footer (Updated Owner & Admin Profile) -->
             <div class="sidebar-footer">
                 <div class="user-info" style="display: flex; align-items: center; gap: 10px;">
-                    <img src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="Owner" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #d4af37; flex-shrink: 0;" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Emtiaz+Sami&background=d4af37&color=fff';">
+                    <img src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="MD. EMTIAZ HOSSAIN SAMI" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #d4af37; flex-shrink: 0;" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Emtiaz+Sami&background=d4af37&color=fff';">
                     <div>
                         <strong style="display: block; font-size: 0.82rem; color: #ffffff; white-space: nowrap;">MD. EMTIAZ HOSSAIN SAMI</strong>
                         <small style="color: #10b981; font-size: 0.75rem;">Owner & Admin</small>
                     </div>
                 </div>
-                <button class="logout-btn" onclick="logout()" title="Logout" style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 1.1rem;">
-                    <i class="fa-solid fa-right-from-bracket"></i>
+                <button class="logout-btn" onclick="logout()" title="Logout" aria-label="Logout" style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 1.1rem;">
+                    <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
                 </button>
             </div>
         </aside>
@@ -98,12 +100,13 @@
             <!-- Top Bar Search & Status -->
             <header class="topbar">
                 <div class="search-bar">
-                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <label for="searchInput" class="sr-only" style="display:none;">Search</label>
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
                     <input type="text" id="searchInput" placeholder="Search guests, rooms, bookings..." onkeyup="searchGuests()">
                 </div>
                 <div class="topbar-actions">
                     <div class="badge-status"><span class="pulse"></span> Live Sync</div>
-                    <div class="date-display" id="currentDateDisplay">Loading clock...</div>
+                    <div class="date-display" id="currentDateDisplay">Wed Jul 29 2026</div>
                 </div>
             </header>
 
@@ -127,28 +130,28 @@
                 <!-- 4 Key Stat Cards -->
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-icon gold"><i class="fa-solid fa-bed"></i></div>
+                        <div class="stat-icon gold"><i class="fa-solid fa-bed" aria-hidden="true"></i></div>
                         <div>
                             <h3 id="statTotalBookings">0</h3>
                             <p>Total Bookings</p>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon green"><i class="fa-solid fa-money-bill-wave"></i></div>
+                        <div class="stat-icon green"><i class="fa-solid fa-dollar-sign" aria-hidden="true"></i></div>
                         <div>
-                            <h3 id="statRevenue">৳0</h3>
+                            <h3 id="statRevenue">$0</h3>
                             <p>Total Revenue</p>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon blue"><i class="fa-solid fa-person-swimming"></i></div>
+                        <div class="stat-icon blue"><i class="fa-solid fa-person-swimming" aria-hidden="true"></i></div>
                         <div>
                             <h3 id="statPoolPass">0</h3>
                             <p>Pool Passes</p>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon purple"><i class="fa-solid fa-utensils"></i></div>
+                        <div class="stat-icon purple"><i class="fa-solid fa-utensils" aria-hidden="true"></i></div>
                         <div>
                             <h3 id="statDiningOrders">0</h3>
                             <p>Dining Orders</p>
@@ -199,144 +202,142 @@
                 </div>
                 <form id="reservationForm" class="booking-grid">
                     <div class="form-card">
-                        <h3 class="card-title"><i class="fa-solid fa-user-tag"></i> Guest Info & Photo</h3>
+                        <h3 class="card-title"><i class="fa-solid fa-user-tag" aria-hidden="true"></i> Guest Info & Photo</h3>
                         <div class="form-row">
                             <div class="form-group">
-                                <label>First Name *</label>
-                                <input type="text" id="fName" required placeholder="First Name">
+                                <label for="fName">First Name *</label>
+                                <input type="text" id="fName" autocomplete="given-name" required placeholder="First Name">
                             </div>
                             <div class="form-group">
-                                <label>Last Name *</label>
-                                <input type="text" id="lName" required placeholder="Last Name">
+                                <label for="lName">Last Name *</label>
+                                <input type="text" id="lName" autocomplete="family-name" required placeholder="Last Name">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Email *</label>
-                                <input type="email" id="email" required placeholder="guest@example.com">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" autocomplete="email" required placeholder="guest@example.com">
                             </div>
                             <div class="form-group">
-                                <label>Phone *</label>
-                                <input type="tel" id="phone" required placeholder="+8801700000000">
+                                <label for="phone">Phone *</label>
+                                <input type="tel" id="phone" autocomplete="tel" required placeholder="+8801700000000">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label><i class="fa-solid fa-camera"></i> Photo Upload</label>
+                            <label><i class="fa-solid fa-camera" aria-hidden="true"></i> Photo Upload</label>
                             <div class="image-upload-wrapper">
                                 <div class="img-preview-box">
                                     <img id="previewImg" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&auto=format&fit=crop&q=80" alt="Guest Preview">
                                 </div>
                                 <div class="upload-controls">
                                     <label class="btn-file-upload">
-                                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload From Device
+                                        <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i> Upload From Device
                                         <input type="file" id="guestPhotoFile" accept="image/*" onchange="handleGuestPhotoUpload(event)">
                                     </label>
+                                    <label for="imgUrlInput" class="sr-only" style="display:none;">Image URL</label>
                                     <input type="url" id="imgUrlInput" placeholder="Or paste Image URL...">
                                     <button type="button" class="btn-secondary-sm" onclick="updateGuestImageFromUrl()">Load URL</button>
                                 </div>
                             </div>
                         </div>
-                        <h3 class="card-title mt-20"><i class="fa-solid fa-bed"></i> Room Category</h3>
+                        <h3 class="card-title mt-20"><i class="fa-solid fa-bed" aria-hidden="true"></i> Room Category</h3>
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Check-In *</label>
+                                <label for="checkIn">Check-In *</label>
                                 <input type="date" id="checkIn" required onchange="calculateBilling()">
                             </div>
                             <div class="form-group">
-                                <label>Check-Out *</label>
+                                <label for="checkOut">Check-Out *</label>
                                 <input type="date" id="checkOut" required onchange="calculateBilling()">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Room Category *</label>
+                            <label for="roomTypeSelect">Room Category *</label>
                             <select id="roomTypeSelect" onchange="calculateBilling()" class="custom-select">
-                                <option value="Single Standard Room|800">Single Standard Room — ৳800 / night</option>
-                                <option value="Single Executive Room|1000">Single Executive Room — ৳1,000 / night</option>
-                                <option value="Deluxe Double Room|5000">Deluxe Double Room — ৳5,000 / night</option>
-                                <option value="Super Deluxe Double Room|7500">Super Deluxe Double Room — ৳7,500 / night</option>
-                                <option value="Executive Double Ocean View|10000">Executive Double Ocean View — ৳10,000 / night</option>
-                                <option value="Royal Family Suite|20000">Royal Family Suite — ৳20,000 / night</option>
-                                <option value="Ultra-Luxurious Presidential VIP Suite|35000">Ultra-Luxurious Presidential VIP Suite — ৳35,000 / night</option>
-                                <option value="Royal Palace Villa with Private Pool|50000">Royal Palace Villa with Private Pool — ৳50,000 / night</option>
+                                <option value="Single Bed Room|80">Single Bed Room ($80 / night)</option>
+                                <option value="Standard Double Bed Room|140">Standard Double Bed Room ($140 / night)</option>
+                                <option value="Deluxe Double Room|220">Deluxe Double Room ($220 / night)</option>
+                                <option value="Ultra-Luxurious Presidential Suite|550">Ultra-Luxurious Presidential Suite ($550 / night)</option>
+                                <option value="Royal Villa with Private Pool|1000">Royal Villa with Private Pool ($1,000 / night)</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="form-card">
-                        <h3 class="card-title"><i class="fa-solid fa-utensils"></i> Cuisine Options</h3>
+                        <h3 class="card-title"><i class="fa-solid fa-utensils" aria-hidden="true"></i> Cuisine Options</h3>
                         <div class="checkbox-group">
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value="Bengali Traditional Feast" data-price="500" onchange="calculateBilling()">
+                                <input type="checkbox" name="foodMenu" value=" Bengali Traditional Feast" data-price="30" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong>🇧🇩 Bengali Traditional Feast</strong>
-                                    <span>Kacchi Biryani, Hilsha & Sweets (+৳500/day)</span>
+                                    <span>Kacchi Biryani, Hilsha & Sweets (+$30/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value="Authentic Thai Gourmet" data-price="800" onchange="calculateBilling()">
+                                <input type="checkbox" name="foodMenu" value=" Authentic Thai Gourmet" data-price="45" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong>🇹🇭 Authentic Thai Gourmet</strong>
-                                    <span>Tom Yum Goong & Pad Thai (+৳800/day)</span>
+                                    <span>Tom Yum Goong & Pad Thai (+$45/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value="Spanish Seafood Paella" data-price="1000" onchange="calculateBilling()">
+                                <input type="checkbox" name="foodMenu" value=" Spanish Seafood Paella" data-price="55" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong>🇪🇸 Spanish Seafood Paella</strong>
-                                    <span>Seafood Paella & Tapas (+৳1,000/day)</span>
+                                    <span>Seafood Paella & Tapas (+$55/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value="International Buffet" data-price="1200" onchange="calculateBilling()">
+                                <input type="checkbox" name="foodMenu" value=" International Buffet" data-price="65" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong>🌐 International Continental Buffet</strong>
-                                    <span>Unlimited 5-Star Buffet (+৳1,200/day)</span>
+                                    <span>Unlimited 5-Star Buffet (+$65/day)</span>
                                 </div>
                             </label>
                         </div>
 
-                        <h3 class="card-title mt-20"><i class="fa-solid fa-clock"></i> Pool & Gym Slots</h3>
+                        <h3 class="card-title mt-20"><i class="fa-solid fa-clock" aria-hidden="true"></i> Pool & Gym Slots</h3>
                         <div class="checkbox-group">
                             <label class="checkbox-card">
-                                <input type="checkbox" name="amenities" value="Morning Pool Pass (06:00 AM - 11:00 AM)" data-price="300" onchange="calculateBilling()">
+                                <input type="checkbox" name="amenities" value="Morning Pool Pass (06:00 AM - 11:00 AM)" data-price="20" onchange="calculateBilling()">
                                 <div class="card-info">
-                                    <strong><i class="fa-solid fa-water"></i> Morning Swimming Pool Pass</strong>
-                                    <span>06:00 AM - 11:00 AM (+৳300/day)</span>
+                                    <strong><i class="fa-solid fa-water" aria-hidden="true"></i> Morning Swimming Pool Pass</strong>
+                                    <span>06:00 AM - 11:00 AM (+$20/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="amenities" value="Night Infinity Pool Pass (04:00 PM - 10:00 PM)" data-price="500" onchange="calculateBilling()">
+                                <input type="checkbox" name="amenities" value="Night Infinity Pool Pass (04:00 PM - 10:00 PM)" data-price="35" onchange="calculateBilling()">
                                 <div class="card-info">
-                                    <strong><i class="fa-solid fa-person-swimming"></i> Night Infinity Pool Pass</strong>
-                                    <span>04:00 PM - 10:00 PM (+৳500/day)</span>
+                                    <strong><i class="fa-solid fa-person-swimming" aria-hidden="true"></i> Night Infinity Pool Pass</strong>
+                                    <span>04:00 PM - 10:00 PM (+$35/day)</span>
                                 </div>
                             </label>
                         </div>
 
                         <div class="invoice-box">
-                            <h4><i class="fa-solid fa-receipt"></i> Real-time Invoice Calculation</h4>
+                            <h4><i class="fa-solid fa-receipt" aria-hidden="true"></i> Real-time Invoice Calculation</h4>
                             <div class="invoice-row">
                                 <span>Stay Duration:</span>
                                 <span id="billNights">1 Night(s)</span>
                             </div>
                             <div class="invoice-row">
                                 <span>Room Charge:</span>
-                                <span id="billRoom">৳800</span>
+                                <span id="billRoom">$80</span>
                             </div>
                             <div class="invoice-row">
                                 <span>Services:</span>
-                                <span id="billServices">৳0</span>
+                                <span id="billServices">$0</span>
                             </div>
                             <hr class="divider">
                             <div class="invoice-row total-row">
                                 <span>Grand Total Amount:</span>
-                                <strong id="billTotal">৳800</strong>
+                                <strong id="billTotal">$80</strong>
                             </div>
                         </div>
 
                         <div class="btn-group">
-                            <button type="submit" class="btn-primary" id="saveBtn"><i class="fa-solid fa-check"></i> Complete Reservation</button>
-                            <button type="button" class="btn-danger" onclick="resetForm()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+                            <button type="submit" class="btn-primary" id="saveBtn"><i class="fa-solid fa-check" aria-hidden="true"></i> Complete Reservation</button>
+                            <button type="button" class="btn-danger" onclick="resetForm()"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Reset</button>
                         </div>
                     </div>
                 </form>
@@ -381,23 +382,23 @@
     <!-- Mobile Bottom Navigation Bar -->
     <div class="mobile-bottom-nav">
         <button class="m-nav-item active" onclick="switchTab('dashboard')">
-            <i class="fa-solid fa-chart-line"></i>
+            <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
             <span>Home</span>
         </button>
         <button class="m-nav-item" onclick="switchTab('rooms')">
-            <i class="fa-solid fa-bed"></i>
+            <i class="fa-solid fa-bed" aria-hidden="true"></i>
             <span>Rooms</span>
         </button>
         <button class="m-nav-item" onclick="switchTab('booking')">
-            <i class="fa-solid fa-plus-circle"></i>
+            <i class="fa-solid fa-plus-circle" aria-hidden="true"></i>
             <span>Book</span>
         </button>
         <button class="m-nav-item" onclick="switchTab('guests')">
-            <i class="fa-solid fa-users"></i>
+            <i class="fa-solid fa-users" aria-hidden="true"></i>
             <span>Guests</span>
         </button>
         <button class="m-nav-item" onclick="switchTab('services')">
-            <i class="fa-solid fa-utensils"></i>
+            <i class="fa-solid fa-utensils" aria-hidden="true"></i>
             <span>Menu</span>
         </button>
     </div>
