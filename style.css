@@ -1,25 +1,52 @@
+/* ==========================================================================
+   1. ROOT VARIABLES & THEME SETUP
+   ========================================================================== */
 :root {
+    /* Brand Colors */
     --primary-gold: #d4af37;
     --primary-gold-hover: #b89628;
+    --primary-gold-light: rgba(212, 175, 55, 0.15);
+    --primary-gold-glow: rgba(212, 175, 55, 0.3);
+
+    /* Background Colors */
     --bg-dark: #0f172a;
     --bg-card: #1e293b;
     --bg-card-light: #334155;
+
+    /* Text Colors */
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
-    --border-color: rgba(212, 175, 55, 0.25);
+    
+    /* Status & Accent Colors */
+    --border-color: rgba(212, 175, 55, 0.22);
+    --border-color-light: rgba(255, 255, 255, 0.08);
     --success-color: #10b981;
     --danger-color: #ef4444;
     --blue-accent: #3b82f6;
     --purple-accent: #8b5cf6;
+
+    /* Layout Dimensions & Shadows */
     --sidebar-width: 260px;
-    --transition: all 0.3s ease;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
-* {
+/* ==========================================================================
+   2. GLOBAL RESETS & SCROLLBAR
+   ========================================================================== */
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
@@ -27,6 +54,27 @@ body {
     color: var(--text-main);
     overflow-x: hidden;
     min-height: 100vh;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bg-card-light);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-gold);
 }
 
 /* Accessibility Helper */
@@ -42,25 +90,28 @@ body {
     border: 0;
 }
 
-/* Custom Hero Background (Updated with uploaded photo) */
+/* ==========================================================================
+   3. HERO BANNER & LOGIN MODAL
+   ========================================================================== */
 .custom-hero-bg {
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.88) 35%, rgba(0, 0, 0, 0.25)), 
+    background: linear-gradient(to right, rgba(15, 23, 42, 0.92) 35%, rgba(15, 23, 42, 0.35)), 
                 url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat !important;
 }
 
 .custom-login-bg {
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+    background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), 
                 url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat !important;
 }
 
 /* Hero Banner Layout */
 .resort-hero-banner {
     position: relative;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     margin-bottom: 25px;
-    height: 210px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+    height: 220px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
 }
 
 .hero-content {
@@ -69,63 +120,74 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 30px;
+    padding: 0 35px;
     color: #fff;
 }
 
 .hero-subtitle {
     color: var(--primary-gold);
     font-weight: 600;
-    letter-spacing: 2px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
     font-size: 0.8rem;
 }
 
 .hero-title {
     font-family: 'Playfair Display', serif;
-    font-size: 2.1rem;
+    font-size: 2.2rem;
     margin: 6px 0 10px;
     font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero-desc {
     margin: 0;
-    opacity: 0.88;
+    opacity: 0.9;
     max-width: 520px;
     font-size: 0.9rem;
-    line-height: 1.4;
+    line-height: 1.5;
 }
 
 /* Login Modal */
 .login-modal {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(10px);
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 9999;
     padding: 20px;
+    transition: var(--transition);
 }
 
 .login-modal.hidden {
     display: none;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .login-card {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 16px;
+    border-radius: var(--radius-lg);
     width: 100%;
     max-width: 420px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    box-shadow: var(--shadow-lg);
     overflow: hidden;
+    animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .login-header {
     padding: 30px;
-    border-radius: 12px 12px 0 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     color: #fff;
     text-align: center;
 }
@@ -139,19 +201,22 @@ body {
 .login-header h2 {
     margin: 0;
     font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
 }
 
 .login-header p {
     margin: 5px 0 0;
-    font-size: 0.9rem;
-    opacity: 0.9;
+    font-size: 0.88rem;
+    color: var(--text-muted);
 }
 
 #loginForm {
-    padding: 20px;
+    padding: 25px;
 }
 
-/* Layout Container */
+/* ==========================================================================
+   4. MAIN APP LAYOUT & SIDEBAR
+   ========================================================================== */
 .app-container {
     display: flex;
     min-height: 100vh;
@@ -178,7 +243,7 @@ body {
     display: flex;
     align-items: center;
     gap: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--border-color-light);
 }
 
 .brand-icon {
@@ -188,9 +253,10 @@ body {
 
 .brand-desktop h2 {
     font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     letter-spacing: 1px;
     color: #fff;
+    line-height: 1.2;
 }
 
 .brand-desktop span {
@@ -198,53 +264,58 @@ body {
     color: var(--primary-gold);
     letter-spacing: 2px;
     display: block;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .nav-menu {
-    padding: 20px 10px;
+    padding: 20px 12px;
     display: flex;
     flex-direction: column;
     gap: 8px;
     flex-grow: 1;
+    overflow-y: auto;
 }
 
 .nav-item {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     padding: 12px 16px;
     color: var(--text-muted);
     text-decoration: none;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     font-size: 0.9rem;
+    font-weight: 500;
     transition: var(--transition);
+    border-left: 3px solid transparent;
 }
 
 .nav-item:hover, 
 .nav-item.active {
-    background: rgba(212, 175, 55, 0.15);
+    background: var(--primary-gold-light);
     color: var(--primary-gold);
-    border-left: 3px solid var(--primary-gold);
+    border-left-color: var(--primary-gold);
 }
 
 .sidebar-footer {
-    padding: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 18px 20px;
+    border-top: 1px solid var(--border-color-light);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.15);
 }
 
 .user-info {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .admin-avatar {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--primary-gold);
@@ -253,7 +324,8 @@ body {
 
 .admin-name {
     display: block;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
+    font-weight: 600;
     color: #ffffff;
     white-space: nowrap;
 }
@@ -261,14 +333,23 @@ body {
 .admin-role {
     color: var(--success-color);
     font-size: 0.75rem;
+    font-weight: 500;
 }
 
 .logout-btn {
     background: none;
     border: none;
-    color: #94a3b8;
+    color: var(--text-muted);
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    padding: 6px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.logout-btn:hover {
+    color: var(--danger-color);
+    background: rgba(239, 68, 68, 0.1);
 }
 
 /* Main Content Area */
@@ -281,7 +362,9 @@ body {
     transition: var(--transition);
 }
 
-/* Top Bar */
+/* ==========================================================================
+   5. TOPBAR & NAVIGATION CONTROLS
+   ========================================================================== */
 .topbar {
     display: flex;
     justify-content: space-between;
@@ -289,8 +372,9 @@ body {
     margin-bottom: 30px;
     background: var(--bg-card);
     padding: 15px 25px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .search-bar {
@@ -298,10 +382,16 @@ body {
     align-items: center;
     gap: 10px;
     background: var(--bg-dark);
-    padding: 8px 16px;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 18px;
+    border-radius: 25px;
+    border: 1px solid var(--border-color-light);
     width: 320px;
+    transition: var(--transition);
+}
+
+.search-bar:focus-within {
+    border-color: var(--primary-gold);
+    box-shadow: 0 0 10px var(--primary-gold-glow);
 }
 
 .search-bar i {
@@ -314,7 +404,7 @@ body {
     color: #fff;
     outline: none;
     width: 100%;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
 }
 
 .topbar-actions {
@@ -324,11 +414,12 @@ body {
 }
 
 .badge-status {
-    background: rgba(16, 185, 129, 0.15);
+    background: rgba(16, 185, 129, 0.12);
     color: var(--success-color);
-    padding: 6px 12px;
+    padding: 6px 14px;
     border-radius: 20px;
     font-size: 0.8rem;
+    font-weight: 500;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -346,7 +437,7 @@ body {
 
 @keyframes pulseAnimation {
     0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+    70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
     100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
 
@@ -356,10 +447,10 @@ body {
     font-weight: 500;
 }
 
-/* Tabs & Animations */
+/* Tab Pages & Fade Animation */
 .tab-page {
     display: none;
-    animation: fadeIn 0.4s ease;
+    animation: fadeIn 0.35s ease-out forwards;
 }
 
 .tab-page.active {
@@ -367,7 +458,7 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
@@ -377,7 +468,7 @@ body {
 
 .page-header h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
+    font-size: 1.85rem;
     color: #fff;
 }
 
@@ -387,11 +478,14 @@ body {
 }
 
 .section-title {
-    font-size: 1.4rem;
-    margin-bottom: 15px;
+    font-size: 1.35rem;
+    margin-bottom: 18px;
+    font-family: 'Playfair Display', serif;
 }
 
-/* Dashboard Stats Grid */
+/* ==========================================================================
+   6. DASHBOARD CARDS & STATS GRID
+   ========================================================================== */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -401,71 +495,95 @@ body {
 
 .stat-card {
     background: var(--bg-card);
-    padding: 20px;
-    border-radius: 12px;
+    padding: 22px;
+    border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     gap: 18px;
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(212, 175, 55, 0.4);
 }
 
 .stat-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 10px;
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.4rem;
+    flex-shrink: 0;
 }
 
-.stat-icon.gold { background: rgba(212, 175, 55, 0.15); color: var(--primary-gold); }
+.stat-icon.gold { background: var(--primary-gold-light); color: var(--primary-gold); }
 .stat-icon.green { background: rgba(16, 185, 129, 0.15); color: var(--success-color); }
 .stat-icon.blue { background: rgba(59, 130, 246, 0.15); color: var(--blue-accent); }
 .stat-icon.purple { background: rgba(139, 92, 246, 0.15); color: var(--purple-accent); }
 
 .stat-card h3 {
-    font-size: 1.5rem;
+    font-size: 1.55rem;
     color: #fff;
+    font-weight: 600;
 }
 
 .stat-card p {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     color: var(--text-muted);
 }
 
-/* Tables */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+/* ==========================================================================
+   7. TABLES
+   ========================================================================== */
 .table-wrapper {
     background: var(--bg-card);
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
     overflow-x: auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .data-table {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
 }
 
 .data-table th {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.35);
     color: var(--primary-gold);
-    padding: 14px 18px;
+    padding: 16px 20px;
     font-weight: 600;
     letter-spacing: 0.5px;
     border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
 }
 
 .data-table td {
-    padding: 14px 18px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color-light);
     color: #e2e8f0;
+    vertical-align: middle;
+}
+
+.data-table tr:last-child td {
+    border-bottom: none;
 }
 
 .data-table tr:hover {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.03);
 }
 
 .guest-avatar-td {
@@ -476,7 +594,9 @@ body {
     border: 2px solid var(--primary-gold);
 }
 
-/* Booking & Forms */
+/* ==========================================================================
+   8. FORMS & INPUTS
+   ========================================================================== */
 .booking-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -486,21 +606,22 @@ body {
 .form-card {
     background: var(--bg-card);
     padding: 25px;
-    border-radius: 12px;
+    border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
 }
 
 .card-title {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     color: var(--primary-gold);
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 10px;
+    font-family: 'Playfair Display', serif;
 }
 
 .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 18px;
 }
 
 .form-row {
@@ -514,23 +635,24 @@ label {
     font-size: 0.8rem;
     color: var(--text-muted);
     margin-bottom: 6px;
+    font-weight: 500;
 }
 
-input, select {
+input, select, textarea {
     width: 100%;
-    padding: 10px 14px;
+    padding: 11px 15px;
     background: var(--bg-dark);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    border: 1px solid var(--border-color-light);
+    border-radius: var(--radius-sm);
     color: #fff;
     font-size: 0.88rem;
     outline: none;
     transition: var(--transition);
 }
 
-input:focus, select:focus {
+input:focus, select:focus, textarea:focus {
     border-color: var(--primary-gold);
-    box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+    box-shadow: 0 0 8px var(--primary-gold-glow);
 }
 
 .custom-select {
@@ -547,10 +669,11 @@ input:focus, select:focus {
 .img-preview-box {
     width: 75px;
     height: 75px;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     overflow: hidden;
     border: 2px dashed var(--primary-gold);
     flex-shrink: 0;
+    background: var(--bg-dark);
 }
 
 .img-preview-box img {
@@ -570,14 +693,20 @@ input:focus, select:focus {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(212, 175, 55, 0.1);
+    background: var(--primary-gold-light);
     color: var(--primary-gold);
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 0.8rem;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 500;
     cursor: pointer;
     border: 1px solid var(--border-color);
     width: fit-content;
+    transition: var(--transition);
+}
+
+.btn-file-upload:hover {
+    background: rgba(212, 175, 55, 0.25);
 }
 
 .btn-file-upload input[type="file"] {
@@ -597,15 +726,21 @@ input:focus, select:focus {
     gap: 12px;
     background: var(--bg-dark);
     padding: 12px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color-light);
     cursor: pointer;
+    transition: var(--transition);
+}
+
+.checkbox-card:hover {
+    border-color: var(--border-color);
 }
 
 .checkbox-card input[type="checkbox"] {
     width: 18px;
     height: 18px;
     accent-color: var(--primary-gold);
+    cursor: pointer;
 }
 
 .card-info strong {
@@ -619,83 +754,88 @@ input:focus, select:focus {
     color: var(--text-muted);
 }
 
-.mt-20 {
-    margin-top: 20px;
-}
-
 /* Invoice Box */
 .invoice-box {
     margin-top: 20px;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 18px;
-    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 20px;
+    border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
 }
 
 .invoice-box h4 {
     color: var(--primary-gold);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     margin-bottom: 12px;
+    font-family: 'Playfair Display', serif;
 }
 
 .invoice-row {
     display: flex;
     justify-content: space-between;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     color: var(--text-muted);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .total-row {
     color: #fff;
-    font-size: 0.95rem;
-    margin-top: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 10px;
 }
 
 .divider {
     border: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin: 8px 0;
+    border-top: 1px solid var(--border-color-light);
+    margin: 10px 0;
 }
 
-/* Buttons */
+.mt-20 {
+    margin-top: 20px;
+}
+
+/* ==========================================================================
+   9. BUTTONS
+   ========================================================================== */
 .btn-group {
     display: flex;
     gap: 12px;
     margin-top: 20px;
 }
 
-.btn-primary {
+.btn-primary, .btn-primary-block {
     background: var(--primary-gold);
     color: #000;
     font-weight: 600;
     border: none;
     padding: 12px 20px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    flex-grow: 1;
     transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
-.btn-primary:hover {
-    background: var(--primary-gold-hover);
+.btn-primary {
+    flex-grow: 1;
 }
 
 .btn-primary-block {
     width: 100%;
-    background: var(--primary-gold);
-    color: #000;
-    font-weight: 600;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    cursor: pointer;
     margin-top: 10px;
-    transition: var(--transition);
 }
 
-.btn-primary-block:hover {
+.btn-primary:hover, .btn-primary-block:hover {
     background: var(--primary-gold-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--primary-gold-glow);
+}
+
+.btn-primary:active, .btn-primary-block:active {
+    transform: translateY(0);
 }
 
 .btn-danger {
@@ -703,38 +843,36 @@ input:focus, select:focus {
     color: var(--danger-color);
     border: 1px solid rgba(239, 68, 68, 0.3);
     padding: 12px 18px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
+    font-weight: 600;
     transition: var(--transition);
 }
 
 .btn-danger:hover {
     background: rgba(239, 68, 68, 0.25);
+    border-color: var(--danger-color);
 }
 
 .btn-secondary-sm {
     background: var(--bg-card-light);
     color: #fff;
     border: none;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.75rem;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+    font-weight: 500;
     cursor: pointer;
     transition: var(--transition);
 }
 
 .btn-secondary-sm:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.25);
 }
 
-/* Cards Grid */
-.cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-/* Responsive Mobile Navigation Elements */
+/* ==========================================================================
+   10. RESPONSIVE DESIGN (MEDIA QUERIES)
+   ========================================================================== */
 .mobile-top-bar, 
 .mobile-bottom-nav, 
 .sidebar-overlay {
@@ -748,8 +886,10 @@ input:focus, select:focus {
 }
 
 @media (max-width: 768px) {
+    /* Mobile Sidebar & Overlay */
     .sidebar {
         transform: translateX(-100%);
+        box-shadow: var(--shadow-lg);
     }
 
     .sidebar.active {
@@ -760,7 +900,8 @@ input:focus, select:focus {
         display: block;
         position: fixed;
         inset: 0;
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(4px);
         z-index: 999;
         opacity: 0;
         pointer-events: none;
@@ -772,13 +913,15 @@ input:focus, select:focus {
         pointer-events: auto;
     }
 
+    /* Main Content Layout Adjustments */
     .main-content {
         margin-left: 0;
         width: 100%;
         padding: 15px;
-        padding-bottom: 80px;
+        padding-bottom: 90px;
     }
 
+    /* Mobile Header Navigation */
     .mobile-top-bar {
         display: flex;
         justify-content: space-between;
@@ -787,6 +930,7 @@ input:focus, select:focus {
         background: var(--bg-card);
         border-bottom: 1px solid var(--border-color);
         margin-bottom: 15px;
+        border-radius: var(--radius-md);
     }
 
     .mobile-brand {
@@ -796,6 +940,7 @@ input:focus, select:focus {
         color: var(--primary-gold);
         font-family: 'Playfair Display', serif;
         font-weight: bold;
+        font-size: 1.1rem;
     }
 
     .menu-toggle {
@@ -804,8 +949,10 @@ input:focus, select:focus {
         color: #fff;
         font-size: 1.3rem;
         cursor: pointer;
+        padding: 4px;
     }
 
+    /* Mobile Bottom Navigation Bar */
     .mobile-bottom-nav {
         display: flex;
         justify-content: space-around;
@@ -818,6 +965,7 @@ input:focus, select:focus {
         border-top: 1px solid var(--border-color);
         padding: 10px 0;
         z-index: 1000;
+        box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.4);
     }
 
     .m-nav-item {
@@ -830,16 +978,18 @@ input:focus, select:focus {
         font-size: 0.7rem;
         gap: 4px;
         cursor: pointer;
+        transition: var(--transition);
     }
 
     .m-nav-item i {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
 
     .m-nav-item.active {
         color: var(--primary-gold);
     }
 
+    /* Responsive Topbar */
     .topbar {
         flex-direction: column;
         gap: 15px;
