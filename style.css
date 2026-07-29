@@ -42,11 +42,10 @@ body {
     border: 0;
 }
 
-/* Custom Background Images for Hero Banner and Login Modal */
-/* (আপনার কাছে থাকা ব্যাকগ্রাউন্ড ছবিটির নাম 'hero-bg.jpg' এবং 'login-bg.jpg' দিয়ে এই স্থানগুলোতে পরিবর্তন করে দিন) */
+
 .custom-hero-bg {
     background: linear-gradient(to right, rgba(0, 0, 0, 0.88) 35%, rgba(0, 0, 0, 0.25)), 
-                url('hero-bg.jpg') center/cover no-repeat !important;
+                url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat !important;
 }
 
 .custom-login-bg {
