@@ -13,12 +13,12 @@
     <!-- Login Modal -->
     <div id="loginModal" class="login-modal">
         <div class="login-card">
-            <div class="login-header">
-                <i class="fa-solid fa-crown logo-icon"></i>
-                <h2>GRAND PALACE</h2>
-                <p>Luxury Resort Management</p>
+            <div class="login-header" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?w=800&auto=format&fit=crop&q=80') center/cover no-repeat; padding: 30px; border-radius: 12px 12px 0 0; color: #fff; text-align: center;">
+                <i class="fa-solid fa-crown logo-icon" style="font-size: 2.5rem; color: #d4af37; margin-bottom: 10px;"></i>
+                <h2 style="margin: 0; font-family: 'Playfair Display', serif;">GRAND PALACE</h2>
+                <p style="margin: 5px 0 0; font-size: 0.9rem; opacity: 0.9;">Luxury Resort Management</p>
             </div>
-            <form id="loginForm">
+            <form id="loginForm" style="padding: 20px;">
                 <div class="form-group">
                     <label><i class="fa-solid fa-user"></i> Admin Username</label>
                     <input type="text" id="username" value="admin" required>
@@ -108,6 +108,16 @@
                 <div class="page-header">
                     <h1>Executive Dashboard</h1>
                     <p>Live status of resort reservations, guests, and services.</p>
+                </div>
+
+                <!-- Grand Palace Resort Hero Banner -->
+                <div class="resort-hero-banner" style="position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 25px; height: 220px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+                    <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?w=1200&auto=format&fit=crop&q=80" alt="Grand Palace Resort Lobby" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0.2)); display: flex; flex-direction: column; justify-content: center; padding: 0 30px; color: #fff;">
+                        <span style="color: #d4af37; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 0.85rem;">Welcome to Grand Palace</span>
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin: 5px 0 10px;">World-Class Hospitality & Luxury Stay</h2>
+                        <p style="margin: 0; opacity: 0.85; max-width: 500px; font-size: 0.95rem;">Manage real-time guest bookings, luxury suites, gourmet dining, and exclusive wellness amenities.</p>
+                    </div>
                 </div>
 
                 <div class="stats-grid">
@@ -213,7 +223,7 @@
                             <label><i class="fa-solid fa-camera"></i> Guest Photo Upload (Mandatory / optional)</label>
                             <div class="image-upload-wrapper">
                                 <div class="img-preview-box">
-                                    <img id="previewImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="Guest Preview">
+                                    <img id="previewImg" src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?w=400&auto=format&fit=crop&q=80" alt="Guest Preview">
                                 </div>
                                 <div class="upload-controls">
                                     <label class="btn-file-upload">
