@@ -42,10 +42,10 @@ body {
     border: 0;
 }
 
-/* Custom Hero Background (Updated with uploaded photo) */
+
 .custom-hero-bg {
     background: linear-gradient(to right, rgba(0, 0, 0, 0.88) 35%, rgba(0, 0, 0, 0.25)), 
-                url('premium_photo-1661964071015-d97428970584 (1).jpg') center/cover no-repeat !important;
+                url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat !important;
 }
 
 .custom-login-bg {
