@@ -24,11 +24,11 @@ const TAX_RATE = 0.15;           // 15% VAT/Tax
 const SERVICE_CHARGE_RATE = 0.10; // 10% Hotel Service Charge
 
 let defaultRooms = [
-    { id: 'room-1', title: 'Single Executive Bed Room', price: 800, desc: 'Cozy executive single bed with high-speed WiFi, mini-bar, Smart TV, and city balcony view.', photo: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&auto=format&fit=crop&q=80', status: 'Available' },
-    { id: 'room-2', title: 'Standard Double Bed Room', price: 2000, desc: 'Spacious double bed with plush duvet, city view, Smart TV, and complimentary breakfast.', photo: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600&auto=format&fit=crop&q=80', status: 'Available' },
-    { id: 'room-3', title: 'Deluxe Ocean View Double Room', price: 5000, desc: 'Luxury double bed with panoramic ocean view, Jacuzzi bath, executive lounge access & 24/7 room service.', photo: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&auto=format&fit=crop&q=80', status: 'Available' },
-    { id: 'room-4', title: 'Ultra-Luxurious Presidential Suite', price: 20000, desc: 'Master suite with private butler, living room, marble bathroom, and VIP airport pickup.', photo: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&auto=format&fit=crop&q=80', status: 'Available' },
-    { id: 'room-5', title: 'Royal Palace Villa with Private Pool', price: 50000, desc: 'Exclusive private villa featuring personal infinity pool, garden lounge, and dedicated chef.', photo: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&auto=format&fit=crop&q=80', status: 'Available' }
+    { id: 'room-1', title: 'Single Executive Bed Room', price: 80, desc: 'Cozy executive single bed with high-speed WiFi, mini-bar, Smart TV, and city balcony view.', photo: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&auto=format&fit=crop&q=80', status: 'Available' },
+    { id: 'room-2', title: 'Standard Double Bed Room', price: 140, desc: 'Spacious double bed with plush duvet, city view, Smart TV, and complimentary breakfast.', photo: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600&auto=format&fit=crop&q=80', status: 'Available' },
+    { id: 'room-3', title: 'Deluxe Ocean View Double Room', price: 220, desc: 'Luxury double bed with panoramic ocean view, Jacuzzi bath, executive lounge access & 24/7 room service.', photo: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&auto=format&fit=crop&q=80', status: 'Available' },
+    { id: 'room-4', title: 'Ultra-Luxurious Presidential Suite', price: 550, desc: 'Master suite with private butler, living room, marble bathroom, and VIP airport pickup.', photo: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&auto=format&fit=crop&q=80', status: 'Available' },
+    { id: 'room-5', title: 'Royal Palace Villa with Private Pool', price: 1000, desc: 'Exclusive private villa featuring personal infinity pool, garden lounge, and dedicated chef.', photo: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&auto=format&fit=crop&q=80', status: 'Available' }
 ];
 
 let defaultServices = [
@@ -116,33 +116,45 @@ function initRealtimeSync() {
 // 5. INITIALIZATION & NAVIGATION
 // ------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('currentDateDisplay').innerText = new Date().toDateString();
+    const dateEl = document.getElementById('currentDateDisplay');
+    if (dateEl) dateEl.innerText = new Date().toDateString();
     
-    document.getElementById('checkIn').valueAsDate = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    document.getElementById('checkOut').valueAsDate = tomorrow;
+    const checkInEl = document.getElementById('checkIn');
+    const checkOutEl = document.getElementById('checkOut');
+    if (checkInEl) checkInEl.valueAsDate = new Date();
+    if (checkOutEl) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        checkOutEl.valueAsDate = tomorrow;
+    }
 
+    renderRoomCards();
+    renderServicesCards();
     initRealtimeSync();
     calculateBilling();
 });
 
-document.getElementById('loginForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    document.getElementById('loginModal').classList.add('hidden');
-    document.getElementById('appContainer').classList.remove('hidden');
-    showToast("Welcome back, Executive Manager!");
-});
+const loginForm = document.getElementById('loginForm');
+if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('appContainer').style.display = 'flex';
+        showToast("Welcome back, MD. EMTIAZ HOSSAIN SAMI!");
+    });
+}
 
 function logout() {
-    document.getElementById('appContainer').classList.add('hidden');
-    document.getElementById('loginModal').classList.remove('hidden');
+    document.getElementById('appContainer').style.display = 'none';
+    document.getElementById('loginModal').style.display = 'flex';
     showToast("Logged out successfully", "warning");
 }
 
 function toggleMobileSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('sidebarOverlay').classList.toggle('open');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (sidebar) sidebar.classList.toggle('open');
+    if (overlay) overlay.classList.toggle('open');
 }
 
 function switchTab(tabName) {
@@ -150,7 +162,8 @@ function switchTab(tabName) {
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.querySelectorAll('.m-nav-item').forEach(item => item.classList.remove('active'));
 
-    document.getElementById(`tab-${tabName}`).classList.add('active');
+    const activeTab = document.getElementById(`tab-${tabName}`);
+    if (activeTab) activeTab.classList.add('active');
 
     const desktopItem = document.querySelector(`.nav-item[onclick="switchTab('${tabName}')"]`);
     if (desktopItem) desktopItem.classList.add('active');
@@ -158,8 +171,10 @@ function switchTab(tabName) {
     const mobileItem = document.querySelector(`.m-nav-item[onclick="switchTab('${tabName}')"]`);
     if (mobileItem) mobileItem.classList.add('active');
 
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').classList.remove('open');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (sidebar) sidebar.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
 
     if (tabName === 'dashboard') updateDashboard();
     if (tabName === 'guests') renderFullBookingsTable();
@@ -174,17 +189,20 @@ function handleGuestPhotoUpload(event) {
         const reader = new FileReader();
         reader.onload = function(e) {
             currentGuestPhotoBase64 = e.target.result;
-            document.getElementById('previewImg').src = currentGuestPhotoBase64;
+            const preview = document.getElementById('previewImg');
+            if (preview) preview.src = currentGuestPhotoBase64;
         };
         reader.readAsDataURL(file);
     }
 }
 
 function updateGuestImageFromUrl() {
-    const url = document.getElementById('imgUrlInput').value.trim();
+    const urlInput = document.getElementById('imgUrlInput');
+    const url = urlInput ? urlInput.value.trim() : '';
     if (url) {
         currentGuestPhotoBase64 = url;
-        document.getElementById('previewImg').src = url;
+        const preview = document.getElementById('previewImg');
+        if (preview) preview.src = url;
         showToast("Profile image loaded!");
     } else {
         showToast("Please enter a valid image URL", "error");
@@ -215,7 +233,7 @@ async function changeItemPhoto(event, type, index) {
 }
 
 // ------------------------------------------------------------------
-// 7. ROOMS & SERVICES RENDERING (WITH AVAILABILITY TRACKING)
+// 7. ROOMS & SERVICES RENDERING
 // ------------------------------------------------------------------
 function renderRoomCards() {
     const container = document.getElementById('roomsCardsGrid');
@@ -228,26 +246,26 @@ function renderRoomCards() {
 
         container.innerHTML += `
             <div class="item-card">
-                <div class="card-image-box">
-                    <img id="roomImg-${index}" src="${room.photo}" alt="${room.title}">
-                    <span class="badge-price">$${room.price.toLocaleString()} / night</span>
+                <div class="card-image-box" style="position: relative; overflow: hidden; border-radius: 10px;">
+                    <img id="roomImg-${index}" src="${room.photo}" alt="${room.title}" style="width:100%; height: 200px; object-fit: cover;">
+                    <span class="badge-price" style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: #d4af37; padding: 4px 10px; border-radius: 6px; font-weight: bold;">$${room.price.toLocaleString()} / night</span>
                     <span style="position: absolute; top: 10px; left: 10px; background: ${badgeColor}; color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold;">
                         ${room.status || 'Available'}
                     </span>
                 </div>
-                <div class="card-content">
+                <div class="card-content" style="padding: 15px 0;">
                     <div>
-                        <h3>${room.title}</h3>
-                        <p>${room.desc}</p>
+                        <h3 style="margin: 0 0 5px;">${room.title}</h3>
+                        <p style="font-size: 0.85rem; color: #64748b; margin: 0;">${room.desc}</p>
                     </div>
-                    <div style="margin-top: 10px; display: flex; gap: 8px;">
+                    <div style="margin-top: 15px; display: flex; gap: 8px;">
                         <button onclick="toggleRoomStatus('${room.id}', '${isOccupied ? 'Available' : 'Occupied'}')" 
                                 style="flex:1; padding: 8px; border-radius: 6px; border: none; background: #3B82F6; color:#fff; font-size:0.8rem; cursor:pointer;">
                             Mark ${isOccupied ? 'Available' : 'Occupied'}
                         </button>
-                        <label class="btn-file-upload" style="flex:1; text-align:center;">
+                        <label class="btn-file-upload" style="flex:1; text-align:center; padding: 8px; background: #e2e8f0; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">
                             <i class="fa-solid fa-camera"></i> Change Photo
-                            <input type="file" accept="image/*" onchange="changeItemPhoto(event, 'room', ${index})">
+                            <input type="file" accept="image/*" style="display:none;" onchange="changeItemPhoto(event, 'room', ${index})">
                         </label>
                     </div>
                 </div>
@@ -273,20 +291,20 @@ function renderServicesCards() {
     servicesData.forEach((srv, index) => {
         container.innerHTML += `
             <div class="item-card">
-                <div class="card-image-box">
-                    <img id="srvImg-${index}" src="${srv.photo}" alt="${srv.title}">
-                    <span class="badge-price">${srv.category}</span>
+                <div class="card-image-box" style="position: relative; overflow: hidden; border-radius: 10px;">
+                    <img id="srvImg-${index}" src="${srv.photo}" alt="${srv.title}" style="width:100%; height: 180px; object-fit: cover;">
+                    <span class="badge-price" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: #fff; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem;">${srv.category}</span>
                 </div>
-                <div class="card-content">
+                <div class="card-content" style="padding: 15px 0;">
                     <div>
-                        <h3>${srv.title}</h3>
-                        <p><strong><i class="fa-solid fa-clock"></i> Timing:</strong> ${srv.time}</p>
-                        <p>${srv.desc}</p>
+                        <h3 style="margin: 0 0 5px;">${srv.title}</h3>
+                        <p style="font-size:0.8rem; color:#10b981; font-weight:600; margin: 0 0 5px;"><i class="fa-solid fa-clock"></i> Timing: ${srv.time}</p>
+                        <p style="font-size:0.85rem; color:#64748b; margin:0;">${srv.desc}</p>
                     </div>
-                    <div class="photo-change-btn-wrapper">
-                        <label class="btn-file-upload" style="width:100%;">
+                    <div style="margin-top: 15px;">
+                        <label class="btn-file-upload" style="display:block; text-align:center; padding: 8px; background: #e2e8f0; border-radius: 6px; cursor: pointer; font-size: 0.8rem;">
                             <i class="fa-solid fa-camera"></i> Change Service Photo
-                            <input type="file" accept="image/*" onchange="changeItemPhoto(event, 'service', ${index})">
+                            <input type="file" accept="image/*" style="display:none;" onchange="changeItemPhoto(event, 'service', ${index})">
                         </label>
                     </div>
                 </div>
@@ -299,13 +317,17 @@ function renderServicesCards() {
 // 8. PROFESSIONAL BILLING & TAX CALCULATOR
 // ------------------------------------------------------------------
 function calculateBilling() {
-    const checkIn = new Date(document.getElementById('checkIn').value);
-    const checkOut = new Date(document.getElementById('checkOut').value);
+    const checkInVal = document.getElementById('checkIn')?.value;
+    const checkOutVal = document.getElementById('checkOut')?.value;
+    
+    const checkIn = checkInVal ? new Date(checkInVal) : new Date();
+    const checkOut = checkOutVal ? new Date(checkOutVal) : new Date();
     
     let nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
     if (isNaN(nights) || nights < 1) nights = 1;
 
-    const roomPrice = parseInt(document.getElementById('roomTypeSelect').value.split('|')[1]) || 0;
+    const roomTypeSelect = document.getElementById('roomTypeSelect');
+    const roomPrice = roomTypeSelect ? parseInt(roomTypeSelect.value.split('|')[1]) || 0 : 80;
     const roomSubtotal = roomPrice * nights;
 
     let servicesSubtotal = 0;
@@ -318,10 +340,10 @@ function calculateBilling() {
     const serviceCharge = subtotal * SERVICE_CHARGE_RATE;
     const grandTotal = Math.round(subtotal + vatAmount + serviceCharge);
 
-    document.getElementById('billNights').innerText = `${nights} Night(s)`;
-    document.getElementById('billRoom').innerText = `$${roomSubtotal.toLocaleString()}`;
-    document.getElementById('billServices').innerText = `$${servicesSubtotal.toLocaleString()}`;
-    document.getElementById('billTotal').innerText = `$${grandTotal.toLocaleString()} (Inc. 15% VAT & 10% Service Charge)`;
+    if (document.getElementById('billNights')) document.getElementById('billNights').innerText = `${nights} Night(s)`;
+    if (document.getElementById('billRoom')) document.getElementById('billRoom').innerText = `$${roomSubtotal.toLocaleString()}`;
+    if (document.getElementById('billServices')) document.getElementById('billServices').innerText = `$${servicesSubtotal.toLocaleString()}`;
+    if (document.getElementById('billTotal')) document.getElementById('billTotal').innerText = `$${grandTotal.toLocaleString()} (Inc. 15% VAT & 10% Service Charge)`;
 
     return { nights, roomSubtotal, servicesSubtotal, vatAmount, serviceCharge, grandTotal };
 }
@@ -329,56 +351,72 @@ function calculateBilling() {
 // ------------------------------------------------------------------
 // 9. RESERVATION FORM SUBMISSION
 // ------------------------------------------------------------------
-document.getElementById('reservationForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+const reservationForm = document.getElementById('reservationForm');
+if (reservationForm) {
+    reservationForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    const submitBtn = e.target.querySelector('button[type="submit"]');
-    if (submitBtn) submitBtn.disabled = true;
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        if (submitBtn) submitBtn.disabled = true;
 
-    const billing = calculateBilling();
-    const roomCategory = document.getElementById('roomTypeSelect').value.split('|')[0];
+        const billing = calculateBilling();
+        const roomTypeSelect = document.getElementById('roomTypeSelect');
+        const roomCategory = roomTypeSelect ? roomTypeSelect.value.split('|')[0] : 'Single Bed Room';
 
-    const selectedServices = [];
-    document.querySelectorAll('input[name="foodMenu"]:checked, input[name="amenities"]:checked').forEach(cb => {
-        selectedServices.push(cb.value);
+        const selectedServices = [];
+        document.querySelectorAll('input[name="foodMenu"]:checked, input[name="amenities"]:checked').forEach(cb => {
+            selectedServices.push(cb.value);
+        });
+
+        const newBooking = {
+            id: 'GP-' + Math.floor(100000 + Math.random() * 900000),
+            guestName: `${document.getElementById('fName').value} ${document.getElementById('lName').value}`,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            room: roomCategory,
+            checkIn: document.getElementById('checkIn').value,
+            checkOut: document.getElementById('checkOut').value,
+            nights: billing.nights,
+            services: selectedServices,
+            roomSubtotal: billing.roomSubtotal,
+            servicesSubtotal: billing.servicesSubtotal,
+            vatAmount: billing.vatAmount,
+            serviceCharge: billing.serviceCharge,
+            totalBill: billing.grandTotal,
+            status: 'Confirmed', // Lifecycle: Confirmed, Checked-In, Checked-Out, Cancelled
+            photo: currentGuestPhotoBase64,
+            createdAt: new Date().toISOString()
+        };
+
+        try {
+            await addDoc(collection(db, "reservations"), newBooking);
+            showToast(`🎉 Reservation ${newBooking.id} Confirmed!`);
+            resetForm();
+            switchTab('dashboard');
+        } catch (error) {
+            showToast("Error creating booking: " + error.message, "error");
+        } finally {
+            if (submitBtn) submitBtn.disabled = false;
+        }
     });
-
-    const newBooking = {
-        id: 'GP-' + Math.floor(100000 + Math.random() * 900000),
-        guestName: `${document.getElementById('fName').value} ${document.getElementById('lName').value}`,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        room: roomCategory,
-        checkIn: document.getElementById('checkIn').value,
-        checkOut: document.getElementById('checkOut').value,
-        nights: billing.nights,
-        services: selectedServices,
-        roomSubtotal: billing.roomSubtotal,
-        servicesSubtotal: billing.servicesSubtotal,
-        vatAmount: billing.vatAmount,
-        serviceCharge: billing.serviceCharge,
-        totalBill: billing.grandTotal,
-        status: 'Confirmed', // Lifecycle: Confirmed, Checked-In, Checked-Out, Cancelled
-        photo: currentGuestPhotoBase64,
-        createdAt: new Date().toISOString()
-    };
-
-    try {
-        await addDoc(collection(db, "reservations"), newBooking);
-        showToast(`🎉 Reservation ${newBooking.id} Confirmed!`);
-        resetForm();
-        switchTab('dashboard');
-    } catch (error) {
-        showToast("Error creating booking: " + error.message, "error");
-    } finally {
-        if (submitBtn) submitBtn.disabled = false;
-    }
-});
+}
 
 function resetForm() {
-    document.getElementById('reservationForm').reset();
+    const form = document.getElementById('reservationForm');
+    if (form) form.reset();
     currentGuestPhotoBase64 = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80';
-    document.getElementById('previewImg').src = currentGuestPhotoBase64;
+    const preview = document.getElementById('previewImg');
+    if (preview) preview.src = currentGuestPhotoBase64;
+    
+    const checkInEl = document.getElementById('checkIn');
+    const checkOutEl = document.getElementById('checkOut');
+    if (checkInEl) checkInEl.valueAsDate = new Date();
+    if (checkOutEl) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        checkOutEl.valueAsDate = tomorrow;
+    }
+    
     calculateBilling();
 }
 
@@ -396,28 +434,42 @@ function updateDashboard() {
         .filter(r => r.status !== 'Cancelled')
         .reduce((acc, curr) => acc + (curr.totalBill || 0), 0);
     
-    document.getElementById('statRevenue').innerText = `$${totalRevenue.toLocaleString()}`;
+    if (document.getElementById('statRevenue')) {
+        document.getElementById('statRevenue').innerText = `$${totalRevenue.toLocaleString()}`;
+    }
 
     let entertainmentCount = reservations.filter(r => r.services && r.services.some(s => s.includes('DJ') || s.includes('Concert') || s.includes('Pool'))).length;
-    document.getElementById('statPoolPass').innerText = entertainmentCount;
+    if (document.getElementById('statPoolPass')) {
+        document.getElementById('statPoolPass').innerText = entertainmentCount;
+    }
 
-    let diningCount = reservations.filter(r => r.services && r.services.some(s => s.includes('Bengali') || s.includes('Thai') || s.includes('Indian') || s.includes('Continental'))).length;
-    document.getElementById('statDiningOrders').innerText = diningCount;
+    let diningCount = reservations.filter(r => r.services && r.services.some(s => s.includes('Bengali') || s.includes('Thai') || s.includes('Indian') || s.includes('Continental') || s.includes('Feast') || s.includes('Paella'))).length;
+    if (document.getElementById('statDiningOrders')) {
+        document.getElementById('statDiningOrders').innerText = diningCount;
+    }
 
     const tbody = document.getElementById('dashboardTableBody');
     if (!tbody) return;
     tbody.innerHTML = '';
 
+    if (reservations.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 20px; color:#94a3b8;">No recent check-ins recorded.</td></tr>';
+        return;
+    }
+
     reservations.slice(0, 5).forEach(res => {
         tbody.innerHTML += `
             <tr>
-                <td><img src="${res.photo}" class="table-avatar" alt="Guest"></td>
+                <td><img src="${res.photo}" class="table-avatar" alt="Guest" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover;"></td>
                 <td><strong>${res.id}</strong></td>
                 <td>${res.guestName}</td>
                 <td>${res.room}</td>
-                <td>${getStatusBadgeHTML(res.status)}</td>
-                <td><strong style="color: var(--accent-gold);">$${(res.totalBill || 0).toLocaleString()}</strong></td>
-                <td><button class="action-btn-del" onclick="deleteBooking('${res.docId}')"><i class="fa-solid fa-trash"></i></button></td>
+                <td>
+                    <small style="color: #64748b; display:block;">${res.checkIn} to ${res.checkOut}</small>
+                    ${getStatusBadgeHTML(res.status)}
+                </td>
+                <td><strong style="color: #d4af37;">$${(res.totalBill || 0).toLocaleString()}</strong></td>
+                <td><button class="action-btn-del" onclick="deleteBooking('${res.docId}')" style="background:#ef4444; color:#fff; border:none; padding: 5px 10px; border-radius: 6px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
             </tr>
         `;
     });
@@ -431,30 +483,35 @@ function renderFullBookingsTable(filteredData = null) {
     const list = filteredData || reservations;
 
     if (list.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color: var(--text-muted); padding: 30px;">No reservation records found.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color: #94a3b8; padding: 30px;">No reservation records found.</td></tr>';
         return;
     }
 
     list.forEach(res => {
+        const servicesText = res.services && res.services.length > 0 ? res.services.join(', ') : 'No extra services';
+
         tbody.innerHTML += `
             <tr>
-                <td><img src="${res.photo}" class="table-avatar" alt="Guest"></td>
+                <td><img src="${res.photo}" class="table-avatar" alt="Guest" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
                 <td><strong>${res.id}</strong></td>
                 <td>
                     <strong>${res.guestName}</strong><br>
-                    <small style="color: var(--text-muted);">${res.phone} | ${res.email}</small>
+                    <small style="color: #64748b;">${res.phone} | ${res.email}</small>
                 </td>
                 <td>${res.room} (${res.nights} Night)</td>
                 <td>
-                    <select onchange="updateBookingStatus('${res.docId}', this.value)" style="padding:4px 8px; border-radius:6px; font-weight:bold;">
-                        <option value="Confirmed" ${res.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
-                        <option value="Checked-In" ${res.status === 'Checked-In' ? 'selected' : ''}>Checked-In</option>
-                        <option value="Checked-Out" ${res.status === 'Checked-Out' ? 'selected' : ''}>Checked-Out</option>
-                        <option value="Cancelled" ${res.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                    </select>
+                    <div style="margin-bottom: 5px;">
+                        <select onchange="updateBookingStatus('${res.docId}', this.value)" style="padding:4px 8px; border-radius:6px; font-weight:bold; border: 1px solid #cbd5e1;">
+                            <option value="Confirmed" ${res.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                            <option value="Checked-In" ${res.status === 'Checked-In' ? 'selected' : ''}>Checked-In</option>
+                            <option value="Checked-Out" ${res.status === 'Checked-Out' ? 'selected' : ''}>Checked-Out</option>
+                            <option value="Cancelled" ${res.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </div>
+                    <small style="color: #64748b; display: block; max-width: 220px; white-space: normal;">${servicesText}</small>
                 </td>
-                <td><strong style="color: var(--accent-gold);">$${(res.totalBill || 0).toLocaleString()}</strong></td>
-                <td><button class="action-btn-del" onclick="deleteBooking('${res.docId}')"><i class="fa-solid fa-trash"></i> Delete</button></td>
+                <td><strong style="color: #d4af37;">$${(res.totalBill || 0).toLocaleString()}</strong></td>
+                <td><button class="action-btn-del" onclick="deleteBooking('${res.docId}')" style="background:#ef4444; color:#fff; border:none; padding: 6px 12px; border-radius: 6px; cursor:pointer;"><i class="fa-solid fa-trash"></i> Delete</button></td>
             </tr>
         `;
     });
@@ -466,7 +523,7 @@ function getStatusBadgeHTML(status) {
     if (status === 'Checked-Out') color = '#6B7280';
     if (status === 'Cancelled') color = '#EF4444';
 
-    return `<span style="background:${color}; color:#fff; padding:3px 8px; border-radius:12px; font-size:0.75rem; font-weight:bold;">${status || 'Confirmed'}</span>`;
+    return `<span style="background:${color}; color:#fff; padding:2px 8px; border-radius:12px; font-size:0.75rem; font-weight:bold; display:inline-block; margin-top:2px;">${status || 'Confirmed'}</span>`;
 }
 
 async function updateBookingStatus(docId, newStatus) {
@@ -479,12 +536,15 @@ async function updateBookingStatus(docId, newStatus) {
 }
 
 function searchGuests() {
-    const query = document.getElementById('searchInput').value.toLowerCase();
+    const input = document.getElementById('searchInput');
+    if (!input) return;
+    const query = input.value.toLowerCase();
+    
     const filtered = reservations.filter(res => 
-        res.guestName.toLowerCase().includes(query) ||
-        res.id.toLowerCase().includes(query) ||
-        res.room.toLowerCase().includes(query) ||
-        res.phone.includes(query)
+        (res.guestName && res.guestName.toLowerCase().includes(query)) ||
+        (res.id && res.id.toLowerCase().includes(query)) ||
+        (res.room && res.room.toLowerCase().includes(query)) ||
+        (res.phone && res.phone.includes(query))
     );
     renderFullBookingsTable(filtered);
 }
@@ -500,7 +560,9 @@ async function deleteBooking(docId) {
     }
 }
 
-// Global exposure for HTML inline events
+// ------------------------------------------------------------------
+// GLOBAL EXPOSURE FOR HTML INLINE EVENTS
+// ------------------------------------------------------------------
 window.logout = logout;
 window.toggleMobileSidebar = toggleMobileSidebar;
 window.switchTab = switchTab;
@@ -508,6 +570,7 @@ window.handleGuestPhotoUpload = handleGuestPhotoUpload;
 window.updateGuestImageFromUrl = updateGuestImageFromUrl;
 window.changeItemPhoto = changeItemPhoto;
 window.calculateBilling = calculateBilling;
+window.resetForm = resetForm;
 window.searchGuests = searchGuests;
 window.deleteBooking = deleteBooking;
 window.toggleRoomStatus = toggleRoomStatus;
