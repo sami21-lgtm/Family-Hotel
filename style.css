@@ -91,36 +91,29 @@ body {
 }
 
 /* ==========================================================================
-   3. HERO BANNER & LOGIN MODAL
+   3. HERO BANNER
    ========================================================================== */
 .custom-hero-bg {
     background: linear-gradient(to right, rgba(15, 23, 42, 0.92) 35%, rgba(15, 23, 42, 0.35)), 
-                url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat !important;
+                url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200') center/cover no-repeat !important;
 }
 
-.custom-login-bg {
-    background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), 
-                url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat !important;
-}
-
-/* Hero Banner Layout */
 .resort-hero-banner {
     position: relative;
     border-radius: var(--radius-lg);
     overflow: hidden;
     margin-bottom: 25px;
-    height: 220px;
+    min-height: 200px;
     box-shadow: var(--shadow-md);
     border: 1px solid var(--border-color);
 }
 
 .hero-content {
-    position: absolute;
-    inset: 0;
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 35px;
+    padding: 35px;
     color: #fff;
 }
 
@@ -148,72 +141,6 @@ body {
     line-height: 1.5;
 }
 
-/* Login Modal */
-.login-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    padding: 20px;
-    transition: var(--transition);
-}
-
-.login-modal.hidden {
-    display: none;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.login-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    width: 100%;
-    max-width: 420px;
-    box-shadow: var(--shadow-lg);
-    overflow: hidden;
-    animation: modalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes modalIn {
-    from { opacity: 0; transform: scale(0.95) translateY(10px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.login-header {
-    padding: 30px;
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    color: #fff;
-    text-align: center;
-}
-
-.login-header .logo-icon {
-    font-size: 2.5rem;
-    color: var(--primary-gold);
-    margin-bottom: 10px;
-}
-
-.login-header h2 {
-    margin: 0;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.6rem;
-}
-
-.login-header p {
-    margin: 5px 0 0;
-    font-size: 0.88rem;
-    color: var(--text-muted);
-}
-
-#loginForm {
-    padding: 25px;
-}
-
 /* ==========================================================================
    4. MAIN APP LAYOUT & SIDEBAR
    ========================================================================== */
@@ -222,7 +149,6 @@ body {
     min-height: 100vh;
 }
 
-/* Sidebar Styling */
 .sidebar {
     width: var(--sidebar-width);
     background: var(--bg-card);
@@ -363,7 +289,7 @@ body {
 }
 
 /* ==========================================================================
-   5. TOPBAR & NAVIGATION CONTROLS
+   5. TOPBAR & CONTROLS
    ========================================================================== */
 .topbar {
     display: flex;
@@ -447,7 +373,7 @@ body {
     font-weight: 500;
 }
 
-/* Tab Pages & Fade Animation */
+/* Tab Pages */
 .tab-page {
     display: none;
     animation: fadeIn 0.35s ease-out forwards;
@@ -484,7 +410,7 @@ body {
 }
 
 /* ==========================================================================
-   6. DASHBOARD CARDS & STATS GRID
+   6. DASHBOARD CARDS & CARDS GRID
    ========================================================================== */
 .stats-grid {
     display: grid;
@@ -540,7 +466,88 @@ body {
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    gap: 22px;
+}
+
+.room-card {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+.room-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-gold);
+}
+
+.room-card-img-wrap {
+    position: relative;
+    height: 180px;
+    width: 100%;
+}
+
+.room-card-img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.card-top-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--success-color);
+    color: #fff;
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.card-top-tag.timing-tag {
+    background: rgba(15, 23, 42, 0.85);
+    color: var(--primary-gold);
+    border: 1px solid var(--border-color);
+}
+
+.card-price-overlay {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(15, 23, 42, 0.88);
+    color: var(--primary-gold);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+}
+
+.room-card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.room-card-title {
+    font-size: 1.05rem;
+    color: #fff;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.room-card-desc {
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 18px;
+    flex-grow: 1;
 }
 
 /* ==========================================================================
@@ -804,38 +811,40 @@ input:focus, select:focus, textarea:focus {
     margin-top: 20px;
 }
 
-.btn-primary, .btn-primary-block {
-    background: var(--primary-gold);
-    color: #000;
-    font-weight: 600;
-    border: none;
-    padding: 12px 20px;
+.btn-primary, .btn-secondary {
+    padding: 12px 18px;
     border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: var(--transition);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
+    width: 100%;
 }
 
 .btn-primary {
-    flex-grow: 1;
+    background: var(--primary-gold);
+    color: #000;
+    border: none;
 }
 
-.btn-primary-block {
-    width: 100%;
-    margin-top: 10px;
-}
-
-.btn-primary:hover, .btn-primary-block:hover {
+.btn-primary:hover {
     background: var(--primary-gold-hover);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px var(--primary-gold-glow);
 }
 
-.btn-primary:active, .btn-primary-block:active {
-    transform: translateY(0);
+.btn-secondary {
+    background: var(--primary-gold-light);
+    color: var(--primary-gold);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: rgba(212, 175, 55, 0.25);
 }
 
 .btn-danger {
@@ -854,47 +863,93 @@ input:focus, select:focus, textarea:focus {
     border-color: var(--danger-color);
 }
 
-.btn-secondary-sm {
-    background: var(--bg-card-light);
-    color: #fff;
-    border: none;
-    padding: 6px 14px;
-    border-radius: var(--radius-sm);
-    font-size: 0.78rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition);
+/* ==========================================================================
+   10. POPUP MODALS
+   ========================================================================== */
+.custom-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.88);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 
-.btn-secondary-sm:hover {
-    background: rgba(255, 255, 255, 0.25);
+.custom-modal.active { display: flex; }
+
+.modal-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: var(--shadow-lg);
+    animation: modalSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+@keyframes modalSlide {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.modal-body { display: grid; grid-template-columns: 1fr 1fr; }
+.modal-image img { width: 100%; height: 100%; object-fit: cover; min-height: 280px; }
+.modal-info { padding: 25px; display: flex; flex-direction: column; justify-content: space-between; }
+
+.modal-badge {
+    background: var(--primary-gold-light);
+    color: var(--primary-gold);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.modal-price { font-size: 1.6rem; font-weight: 700; color: var(--primary-gold); margin: 8px 0; }
+.modal-price span { font-size: 0.85rem; color: var(--text-muted); font-weight: 400; }
+.modal-desc-para { font-size: 0.84rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 15px; }
+
+.modal-amenities-list { list-style: none; margin-bottom: 20px; }
+.modal-amenities-list li { font-size: 0.82rem; color: #ddd; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.modal-amenities-list li i { color: var(--primary-gold); }
 
 /* ==========================================================================
-   10. RESPONSIVE DESIGN (MEDIA QUERIES)
+   11. RESPONSIVE DESIGN (MEDIA QUERIES)
    ========================================================================== */
-.mobile-top-bar, 
-.mobile-bottom-nav, 
-.sidebar-overlay {
-    display: none;
-}
+.mobile-top-bar, .mobile-bottom-nav, .sidebar-overlay { display: none; }
 
 @media (max-width: 992px) {
-    .booking-grid {
-        grid-template-columns: 1fr;
-    }
+    .booking-grid { grid-template-columns: 1fr; }
+    .modal-body { grid-template-columns: 1fr; }
+    .modal-image img { height: 200px; min-height: auto; }
 }
 
 @media (max-width: 768px) {
-    /* Mobile Sidebar & Overlay */
-    .sidebar {
-        transform: translateX(-100%);
-        box-shadow: var(--shadow-lg);
-    }
-
-    .sidebar.active {
-        transform: translateX(0);
-    }
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.active { transform: translateX(0); }
 
     .sidebar-overlay {
         display: block;
@@ -908,12 +963,8 @@ input:focus, select:focus, textarea:focus {
         transition: var(--transition);
     }
 
-    .sidebar-overlay.active {
-        opacity: 1;
-        pointer-events: auto;
-    }
+    .sidebar-overlay.active { opacity: 1; pointer-events: auto; }
 
-    /* Main Content Layout Adjustments */
     .main-content {
         margin-left: 0;
         width: 100%;
@@ -921,7 +972,6 @@ input:focus, select:focus, textarea:focus {
         padding-bottom: 90px;
     }
 
-    /* Mobile Header Navigation */
     .mobile-top-bar {
         display: flex;
         justify-content: space-between;
@@ -949,10 +999,8 @@ input:focus, select:focus, textarea:focus {
         color: #fff;
         font-size: 1.3rem;
         cursor: pointer;
-        padding: 4px;
     }
 
-    /* Mobile Bottom Navigation Bar */
     .mobile-bottom-nav {
         display: flex;
         justify-content: space-around;
@@ -965,7 +1013,6 @@ input:focus, select:focus, textarea:focus {
         border-top: 1px solid var(--border-color);
         padding: 10px 0;
         z-index: 1000;
-        box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.4);
     }
 
     .m-nav-item {
@@ -978,25 +1025,16 @@ input:focus, select:focus, textarea:focus {
         font-size: 0.7rem;
         gap: 4px;
         cursor: pointer;
-        transition: var(--transition);
     }
 
-    .m-nav-item i {
-        font-size: 1.2rem;
-    }
+    .m-nav-item i { font-size: 1.2rem; }
+    .m-nav-item.active { color: var(--primary-gold); }
 
-    .m-nav-item.active {
-        color: var(--primary-gold);
-    }
-
-    /* Responsive Topbar */
     .topbar {
         flex-direction: column;
         gap: 15px;
         align-items: stretch;
     }
 
-    .search-bar {
-        width: 100%;
-    }
+    .search-bar { width: 100%; }
 }
