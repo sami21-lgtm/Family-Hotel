@@ -1,64 +1,112 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Reservation Form</title>
+    <title>Grand Luxury Hotel & Resort</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 </head>
 <body class="reservation-body">
     <div class="reservation-overlay">
         <div class="reservation-card">
+            
             <div class="form-header">
-                <h2>New Guest Form</h2>
+                <h2>GRAND PALACE RESERVATION</h2>
+                <p>Guest Registration & Dining Preferences</p>
             </div>
             
             <div class="form-content">
-                <form id="reservationForm" class="grid-form">
+                <form id="reservationForm" class="grid-form" enctype="multipart/form-data">
+                    
+                    <!-- Left Column: Guest & Booking Details -->
                     <div class="input-side">
+                        <h3 class="section-title">Guest Details</h3>
+                        
                         <div class="field">
-                            <label>First Name:</label>
-                            <input type="text" id="fName" required>
+                            <label for="fName">First Name *</label>
+                            <input type="text" id="fName" name="fName" placeholder="John" required>
                         </div>
                         <div class="field">
-                            <label>Last Name:</label>
-                            <input type="text" id="lName" required>
+                            <label for="lName">Last Name *</label>
+                            <input type="text" id="lName" name="lName" placeholder="Doe" required>
                         </div>
                         <div class="field">
-                            <label>Middle Name:</label>
-                            <input type="text" id="mName">
+                            <label for="mName">Middle Name</label>
+                            <input type="text" id="mName" name="mName" placeholder="Optional">
                         </div>
                         <div class="field">
-                            <label>Address:</label>
-                            <input type="text" id="address" required>
+                            <label for="address">Address *</label>
+                            <input type="text" id="address" name="address" placeholder="Street, City, Country" required>
                         </div>
                         <div class="field">
-                            <label>Contact Number:</label>
-                            <input type="tel" id="contact" required>
+                            <label for="contact">Contact Number *</label>
+                            <input type="tel" id="contact" name="contact" placeholder="+880 1700 000000" required>
                         </div>
                         <div class="field">
-                            <label>Email Address:</label>
-                            <input type="email" id="guestEmail" required>
+                            <label for="guestEmail">Email Address *</label>
+                            <input type="email" id="guestEmail" name="guestEmail" placeholder="guest@example.com" required>
+                        </div>
+
+                        <!-- Room Selection -->
+                        <h3 class="section-title">Room Preference</h3>
+                        <div class="field">
+                            <label for="roomType">Room Category</label>
+                            <select id="roomType" name="roomType" class="custom-select">
+                                <option value="Deluxe Suite - $150">Deluxe Suite ($150/night)</option>
+                                <option value="Executive Suite - $250">Executive Suite ($250/night)</option>
+                                <option value="Presidential Suite - $500">Presidential Suite ($500/night)</option>
+                            </select>
                         </div>
                     </div>
 
+                    <!-- Right Column: Food Menu & Photo Upload -->
                     <div class="image-side">
+                        <h3 class="section-title">Guest Photo</h3>
+                        
                         <div class="guest-img-box">
-                            <img src="premium_photo-1661964071015-d97428970584.jpg" alt="Guest" id="previewImg">
-                        </div>
-                        <div class="upload-options">
-                            <label for="imageUpload" class="custom-file-upload">Choose Photo</label>
-                            <input type="file" id="imageUpload" accept="image/*" onchange="previewFile()">
+                            <img src="https://via.placeholder.com/180x190?text=Guest+Photo" alt="Guest" id="previewImg">
                         </div>
 
+                        <!-- Upload Photo Option -->
+                        <div class="upload-options">
+                            <label for="imageUpload" class="custom-file-upload">📁 Upload File</label>
+                            <input type="file" id="imageUpload" name="imageUpload" accept="image/*" onchange="previewFile()">
+                        </div>
+
+                        <!-- URL Image Option -->
+                        <div class="url-input-area">
+                            <input type="url" id="imgUrlInput" placeholder="Paste Image URL">
+                            <button type="button" class="img-btn" onclick="updateImageFromUrl()">Load Image URL</button>
+                        </div>
+
+                        <!-- Food Menu Section -->
+                        <h3 class="section-title">Dining / Food Package</h3>
+                        <div class="food-menu-box">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="foodMenu" value="Buffet Breakfast ($20)" data-price="20">
+                                <span>Buffet Breakfast (+$20)</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="foodMenu" value="Executive Lunch ($35)" data-price="35">
+                                <span>Executive Lunch (+$35)</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="foodMenu" value="Royal Dinner ($50)" data-price="50">
+                                <span>Royal Dinner (+$50)</span>
+                            </label>
+                        </div>
+
+                        <!-- Action Buttons -->
                         <div class="button-group">
-                            <button type="submit" class="save-btn">Save</button>
-                            <button type="button" class="cancel-btn">Cancel</button>
+                            <button type="submit" class="save-btn" id="saveBtn">Complete Booking</button>
+                            <button type="button" class="cancel-btn" id="cancelBtn" onclick="resetForm()">Reset</button>
                         </div>
                     </div>
                 </form>
             </div>
-            <h1 class="bottom-title">HOTEL RESERVATION</h1>
+            
+            <h1 class="bottom-title">GRAND PALACE HOTEL</h1>
         </div>
     </div>
     <script src="script.js"></script>
