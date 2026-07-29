@@ -23,7 +23,6 @@ const db = getFirestore(app);
 const TAX_RATE = 0.15;           // 15% VAT/Tax
 const SERVICE_CHARGE_RATE = 0.10; // 10% Hotel Service Charge
 
-// ৮টি ভিন্ন ভিন্ন ভ্যারাইটি ও বাজেট ফ্রেন্ডলি থেকে VIP প্রাইসিং রেঞ্জ (800 - 50,000)
 let defaultRooms = [
     { id: 'room-1', title: 'Single Standard Room', price: 800, desc: 'Compact single room with high-speed WiFi, smart TV, air conditioning, and city view.', photo: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&auto=format&fit=crop&q=80', status: 'Available' },
     { id: 'room-2', title: 'Single Executive Room', price: 1000, desc: 'Cozy executive single bed with work desk, mini-bar, Smart TV, and balcony view.', photo: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600&auto=format&fit=crop&q=80', status: 'Available' },
@@ -58,7 +57,7 @@ function startLiveClock() {
     function updateClock() {
         const now = new Date();
         const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        const timeStr = now.toLocaleTimeString('en-US', { hour12: false, timeZone: 'UTC' }); // 24-Hour International UTC Format
+        const timeStr = now.toLocaleTimeString('en-US', { hour12: false, timeZone: 'UTC' });
         
         const clockEl = document.getElementById('currentDateDisplay');
         if (clockEl) {
@@ -66,7 +65,7 @@ function startLiveClock() {
         }
     }
     updateClock();
-    setInterval(updateClock, 1000); // রিয়েল-টাইম সেকেন্ড কাউন্টডাউন
+    setInterval(updateClock, 1000);
 }
 
 // ------------------------------------------------------------------
@@ -135,7 +134,7 @@ function initRealtimeSync() {
 // 6. INITIALIZATION & NAVIGATION
 // ------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
-    startLiveClock(); // লাইভ ঘড়ি স্টার্ট
+    startLiveClock();
     
     const checkInEl = document.getElementById('checkIn');
     const checkOutEl = document.getElementById('checkOut');
@@ -231,29 +230,6 @@ function updateGuestImageFromUrl() {
     }
 }
 
-async function changeItemPhoto(event, type, index) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = async function(e) {
-            const base64Img = e.target.result;
-            try {
-                if (type === 'room') {
-                    roomsData[index].photo = base64Img;
-                    await setDoc(doc(db, "rooms", roomsData[index].id), { photo: base64Img }, { merge: true });
-                } else if (type === 'service') {
-                    servicesData[index].photo = base64Img;
-                    await setDoc(doc(db, "services", servicesData[index].id), { photo: base64Img }, { merge: true });
-                }
-                showToast("📷 Image updated & synced globally!");
-            } catch (err) {
-                showToast("Failed to save image: " + err.message, "error");
-            }
-        };
-        reader.readAsDataURL(file);
-    }
-}
-
 // ------------------------------------------------------------------
 // 8. ROOMS & SERVICES RENDERING
 // ------------------------------------------------------------------
@@ -280,15 +256,11 @@ function renderRoomCards() {
                         <h3 style="margin: 0 0 5px;">${room.title}</h3>
                         <p style="font-size: 0.85rem; color: #64748b; margin: 0;">${room.desc}</p>
                     </div>
-                    <div style="margin-top: 15px; display: flex; gap: 8px;">
+                    <div style="margin-top: 15px;">
                         <button onclick="toggleRoomStatus('${room.id}', '${isOccupied ? 'Available' : 'Occupied'}')" 
-                                style="flex:1; padding: 8px; border-radius: 6px; border: none; background: #3B82F6; color:#fff; font-size:0.8rem; cursor:pointer;">
+                                style="width: 100%; padding: 10px; border-radius: 6px; border: none; background: #3B82F6; color:#fff; font-size:0.85rem; font-weight: 600; cursor:pointer;">
                             Mark ${isOccupied ? 'Available' : 'Occupied'}
                         </button>
-                        <label class="btn-file-upload" style="flex:1; text-align:center; padding: 8px; background: #e2e8f0; border-radius: 6px; cursor: pointer; font-size: 0.8rem; color:#333;">
-                            <i class="fa-solid fa-camera"></i> Change Photo
-                            <input type="file" accept="image/*" style="display:none;" onchange="changeItemPhoto(event, 'room', ${index})">
-                        </label>
                     </div>
                 </div>
             </div>
@@ -322,12 +294,6 @@ function renderServicesCards() {
                         <h3 style="margin: 0 0 5px;">${srv.title}</h3>
                         <p style="font-size:0.8rem; color:#10b981; font-weight:600; margin: 0 0 5px;"><i class="fa-solid fa-clock"></i> Timing: ${srv.time}</p>
                         <p style="font-size:0.85rem; color:#64748b; margin:0;">${srv.desc}</p>
-                    </div>
-                    <div style="margin-top: 15px;">
-                        <label class="btn-file-upload" style="display:block; text-align:center; padding: 8px; background: #e2e8f0; border-radius: 6px; cursor: pointer; font-size: 0.8rem; color:#333;">
-                            <i class="fa-solid fa-camera"></i> Change Service Photo
-                            <input type="file" accept="image/*" style="display:none;" onchange="changeItemPhoto(event, 'service', ${index})">
-                        </label>
                     </div>
                 </div>
             </div>
@@ -589,7 +555,6 @@ window.toggleMobileSidebar = toggleMobileSidebar;
 window.switchTab = switchTab;
 window.handleGuestPhotoUpload = handleGuestPhotoUpload;
 window.updateGuestImageFromUrl = updateGuestImageFromUrl;
-window.changeItemPhoto = changeItemPhoto;
 window.calculateBilling = calculateBilling;
 window.resetForm = resetForm;
 window.searchGuests = searchGuests;
