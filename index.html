@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Grand Palace | Luxury Resort & Management System</title>
+    <title>Grand Palace | Luxury Resort & Spa</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,10 +13,10 @@
     <!-- Login Modal -->
     <div id="loginModal" class="login-modal">
         <div class="login-card">
-            <div class="login-header" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?w=800&auto=format&fit=crop&q=80') center/cover no-repeat; padding: 30px; border-radius: 12px 12px 0 0; color: #fff; text-align: center;">
+            <div class="login-header" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=80') center/cover no-repeat; padding: 30px; border-radius: 12px 12px 0 0; color: #fff; text-align: center;">
                 <i class="fa-solid fa-crown logo-icon" style="font-size: 2.5rem; color: #d4af37; margin-bottom: 10px;"></i>
                 <h2 style="margin: 0; font-family: 'Playfair Display', serif;">GRAND PALACE</h2>
-                <p style="margin: 5px 0 0; font-size: 0.9rem; opacity: 0.9;">Luxury Resort Management</p>
+                <p style="margin: 5px 0 0; font-size: 0.9rem; opacity: 0.9;">Resort & Spa Management System</p>
             </div>
             <form id="loginForm" style="padding: 20px;">
                 <div class="form-group">
@@ -32,10 +32,10 @@
         </div>
     </div>
 
-    <!-- Main Mobile & Desktop App Layout -->
-    <div id="appContainer" class="app-container hidden">
+    <!-- Main App Container -->
+    <div id="appContainer" class="app-container">
         
-        <!-- Mobile Header Bar -->
+        <!-- Mobile Top Bar -->
         <header class="mobile-top-bar">
             <div class="mobile-brand">
                 <i class="fa-solid fa-crown"></i>
@@ -74,27 +74,29 @@
                 </a>
             </nav>
 
-            <!-- Sidebar Footer with Owner Profile -->
+            <!-- Sidebar Footer (Updated Owner & Admin Profile) -->
             <div class="sidebar-footer">
-                <div class="user-info">
-                    <img src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="Owner Photo" class="owner-avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-                    <i class="fa-solid fa-circle-user logo-icon" style="display:none; font-size: 2.2rem; color: #d4af37;"></i>
-                    
+                <div class="user-info" style="display: flex; align-items: center; gap: 10px;">
+                    <!-- 'YOUR_IMAGE_URL_HERE.jpg' এর জায়গায় আপনার ছবির সঠিক লিঙ্কটি বসাবেন -->
+                    <img src="YOUR_IMAGE_URL_HERE.jpg" alt="Owner" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #d4af37; flex-shrink: 0;" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Emtiaz+Sami&background=d4af37&color=fff';">
                     <div>
-                        <strong>আপনার নাম</strong>
-                        <small class="owner-badge">Owner</small>
+                        <strong style="display: block; font-size: 0.82rem; color: #ffffff; white-space: nowrap;">MD. EMTIAZ HOSSAIN SAMI</strong>
+                        <small style="color: #10b981; font-size: 0.75rem;">Owner & Admin</small>
                     </div>
                 </div>
-                <button class="logout-btn" onclick="logout()" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+                <button class="logout-btn" onclick="logout()" title="Logout" style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 1.1rem;">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
             </div>
         </aside>
 
-        <!-- Mobile Overlay -->
+        <!-- Sidebar Overlay for Mobile -->
         <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
 
-        <!-- Main Body Content -->
+        <!-- Main Content Area -->
         <main class="main-content">
             
+            <!-- Top Bar Search & Status -->
             <header class="topbar">
                 <div class="search-bar">
                     <i class="fa-solid fa-magnifying-glass"></i>
@@ -102,11 +104,11 @@
                 </div>
                 <div class="topbar-actions">
                     <div class="badge-status"><span class="pulse"></span> Live Sync</div>
-                    <div class="date-display" id="currentDateDisplay"></div>
+                    <div class="date-display" id="currentDateDisplay">Wed Jul 29 2026</div>
                 </div>
             </header>
 
-            <!-- TAB 1: DASHBOARD -->
+            <!-- TAB 1: EXECUTIVE DASHBOARD -->
             <section id="tab-dashboard" class="tab-page active">
                 <div class="page-header">
                     <h1>Executive Dashboard</h1>
@@ -114,15 +116,16 @@
                 </div>
 
                 <!-- Grand Palace Resort Hero Banner -->
-                <div class="resort-hero-banner" style="position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 25px; height: 220px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-                    <img src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?w=1200&auto=format&fit=crop&q=80" alt="Grand Palace Resort Lobby" style="width: 100%; height: 100%; object-fit: cover;">
-                    <div style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0.2)); display: flex; flex-direction: column; justify-content: center; padding: 0 30px; color: #fff;">
-                        <span style="color: #d4af37; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 0.85rem;">Welcome to Grand Palace</span>
-                        <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin: 5px 0 10px;">World-Class Hospitality & Luxury Stay</h2>
-                        <p style="margin: 0; opacity: 0.85; max-width: 500px; font-size: 0.95rem;">Manage real-time guest bookings, luxury suites, gourmet dining, and exclusive wellness amenities.</p>
+                <div class="resort-hero-banner" style="position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 25px; height: 210px; box-shadow: 0 4px 15px rgba(0,0,0,0.12);">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&auto=format&fit=crop&q=80" alt="Grand Palace Resort Lobby" style="width: 100%; height: 100%; object-fit: cover;">
+                    <div style="position: absolute; inset: 0; background: linear-gradient(to right, rgba(0, 0, 0, 0.88) 35%, rgba(0, 0, 0, 0.25)); display: flex; flex-direction: column; justify-content: center; padding: 0 30px; color: #fff;">
+                        <span style="color: #d4af37; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem;">WELCOME TO GRAND PALACE</span>
+                        <h2 style="font-family: 'Playfair Display', serif; font-size: 2.1rem; margin: 6px 0 10px; font-weight: 700;">World-Class Hospitality & Luxury Stay</h2>
+                        <p style="margin: 0; opacity: 0.88; max-width: 520px; font-size: 0.9rem; line-height: 1.4;">Manage real-time guest bookings, luxury suites, gourmet dining, and exclusive wellness amenities.</p>
                     </div>
                 </div>
 
+                <!-- 4 Key Stat Cards -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-icon gold"><i class="fa-solid fa-bed"></i></div>
@@ -154,63 +157,60 @@
                     </div>
                 </div>
 
+                <!-- Recent Check-Ins Table -->
                 <div class="recent-bookings-section">
-                    <h2>Recent Check-Ins</h2>
+                    <h2 style="font-size: 1.4rem; margin-bottom: 15px;">Recent Check-Ins</h2>
                     <div class="table-wrapper">
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Guest Photo</th>
+                                    <th>GUEST PHOTO</th>
                                     <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Room Type</th>
-                                    <th>Dates</th>
-                                    <th>Bill</th>
-                                    <th>Action</th>
+                                    <th>NAME</th>
+                                    <th>ROOM TYPE</th>
+                                    <th>DATES</th>
+                                    <th>BILL</th>
+                                    <th>ACTION</th>
                                 </tr>
                             </thead>
                             <tbody id="dashboardTableBody">
+                                <!-- Dynamic JS Rows -->
                             </tbody>
                         </table>
                     </div>
                 </div>
             </section>
 
-            <!-- TAB 2: ROOM MANAGEMENT & CUSTOM PHOTOS -->
+            <!-- TAB 2: ROOM MANAGEMENT -->
             <section id="tab-rooms" class="tab-page">
                 <div class="page-header">
-                    <h1>Room Inventory & Custom Photo Manager</h1>
-                    <p>Change and set photos for each room category (saved directly to system memory).</p>
+                    <h1>Rooms & Custom Photos</h1>
+                    <p>Manage resort inventory and custom room photography.</p>
                 </div>
-
                 <div class="cards-grid" id="roomsCardsGrid">
-                    <!-- Dynamic Room Cards Generated via JS -->
+                    <!-- Dynamic Room Cards -->
                 </div>
             </section>
 
-            <!-- TAB 3: NEW RESERVATION -->
+            <!-- TAB 3: NEW BOOKING -->
             <section id="tab-booking" class="tab-page">
                 <div class="page-header">
-                    <h1>Create Guest Reservation</h1>
-                    <p>Select room type, upload guest picture, food menu & amenity slots.</p>
+                    <h1>New Guest Booking</h1>
+                    <p>Create room reservations, food orders, and activity slots.</p>
                 </div>
-
                 <form id="reservationForm" class="booking-grid">
-                    
                     <div class="form-card">
-                        <h3 class="card-title"><i class="fa-solid fa-user-tag"></i> Guest Info & Profile Picture</h3>
-                        
+                        <h3 class="card-title"><i class="fa-solid fa-user-tag"></i> Guest Info & Photo</h3>
                         <div class="form-row">
                             <div class="form-group">
                                 <label>First Name *</label>
-                                <input type="text" id="fName" required placeholder="Guest First Name">
+                                <input type="text" id="fName" required placeholder="First Name">
                             </div>
                             <div class="form-group">
                                 <label>Last Name *</label>
-                                <input type="text" id="lName" required placeholder="Guest Last Name">
+                                <input type="text" id="lName" required placeholder="Last Name">
                             </div>
                         </div>
-
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Email *</label>
@@ -218,19 +218,18 @@
                             </div>
                             <div class="form-group">
                                 <label>Phone *</label>
-                                <input type="tel" id="phone" required placeholder="+880 1700 000000">
+                                <input type="tel" id="phone" required placeholder="+8801700000000">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label><i class="fa-solid fa-camera"></i> Guest Photo Upload (Mandatory / optional)</label>
+                            <label><i class="fa-solid fa-camera"></i> Photo Upload</label>
                             <div class="image-upload-wrapper">
                                 <div class="img-preview-box">
-                                    <img id="previewImg" src="https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?w=400&auto=format&fit=crop&q=80" alt="Guest Preview">
+                                    <img id="previewImg" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&auto=format&fit=crop&q=80" alt="Guest Preview">
                                 </div>
                                 <div class="upload-controls">
                                     <label class="btn-file-upload">
-                                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload From Phone/PC
+                                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload From Device
                                         <input type="file" id="guestPhotoFile" accept="image/*" onchange="handleGuestPhotoUpload(event)">
                                     </label>
                                     <input type="url" id="imgUrlInput" placeholder="Or paste Image URL...">
@@ -238,22 +237,19 @@
                                 </div>
                             </div>
                         </div>
-
-                        <h3 class="card-title mt-20"><i class="fa-solid fa-bed"></i> Room & Dates</h3>
-                        
+                        <h3 class="card-title mt-20"><i class="fa-solid fa-bed"></i> Room Category</h3>
                         <div class="form-row">
                             <div class="form-group">
-                                <label>Check-In Date *</label>
+                                <label>Check-In *</label>
                                 <input type="date" id="checkIn" required onchange="calculateBilling()">
                             </div>
                             <div class="form-group">
-                                <label>Check-Out Date *</label>
+                                <label>Check-Out *</label>
                                 <input type="date" id="checkOut" required onchange="calculateBilling()">
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label>Select Room Category *</label>
+                            <label>Room Category *</label>
                             <select id="roomTypeSelect" onchange="calculateBilling()" class="custom-select">
                                 <option value="Single Bed Room|80">Single Bed Room ($80 / night)</option>
                                 <option value="Standard Double Bed Room|140">Standard Double Bed Room ($140 / night)</option>
@@ -265,72 +261,58 @@
                     </div>
 
                     <div class="form-card">
-                        <h3 class="card-title"><i class="fa-solid fa-utensils"></i> Food Menu Selection (Bangla to Global)</h3>
+                        <h3 class="card-title"><i class="fa-solid fa-utensils"></i> Cuisine Options</h3>
                         <div class="checkbox-group">
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value="🇧🇩 Bengali Traditional Feast" data-price="30" onchange="calculateBilling()">
+                                <input type="checkbox" name="foodMenu" value=" Bengali Traditional Feast" data-price="30" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong>🇧🇩 Bengali Traditional Feast</strong>
-                                    <span>Kacchi Biryani, Hilsha, Vorta & Sweets (+$30/day)</span>
+                                    <span>Kacchi Biryani, Hilsha & Sweets (+$30/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value="🇹🇭 Authentic Thai Cuisine" data-price="45" onchange="calculateBilling()">
+                                <input type="checkbox" name="foodMenu" value=" Authentic Thai Gourmet" data-price="45" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong>🇹🇭 Authentic Thai Gourmet</strong>
-                                    <span>Tom Yum Goong, Pad Thai & Mango Sticky Rice (+$45/day)</span>
+                                    <span>Tom Yum Goong & Pad Thai (+$45/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value="🇪🇸 Spanish Tapas & Paella" data-price="55" onchange="calculateBilling()">
+                                <input type="checkbox" name="foodMenu" value=" Spanish Seafood Paella" data-price="55" onchange="calculateBilling()">
                                 <div class="card-info">
-                                    <strong>🇪🇸 Spanish Seafood Paella & Tapas</strong>
-                                    <span>Traditional Seafood Paella & Churros (+$55/day)</span>
+                                    <strong>🇪🇸 Spanish Seafood Paella</strong>
+                                    <span>Seafood Paella & Tapas (+$55/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value="🌐 Continental 5-Star Buffet" data-price="65" onchange="calculateBilling()">
+                                <input type="checkbox" name="foodMenu" value=" International Buffet" data-price="65" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong>🌐 International Continental Buffet</strong>
-                                    <span>Unlimited Chef's Choice Buffet (+$65/day)</span>
+                                    <span>Unlimited 5-Star Buffet (+$65/day)</span>
                                 </div>
                             </label>
                         </div>
 
-                        <h3 class="card-title mt-20"><i class="fa-solid fa-clock"></i> Swimming Pool & Gym Timing Slots</h3>
+                        <h3 class="card-title mt-20"><i class="fa-solid fa-clock"></i> Pool & Gym Slots</h3>
                         <div class="checkbox-group">
                             <label class="checkbox-card">
                                 <input type="checkbox" name="amenities" value="Morning Pool Pass (06:00 AM - 11:00 AM)" data-price="20" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong><i class="fa-solid fa-water"></i> Morning Swimming Pool Pass</strong>
-                                    <span>Timing Slot: 06:00 AM - 11:00 AM (+$20/day)</span>
+                                    <span>06:00 AM - 11:00 AM (+$20/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="amenities" value="Sunset & Night Pool Pass (04:00 PM - 10:00 PM)" data-price="35" onchange="calculateBilling()">
+                                <input type="checkbox" name="amenities" value="Night Infinity Pool Pass (04:00 PM - 10:00 PM)" data-price="35" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong><i class="fa-solid fa-person-swimming"></i> Night Infinity Pool Pass</strong>
-                                    <span>Timing Slot: 04:00 PM - 10:00 PM (+$35/day)</span>
-                                </div>
-                            </label>
-                            <label class="checkbox-card">
-                                <input type="checkbox" name="amenities" value="Morning Gym Slot (06:00 AM - 11:00 AM)" data-price="15" onchange="calculateBilling()">
-                                <div class="card-info">
-                                    <strong><i class="fa-solid fa-dumbbell"></i> Morning Gym Fitness Pass</strong>
-                                    <span>Timing Slot: 06:00 AM - 11:00 AM (+$15/day)</span>
-                                </div>
-                            </label>
-                            <label class="checkbox-card">
-                                <input type="checkbox" name="amenities" value="Evening Gym + Personal Trainer (04:00 PM - 09:00 PM)" data-price="40" onchange="calculateBilling()">
-                                <div class="card-info">
-                                    <strong><i class="fa-solid fa-person-running"></i> Evening Gym + Trainer Pass</strong>
-                                    <span>Timing Slot: 04:00 PM - 09:00 PM (+$40/day)</span>
+                                    <span>04:00 PM - 10:00 PM (+$35/day)</span>
                                 </div>
                             </label>
                         </div>
 
                         <div class="invoice-box">
-                            <h4><i class="fa-solid fa-receipt"></i> Real-time Automated Billing</h4>
+                            <h4><i class="fa-solid fa-receipt"></i> Real-time Invoice Calculation</h4>
                             <div class="invoice-row">
                                 <span>Stay Duration:</span>
                                 <span id="billNights">1 Night(s)</span>
@@ -340,7 +322,7 @@
                                 <span id="billRoom">$80</span>
                             </div>
                             <div class="invoice-row">
-                                <span>Food & Activity Services:</span>
+                                <span>Services:</span>
                                 <span id="billServices">$0</span>
                             </div>
                             <hr class="divider">
@@ -352,20 +334,18 @@
 
                         <div class="btn-group">
                             <button type="submit" class="btn-primary" id="saveBtn"><i class="fa-solid fa-check"></i> Complete Reservation</button>
-                            <button type="button" class="btn-danger" onclick="resetForm()"><i class="fa-solid fa-rotate-left"></i> Clear</button>
+                            <button type="button" class="btn-danger" onclick="resetForm()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
                         </div>
                     </div>
-
                 </form>
             </section>
 
             <!-- TAB 4: GUEST DIRECTORY -->
             <section id="tab-guests" class="tab-page">
                 <div class="page-header">
-                    <h1>Guest Directory & Photo Records</h1>
-                    <p>List of all saved guests with their pictures, room selections, and service packages.</p>
+                    <h1>Guest Directory</h1>
+                    <p>All recorded guest check-ins and active stays.</p>
                 </div>
-                
                 <div class="table-wrapper">
                     <table class="data-table">
                         <thead>
@@ -379,28 +359,24 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
-                        <tbody id="fullBookingsTableBody">
-                        </tbody>
+                        <tbody id="fullBookingsTableBody"></tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- TAB 5: SERVICES & MENU CUSTOMIZER -->
+            <!-- TAB 5: SERVICES -->
             <section id="tab-services" class="tab-page">
                 <div class="page-header">
-                    <h1>Food Menus & Facility Photo Gallery</h1>
-                    <p>Customize photos and timings for cuisines, pool, and gym.</p>
+                    <h1>Food, Pool & Gym</h1>
+                    <p>Manage dining packages and facility access.</p>
                 </div>
-
-                <div class="cards-grid" id="servicesCardsGrid">
-                    <!-- Dynamic Services Cards Generated via JS -->
-                </div>
+                <div class="cards-grid" id="servicesCardsGrid"></div>
             </section>
 
         </main>
     </div>
 
-    <!-- Mobile Navigation Bottom Bar -->
+    <!-- Mobile Bottom Navigation Bar -->
     <div class="mobile-bottom-nav">
         <button class="m-nav-item active" onclick="switchTab('dashboard')">
             <i class="fa-solid fa-chart-line"></i>
@@ -424,8 +400,6 @@
         </button>
     </div>
 
-  <script type="module" src="script.js"></script>
-</body>
-</html>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
