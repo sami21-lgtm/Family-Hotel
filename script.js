@@ -5,7 +5,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // ==================================================================
-// 1. FIREBASE CONFIGURATION & INITIALIZATION
+// 1. FIREBASE CONFIGURATION
 // ==================================================================
 const firebaseConfig = {
     apiKey: "AIzaSyCjHk05Mjd1hwizLr08SAFHs867BBRbtf8",
@@ -21,12 +21,12 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // ==================================================================
-// 2. FINANCIAL & SYSTEM CONSTANTS
+// 2. SYSTEM & FINANCIAL CONSTANTS
 // ==================================================================
 const TAX_RATE = 0.15;           // 15% VAT
 const SERVICE_CHARGE_RATE = 0.10; // 10% Hotel Service Charge
 
-// Room Database
+// ALL 8 ROOMS DATABASE
 let roomsDatabase = [
     {
         id: 'single-std',
@@ -102,7 +102,7 @@ let roomsDatabase = [
     }
 ];
 
-// Services Database
+// ALL 8 SERVICES DATABASE
 let servicesDatabase = [
     {
         id: 'serv-1',
@@ -187,7 +187,7 @@ let selectedRoomForModal = '';
 let uploadedGuestPhoto = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100';
 
 // ==================================================================
-// 3. CLOCK & NOTIFICATION SYSTEM
+// 3. LIVE BANGLADESH CLOCK & TOAST NOTIFICATIONS
 // ==================================================================
 function startClock() {
     function updateClock() {
@@ -233,7 +233,7 @@ function showToast(message, type = 'success') {
 }
 
 // ==================================================================
-// 4. REAL-TIME FIRESTORE DATA SYNC
+// 4. REALTIME FIRESTORE SYNC
 // ==================================================================
 function initRealtimeSync() {
     onSnapshot(collection(db, "reservations"), (snapshot) => {
@@ -242,7 +242,7 @@ function initRealtimeSync() {
         }
         renderTables();
     }, (error) => {
-        console.warn("Firestore live sync offline, using local cache:", error.message);
+        console.warn("Firestore offline, loading local data:", error.message);
     });
 
     onSnapshot(collection(db, "rooms"), (snapshot) => {
@@ -256,7 +256,7 @@ function initRealtimeSync() {
 }
 
 // ==================================================================
-// 5. INITIALIZATION & NAVIGATION
+// 5. INITIALIZATION & TAB SWITCHING
 // ==================================================================
 window.addEventListener('DOMContentLoaded', () => {
     startClock();
@@ -307,7 +307,7 @@ function toggleSidebar(forceState) {
 }
 
 // ==================================================================
-// 6. PHOTO & PREVIEW HANDLERS
+// 6. PHOTO PREVIEW & IMAGE URL HANDLERS
 // ==================================================================
 function previewUploadImage(e) {
     const file = e.target.files[0];
@@ -329,14 +329,14 @@ function updateGuestImageFromUrl() {
         uploadedGuestPhoto = url;
         const preview = document.getElementById('guestImgPreview') || document.getElementById('previewImg');
         if (preview) preview.src = url;
-        showToast("Profile image updated!");
+        showToast("Profile image loaded!");
     } else {
         showToast("Please enter a valid image URL", "error");
     }
 }
 
 // ==================================================================
-// 7. ROOMS & SERVICES RENDERING
+// 7. RENDERING ROOMS & SERVICES (WITH VIEW BUTTONS)
 // ==================================================================
 function renderRooms() {
     const grid = document.getElementById('roomsCardsGrid');
@@ -381,7 +381,7 @@ function renderServices() {
 }
 
 // ==================================================================
-// 8. MODAL MODIFIERS
+// 8. MODAL CONTROLLERS
 // ==================================================================
 function openRoomModal(roomId) {
     const room = roomsDatabase.find(r => r.id === roomId);
@@ -449,7 +449,7 @@ function closeServiceModal() {
 }
 
 // ==================================================================
-// 9. CALCULATOR & BOOKING LOGIC
+// 9. DYNAMIC BILLING & FORM SUBMISSION
 // ==================================================================
 function setTodayDates() {
     const checkInEl = document.getElementById('checkInDate') || document.getElementById('checkIn');
@@ -493,7 +493,7 @@ function calcTotal() {
     if (document.getElementById('billNights')) document.getElementById('billNights').innerText = `${nights} Night(s)`;
     if (document.getElementById('billRoom')) document.getElementById('billRoom').innerText = `৳${roomSubtotal.toLocaleString()}`;
     if (document.getElementById('billAddons')) document.getElementById('billAddons').innerText = `৳${servicesSubtotal.toLocaleString()}`;
-    if (document.getElementById('billTotal')) document.getElementById('billTotal').innerText = `৳${grandTotal.toLocaleString()} (Inc. Tax & Service Charge)`;
+    if (document.getElementById('billTotal')) document.getElementById('billTotal').innerText = `৳${grandTotal.toLocaleString()} (Inc. VAT & Service Charge)`;
 
     return { nights, roomSubtotal, servicesSubtotal, grandTotal };
 }
@@ -554,7 +554,7 @@ async function handleBookingSubmit(e) {
 }
 
 // ==================================================================
-// 10. TABLES RENDERING & SEARCH
+// 10. DIRECTORY TABLES & SEARCH
 // ==================================================================
 function renderTables() {
     const dashBody = document.getElementById('dashboardTableBody');
@@ -622,7 +622,7 @@ async function deleteBooking(docId) {
 }
 
 // ==================================================================
-// 11. GLOBAL EVENT EXPOSURE (WINDOW ATTACHMENTS)
+// 11. GLOBAL EVENT BINDINGS
 // ==================================================================
 window.switchTab = switchTab;
 window.toggleSidebar = toggleSidebar;
