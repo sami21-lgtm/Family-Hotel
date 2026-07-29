@@ -51,17 +51,20 @@ let reservations = [];
 let currentGuestPhotoBase64 = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80';
 
 // ------------------------------------------------------------------
-// 3. LIVE INTERNATIONAL DIGITAL CLOCK FUNCTION
+// 3. LIVE BANGLADESH TIME (BST 12-Hour AM/PM) CLOCK
 // ------------------------------------------------------------------
 function startLiveClock() {
     function updateClock() {
         const now = new Date();
-        const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        const timeStr = now.toLocaleTimeString('en-US', { hour12: false, timeZone: 'UTC' });
+        const timeOptions = { timeZone: 'Asia/Dhaka', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+        const dateOptions = { timeZone: 'Asia/Dhaka', month: 'short', day: 'numeric', year: 'numeric' };
+        
+        const timeStr = now.toLocaleTimeString('en-US', timeOptions);
+        const dateStr = now.toLocaleDateString('en-US', dateOptions);
         
         const clockEl = document.getElementById('currentDateDisplay');
         if (clockEl) {
-            clockEl.innerHTML = `<i class="fa-solid fa-globe" style="color: #d4af37; margin-right: 5px;"></i> <strong>${timeStr} UTC</strong> | <small>${dateStr}</small>`;
+            clockEl.innerHTML = `<i class="fa-solid fa-clock" style="color: #d4af37; margin-right: 5px;"></i> <strong>${timeStr}</strong> | <small>${dateStr} (BST)</small>`;
         }
     }
     updateClock();
@@ -69,7 +72,7 @@ function startLiveClock() {
 }
 
 // ------------------------------------------------------------------
-// 4. CUSTOM MODERN TOAST NOTIFICATION SYSTEM
+// 4. CUSTOM TOAST NOTIFICATION SYSTEM
 // ------------------------------------------------------------------
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
@@ -150,26 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initRealtimeSync();
     calculateBilling();
 });
-
-const loginForm = document.getElementById('loginForm');
-if (loginForm) {
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const loginModal = document.getElementById('loginModal');
-        const appContainer = document.getElementById('appContainer');
-        if (loginModal) loginModal.style.display = 'none';
-        if (appContainer) appContainer.style.display = 'flex';
-        showToast("Welcome back, MD. EMTIAZ HOSSAIN SAMI!");
-    });
-}
-
-function logout() {
-    const loginModal = document.getElementById('loginModal');
-    const appContainer = document.getElementById('appContainer');
-    if (appContainer) appContainer.style.display = 'none';
-    if (loginModal) loginModal.style.display = 'flex';
-    showToast("Logged out successfully", "warning");
-}
 
 function toggleMobileSidebar() {
     const sidebar = document.getElementById('sidebar');
@@ -302,7 +285,7 @@ function renderServicesCards() {
 }
 
 // ------------------------------------------------------------------
-// 9. PROFESSIONAL BILLING & TAX CALCULATOR
+// 9. PROFESSIONAL BILLING & TAX CALCULATOR (BDT / ৳)
 // ------------------------------------------------------------------
 function calculateBilling() {
     const checkInVal = document.getElementById('checkIn')?.value;
@@ -315,12 +298,13 @@ function calculateBilling() {
     if (isNaN(nights) || nights < 1) nights = 1;
 
     const roomTypeSelect = document.getElementById('roomTypeSelect');
-    const roomPrice = roomTypeSelect ? parseInt(roomTypeSelect.value.split('|')[1]) || 0 : 800;
+    const roomPrice = roomTypeSelect ? (parseInt(roomTypeSelect.value.split('|')[1]) || 800) : 800;
     const roomSubtotal = roomPrice * nights;
 
     let servicesSubtotal = 0;
     document.querySelectorAll('input[name="foodMenu"]:checked, input[name="amenities"]:checked').forEach(cb => {
-        servicesSubtotal += (parseInt(cb.dataset.price) || 0) * nights;
+        const price = parseInt(cb.dataset.price || cb.getAttribute('data-price')) || 0;
+        servicesSubtotal += price * nights;
     });
 
     const subtotal = roomSubtotal + servicesSubtotal;
@@ -548,9 +532,8 @@ async function deleteBooking(docId) {
 }
 
 // ------------------------------------------------------------------
-// GLOBAL EXPOSURE FOR HTML INLINE EVENTS
+// GLOBAL EXPOSURE FOR HTML INLINE EVENTS (window.*)
 // ------------------------------------------------------------------
-window.logout = logout;
 window.toggleMobileSidebar = toggleMobileSidebar;
 window.switchTab = switchTab;
 window.handleGuestPhotoUpload = handleGuestPhotoUpload;
