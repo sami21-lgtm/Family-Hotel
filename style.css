@@ -29,6 +29,20 @@ body {
     min-height: 100vh;
 }
 
+/* Accessibility Helper */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Login Modal */
 .login-modal {
     position: fixed;
     inset: 0;
@@ -55,11 +69,13 @@ body {
     overflow: hidden;
 }
 
+/* Layout Container */
 .app-container {
     display: flex;
     min-height: 100vh;
 }
 
+/* Sidebar Styling */
 .sidebar {
     width: var(--sidebar-width);
     background: var(--bg-card);
@@ -122,7 +138,8 @@ body {
     transition: var(--transition);
 }
 
-.nav-item:hover, .nav-item.active {
+.nav-item:hover, 
+.nav-item.active {
     background: rgba(212, 175, 55, 0.15);
     color: var(--primary-gold);
     border-left: 3px solid var(--primary-gold);
@@ -137,6 +154,7 @@ body {
     background: rgba(0, 0, 0, 0.2);
 }
 
+/* Main Content Area */
 .main-content {
     margin-left: var(--sidebar-width);
     flex-grow: 1;
@@ -146,6 +164,7 @@ body {
     transition: var(--transition);
 }
 
+/* Top Bar */
 .topbar {
     display: flex;
     justify-content: space-between;
@@ -220,6 +239,7 @@ body {
     font-weight: 500;
 }
 
+/* Tabs & Animations */
 .tab-page {
     display: none;
     animation: fadeIn 0.4s ease;
@@ -249,6 +269,7 @@ body {
     font-size: 0.88rem;
 }
 
+/* Dashboard Stats Grid */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -291,6 +312,7 @@ body {
     color: var(--text-muted);
 }
 
+/* Tables */
 .table-wrapper {
     background: var(--bg-card);
     border-radius: 12px;
@@ -332,6 +354,7 @@ body {
     border: 2px solid var(--primary-gold);
 }
 
+/* Booking & Forms */
 .booking-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -392,6 +415,7 @@ input:focus, select:focus {
     cursor: pointer;
 }
 
+/* Image Upload Component */
 .image-upload-wrapper {
     display: flex;
     gap: 15px;
@@ -438,6 +462,7 @@ input:focus, select:focus {
     display: none;
 }
 
+/* Checkbox Cards */
 .checkbox-group {
     display: flex;
     flex-direction: column;
@@ -476,6 +501,7 @@ input:focus, select:focus {
     margin-top: 20px;
 }
 
+/* Invoice Box */
 .invoice-box {
     margin-top: 20px;
     background: rgba(0, 0, 0, 0.3);
@@ -510,6 +536,7 @@ input:focus, select:focus {
     margin: 8px 0;
 }
 
+/* Buttons */
 .btn-group {
     display: flex;
     gap: 12px;
@@ -542,6 +569,11 @@ input:focus, select:focus {
     border-radius: 8px;
     cursor: pointer;
     margin-top: 10px;
+    transition: var(--transition);
+}
+
+.btn-primary-block:hover {
+    background: var(--primary-gold-hover);
 }
 
 .btn-danger {
@@ -551,6 +583,11 @@ input:focus, select:focus {
     padding: 12px 18px;
     border-radius: 8px;
     cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-danger:hover {
+    background: rgba(239, 68, 68, 0.25);
 }
 
 .btn-secondary-sm {
@@ -561,15 +598,24 @@ input:focus, select:focus {
     border-radius: 6px;
     font-size: 0.75rem;
     cursor: pointer;
+    transition: var(--transition);
 }
 
+.btn-secondary-sm:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Cards Grid */
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 20px;
 }
 
-.mobile-top-bar, .mobile-bottom-nav, .sidebar-overlay {
+/* Responsive Mobile Navigation Elements */
+.mobile-top-bar, 
+.mobile-bottom-nav, 
+.sidebar-overlay {
     display: none;
 }
 
