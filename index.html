@@ -281,7 +281,37 @@
                             </label>
                         </div>
 
-                        <div class="invoice-box">
+                        <!-- ONLINE PAYMENT METHOD SELECTION -->
+                        <h3 class="card-title mt-20"><i class="fa-solid fa-wallet" aria-hidden="true"></i> Payment Options</h3>
+                        <div class="form-group">
+                            <label for="paymentMethodSelect">Select Payment Gateway *</label>
+                            <select id="paymentMethodSelect" class="custom-select" onchange="togglePaymentDetails()">
+                                <option value="cash">Pay at Hotel (Cash / Card on Arrival)</option>
+                                <option value="bkash">bKash Mobile Banking</option>
+                                <option value="nagad">Nagad Mobile Banking</option>
+                                <option value="card">Credit / Debit Card</option>
+                            </select>
+                        </div>
+
+                        <!-- bKash / Nagad / Card Details Box (Initially Hidden) -->
+                        <div id="onlinePaymentDetails" style="display: none; margin-top: 15px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 8px; border: 1px solid #d4af37;">
+                            <p id="paymentInstructions" style="font-size: 13px; margin-bottom: 12px; color: #fff;">
+                                Please Pay/Send Money to bKash/Nagad Number: <strong>+8801700000000</strong>
+                            </p>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="senderPhone">Sender Mobile No / Account *</label>
+                                    <input type="tel" id="senderPhone" placeholder="017XXXXXXXX">
+                                </div>
+                                <div class="form-group">
+                                    <label for="trxId">Transaction ID (TrxID) *</label>
+                                    <input type="text" id="trxId" placeholder="e.g. 9J7A6K8L">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- INVOICE BOX -->
+                        <div class="invoice-box mt-20">
                             <h4><i class="fa-solid fa-receipt" aria-hidden="true"></i> Real-time Invoice Calculation</h4>
                             <div class="invoice-row">
                                 <span>Stay Duration:</span>
@@ -298,7 +328,7 @@
                             <hr class="divider">
                             <div class="invoice-row total-row">
                                 <span>Grand Total Amount:</span>
-                                <strong id="billTotal">৳1,000 (Inc. Tax & Service Charge)</strong>
+                                <strong id="billTotal">৳800 (Inc. Tax & Service Charge)</strong>
                             </div>
                         </div>
 
@@ -324,7 +354,7 @@
                                 <th>Booking ID</th>
                                 <th>Guest Details</th>
                                 <th>Room Type</th>
-                                <th>Services & Timings</th>
+                                <th>Services & Payment</th>
                                 <th>Total Bill</th>
                                 <th>Action</th>
                             </tr>
