@@ -948,3 +948,51 @@ input:focus, select:focus, textarea:focus {
 
     .search-bar { width: 100%; }
 }
+/* ==========================================
+   PAYMENT DETAILS & INSTRUCTIONS STYLING
+   ========================================== */
+
+#onlinePaymentDetails {
+    background: rgba(212, 175, 55, 0.08); 
+    border: 1px dashed var(--primary-gold);
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 15px;
+    animation: fadeIn 0.3s ease-in-out; 
+}
+
+#paymentInstructions {
+    font-size: 0.88rem;
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+#paymentInstructions strong {
+    color: var(--primary-gold);
+    font-size: 0.98rem;
+    letter-spacing: 0.5px;
+}
+
+
+.payment-trx-group {
+    margin-top: 12px;
+}
+
+.payment-trx-group label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
