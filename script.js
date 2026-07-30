@@ -557,13 +557,12 @@ function resetForm() {
     setTodayDates();
     calcTotal();
 }
-// --- PAYMENT METHOD TOGGLE ---
-export function togglePaymentDetails() {
+
+function togglePaymentDetails() {
     const methodSelect = document.getElementById('paymentMethodSelect');
     const detailsBox = document.getElementById('onlinePaymentDetails');
     const instructions = document.getElementById('paymentInstructions');
 
-    // Element-গুলো থাকলে তবেই কোড এক্সিকিউট হবে (Error এড়ানোর জন্য)
     if (!methodSelect || !detailsBox || !instructions) return;
 
     const method = methodSelect.value;
@@ -578,8 +577,9 @@ export function togglePaymentDetails() {
         detailsBox.style.display = 'none';
     }
 }
+
 // ==================================================================
-// 10. DIRECTORY TABLES, STATS & SEARCH
+// 10. DIRECTORY TABLES, STATS, SEARCH & DELETE
 // ==================================================================
 function updateDashboardStats() {
     const totalStat = document.getElementById('statTotalBookings');
@@ -639,7 +639,7 @@ function searchGuests() {
                 <td>${g.dates}</td>
                 <td><strong style="color:#10B981;">${g.bill}</strong></td>
                 <td>
-                    ${g.docId ? `<button onclick="deleteBooking('${g.docId}')" style="background:#ef4444; color:#fff; border:none; padding:6px 10px; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-trash"></i> Delete</button>` : ''}
+                    ${g.docId ? `<button onclick="deleteBooking('${g.docId}')" style="background:#ef4444; color:#fff; border:none; padding:6px 10px; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-trash"></i> Delete</button>` : `<span style="color:#94a3b8; font-size:0.75rem;">Default</span>`}
                 </td>
             </tr>
         `).join('');
@@ -647,29 +647,33 @@ function searchGuests() {
 }
 
 async function deleteBooking(docId) {
+    if (!docId) return;
     if (confirm("Are you sure you want to delete this reservation?")) {
         try {
             await deleteDoc(doc(db, "reservations", docId));
-            showToast("Reservation deleted!");
-        } catch (err) {
-            showToast("Failed to delete: " + err.message, "error");
+            showToast("Booking deleted successfully!");
+        } catch (error) {
+            console.error("Error deleting reservation:", error);
+            showToast("Failed to delete booking", "error");
         }
     }
 }
 
 // ==================================================================
-// 11. GLOBAL WINDOW BINDINGS
+// 11. EXPOSE FUNCTIONS TO WINDOW FOR INLINE HTML EVENT HANDLERS
 // ==================================================================
-window.switchTab = switchTab;
-window.toggleSidebar = toggleSidebar;
-window.previewUploadImage = previewUploadImage;
-window.updateGuestImageFromUrl = updateGuestImageFromUrl;
-window.calculateBilling = calcTotal;
-window.resetForm = resetForm;
-window.searchGuests = searchGuests;
-window.deleteBooking = deleteBooking;
-window.openRoomModal = openRoomModal;
-window.openServiceModal = openServiceModal;
-window.closeModal = closeModal;
-window.closeModalOnOutsideClick = closeModalOnOutsideClick;
-window.selectRoomAndBook = selectRoomAndBook;
+Object.assign(window, {
+    switchTab,
+    toggleSidebar,
+    previewUploadImage,
+    updateGuestImageFromUrl,
+    openRoomModal,
+    openServiceModal,
+    closeModal,
+    closeModalOnOutsideClick,
+    selectRoomAndBook,
+    calcTotal,
+    togglePaymentDetails,
+    searchGuests,
+    deleteBooking
+});
