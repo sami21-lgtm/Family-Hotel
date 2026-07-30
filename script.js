@@ -557,7 +557,27 @@ function resetForm() {
     setTodayDates();
     calcTotal();
 }
+// --- PAYMENT METHOD TOGGLE ---
+export function togglePaymentDetails() {
+    const methodSelect = document.getElementById('paymentMethodSelect');
+    const detailsBox = document.getElementById('onlinePaymentDetails');
+    const instructions = document.getElementById('paymentInstructions');
 
+    // Element-গুলো থাকলে তবেই কোড এক্সিকিউট হবে (Error এড়ানোর জন্য)
+    if (!methodSelect || !detailsBox || !instructions) return;
+
+    const method = methodSelect.value;
+
+    if (method === 'bkash') {
+        detailsBox.style.display = 'block';
+        instructions.innerHTML = 'Please Pay/Send Money to bKash Number: <strong>+8801700000000</strong>';
+    } else if (method === 'nagad') {
+        detailsBox.style.display = 'block';
+        instructions.innerHTML = 'Please Pay/Send Money to Nagad Number: <strong>+8801700000000</strong>';
+    } else {
+        detailsBox.style.display = 'none';
+    }
+}
 // ==================================================================
 // 10. DIRECTORY TABLES, STATS & SEARCH
 // ==================================================================
