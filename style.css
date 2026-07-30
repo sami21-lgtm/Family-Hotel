@@ -6,31 +6,33 @@
     --primary-gold: #d4af37;
     --primary-gold-hover: #b89628;
     --primary-gold-light: rgba(212, 175, 55, 0.15);
-    --primary-gold-glow: rgba(212, 175, 55, 0.3);
-    
+    --primary-gold-glow: rgba(212, 175, 55, 0.35);
+
     /* Background Colors */
     --bg-dark: #0f172a;
     --bg-card: #1e293b;
     --bg-card-light: #334155;
-    
+
     /* Text Colors */
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
-    
+
     /* Status & Accent Colors */
     --border-color: rgba(212, 175, 55, 0.22);
     --border-color-light: rgba(255, 255, 255, 0.08);
     --success-color: #10b981;
+    --warning-color: #f59e0b;
     --danger-color: #ef4444;
     --blue-accent: #3b82f6;
     --purple-accent: #8b5cf6;
-    
+
     /* Layout Dimensions & Shadows */
     --sidebar-width: 260px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --radius-sm: 6px;
     --radius-md: 10px;
     --radius-lg: 16px;
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.15);
     --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
@@ -56,6 +58,7 @@ body {
     min-height: 100vh;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* Custom Scrollbar */
@@ -87,7 +90,32 @@ body {
 }
 
 /* ==========================================================================
-   3. HERO BANNER
+   3. UTILITY CLASSES
+   ========================================================================== */
+.text-gold { color: var(--primary-gold) !important; }
+.text-muted { color: var(--text-muted) !important; }
+.text-success { color: var(--success-color) !important; }
+.text-danger { color: var(--danger-color) !important; }
+.text-center { text-align: center; }
+
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.flex-center { display: flex; justify-content: center; align-items: center; }
+.gap-10 { gap: 10px; }
+.gap-15 { gap: 15px; }
+
+.mt-10 { margin-top: 10px; }
+.mt-15 { margin-top: 15px; }
+.mt-20 { margin-top: 20px; }
+.mb-20 { margin-bottom: 20px; }
+
+.divider {
+    border: none;
+    border-top: 1px solid var(--border-color-light);
+    margin: 15px 0;
+}
+
+/* ==========================================================================
+   4. HERO BANNER
    ========================================================================== */
 .custom-hero-bg {
     background: linear-gradient(to right, rgba(15, 23, 42, 0.92) 35%, rgba(15, 23, 42, 0.35)), 
@@ -139,7 +167,7 @@ body {
 }
 
 /* ==========================================================================
-   4. MAIN APP LAYOUT & SIDEBAR
+   5. MAIN APP LAYOUT & SIDEBAR
    ========================================================================== */
 .app-container {
     display: flex;
@@ -283,7 +311,7 @@ footer strong {
 }
 
 /* ==========================================================================
-   5. TOPBAR & NAVIGATION CONTROLS
+   6. TOPBAR & NAVIGATION CONTROLS
    ========================================================================== */
 .topbar {
     display: flex;
@@ -294,7 +322,7 @@ footer strong {
     padding: 15px 25px;
     border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-sm);
 }
 
 .search-bar {
@@ -397,7 +425,7 @@ footer strong {
 }
 
 /* ==========================================================================
-   6. DASHBOARD CARDS & STATS GRID
+   7. DASHBOARD CARDS & STATS GRID
    ========================================================================== */
 .stats-grid {
     display: grid;
@@ -457,7 +485,7 @@ footer strong {
 }
 
 /* ==========================================================================
-   7. TABLES
+   8. TABLES & STATUS BADGES
    ========================================================================== */
 .table-wrapper {
     background: var(--bg-card);
@@ -502,8 +530,36 @@ footer strong {
     border: 2px solid var(--primary-gold);
 }
 
+/* Status Badges */
+.badge-pill {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+    text-transform: capitalize;
+}
+
+.badge-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--success-color);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.badge-warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--warning-color);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--danger-color);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
 /* ==========================================================================
-   8. FORMS & INPUTS
+   9. FORMS & INPUTS
    ========================================================================== */
 .booking-grid {
     display: grid;
@@ -563,6 +619,7 @@ input:focus, select:focus, textarea:focus {
 
 .custom-select { cursor: pointer; }
 
+/* Image Upload Component */
 .image-upload-wrapper {
     display: flex;
     gap: 15px;
@@ -612,6 +669,7 @@ input:focus, select:focus, textarea:focus {
 
 .btn-file-upload input[type="file"] { display: none; }
 
+/* Checkbox Cards */
 .checkbox-group {
     display: flex;
     flex-direction: column;
@@ -650,6 +708,9 @@ input:focus, select:focus, textarea:focus {
     color: var(--text-muted);
 }
 
+/* ==========================================================================
+   10. PAYMENT DETAILS & INVOICE BOX (SOHO SPECIFIC)
+   ========================================================================== */
 .invoice-box {
     margin-top: 20px;
     background: rgba(0, 0, 0, 0.25);
@@ -680,16 +741,40 @@ input:focus, select:focus, textarea:focus {
     margin-top: 10px;
 }
 
-.divider {
-    border: none;
-    border-top: 1px solid var(--border-color-light);
-    margin: 10px 0;
+#onlinePaymentDetails {
+    background: rgba(212, 175, 55, 0.08); 
+    border: 1px dashed var(--primary-gold);
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 15px;
+    animation: fadeIn 0.3s ease-in-out; 
 }
 
-.mt-20 { margin-top: 20px; }
+#paymentInstructions {
+    font-size: 0.88rem;
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+#paymentInstructions strong {
+    color: var(--primary-gold);
+    font-size: 0.98rem;
+    letter-spacing: 0.5px;
+}
+
+.payment-trx-group {
+    margin-top: 12px;
+}
+
+.payment-trx-group label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
 
 /* ==========================================================================
-   9. BUTTONS & CARDS
+   11. BUTTONS & CARDS
    ========================================================================== */
 .btn-group {
     display: flex;
@@ -769,7 +854,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   10. MODAL POPUP SYSTEM (NEW ADDITION)
+   12. MODAL POPUP SYSTEM
    ========================================================================== */
 .modal-overlay {
     position: fixed;
@@ -835,7 +920,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   11. RESPONSIVE DESIGN (MEDIA QUERIES)
+   13. RESPONSIVE DESIGN (MEDIA QUERIES)
    ========================================================================== */
 .mobile-top-bar, 
 .mobile-bottom-nav, 
@@ -947,52 +1032,6 @@ input:focus, select:focus, textarea:focus {
     }
 
     .search-bar { width: 100%; }
-}
-/* ==========================================
-   PAYMENT DETAILS & INSTRUCTIONS STYLING
-   ========================================== */
 
-#onlinePaymentDetails {
-    background: rgba(212, 175, 55, 0.08); 
-    border: 1px dashed var(--primary-gold);
-    padding: 16px;
-    border-radius: 8px;
-    margin-top: 15px;
-    animation: fadeIn 0.3s ease-in-out; 
-}
-
-#paymentInstructions {
-    font-size: 0.88rem;
-    color: var(--text-main);
-    line-height: 1.6;
-}
-
-#paymentInstructions strong {
-    color: var(--primary-gold);
-    font-size: 0.98rem;
-    letter-spacing: 0.5px;
-}
-
-
-.payment-trx-group {
-    margin-top: 12px;
-}
-
-.payment-trx-group label {
-    display: block;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-}
-
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-6px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    .form-row { grid-template-columns: 1fr; }
 }
