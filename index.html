@@ -56,6 +56,18 @@
                 </a>
             </nav>
 
+            <!-- Sidebar Contact Section -->
+            <div class="sidebar-contact">
+                <a href="tel:+8801700000000" class="contact-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>+880 1723434535</span>
+                </a>
+                <a href="mailto:support@luxuryresort.com" class="contact-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>support@luxuryresort.com</span>
+                </a>
+            </div>
+
             <!-- Sidebar Footer -->
             <div class="sidebar-footer">
                 <div class="user-info">
@@ -217,16 +229,16 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="checkIn">Check-In *</label>
-                                <input type="date" id="checkIn" required onchange="calcTotal()">
+                                <input type="date" id="checkIn" required onchange="calculateBilling()">
                             </div>
                             <div class="form-group">
                                 <label for="checkOut">Check-Out *</label>
-                                <input type="date" id="checkOut" required onchange="calcTotal()">
+                                <input type="date" id="checkOut" required onchange="calculateBilling()">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="roomTypeSelect">Room Category *</label>
-                            <select id="roomTypeSelect" onchange="calcTotal()" class="custom-select">
+                            <select id="roomTypeSelect" onchange="calculateBilling()" class="custom-select">
                                 <option value="Single Standard Room|800">Single Standard Room (৳800 / night)</option>
                                 <option value="Single Executive Room|1000">Single Executive Room (৳1,000 / night)</option>
                                 <option value="Deluxe Double Room|5000">Deluxe Double Room (৳5,000 / night)</option>
@@ -243,21 +255,21 @@
                         <h3 class="card-title"><i class="fa-solid fa-utensils" aria-hidden="true"></i> Cuisine Options</h3>
                         <div class="checkbox-group">
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value="Bengali Traditional Feast" data-price="500" onchange="calcTotal()">
+                                <input type="checkbox" name="foodMenu" value="Bengali Traditional Feast" data-price="500" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong>🇧🇩 Bengali Traditional Feast</strong>
                                     <span>Kacchi Biryani, Hilsha & Sweets (+৳500/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value="Authentic Thai Gourmet" data-price="750" onchange="calcTotal()">
+                                <input type="checkbox" name="foodMenu" value="Authentic Thai Gourmet" data-price="750" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong>🇹🇭 Authentic Thai Gourmet</strong>
                                     <span>Tom Yum Goong & Pad Thai (+৳750/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="foodMenu" value="Continental 5-Star Buffet" data-price="1200" onchange="calcTotal()">
+                                <input type="checkbox" name="foodMenu" value="Continental 5-Star Buffet" data-price="1200" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong>🌐 Continental 5-Star Buffet</strong>
                                     <span>Unlimited Gourmet Buffet (+৳1,200/day)</span>
@@ -268,14 +280,14 @@
                         <h3 class="card-title mt-20"><i class="fa-solid fa-clock" aria-hidden="true"></i> Pool & Wellness Slots</h3>
                         <div class="checkbox-group">
                             <label class="checkbox-card">
-                                <input type="checkbox" name="amenities" value="Morning Swimming Pool Pass" data-price="300" onchange="calcTotal()">
+                                <input type="checkbox" name="amenities" value="Morning Swimming Pool Pass" data-price="300" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong><i class="fa-solid fa-water" aria-hidden="true"></i> Morning Pool Pass</strong>
                                     <span>06:00 AM - 11:00 AM (+৳300/day)</span>
                                 </div>
                             </label>
                             <label class="checkbox-card">
-                                <input type="checkbox" name="amenities" value="Night Infinity Pool Pass" data-price="500" onchange="calcTotal()">
+                                <input type="checkbox" name="amenities" value="Night Infinity Pool Pass" data-price="500" onchange="calculateBilling()">
                                 <div class="card-info">
                                     <strong><i class="fa-solid fa-person-swimming" aria-hidden="true"></i> Night Infinity Pool Pass</strong>
                                     <span>04:00 PM - 10:00 PM (+৳500/day)</span>
@@ -348,23 +360,17 @@
                     <h1>Guest Directory</h1>
                     <p>All recorded guest check-ins and active stays.</p>
                 </div>
-
-                <!-- LIVE SEARCH BAR -->
-                <div class="search-bar-wrapper" style="margin-bottom: 20px;">
-                    <input type="text" id="searchInput" onkeyup="searchGuests()" placeholder="🔍 Search guests by Name, ID or Room..." style="width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.3); background: rgba(15, 23, 42, 0.8); color: #fff; font-size: 0.95rem; outline: none;">
-                </div>
-
                 <div class="table-wrapper">
                     <table class="data-table">
                         <thead>
                             <tr>
-                                <th>PHOTO</th>
-                                <th>BOOKING ID</th>
-                                <th>GUEST NAME</th>
-                                <th>ROOM TYPE</th>
-                                <th>STAY DATES</th>
-                                <th>TOTAL BILL</th>
-                                <th>ACTION</th>
+                                <th>Photo</th>
+                                <th>Booking ID</th>
+                                <th>Guest Details</th>
+                                <th>Room Type</th>
+                                <th>Services & Payment</th>
+                                <th>Total Bill</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="fullBookingsTableBody"></tbody>
