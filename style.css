@@ -3,7 +3,7 @@
    ================================================================== */
 :root {
     --bg-dark: #090d16;
-    /* Glassmorphic cards with transparency for luxury background view */
+    /* Translucent cards for glassmorphic luxury background view */
     --bg-card: rgba(15, 23, 42, 0.72);
     --bg-card-hover: rgba(30, 41, 59, 0.85);
     --primary-gold: #d4af37;
@@ -19,6 +19,7 @@
     --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.5);
     --font-main: 'Poppins', system-ui, -apple-system, sans-serif;
     --font-serif: 'Playfair Display', Georgia, serif;
+    /* Font stack for crisp emoji rendering across systems */
     --font-emoji: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
@@ -30,7 +31,7 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-/* FULL-SCREEN BACKGROUND FROM 2ND IMAGE WITH LUXURY DARK OVERLAY */
+/* FULL-SCREEN BACKGROUND WITH LUXURY DARK GRADIENT OVERLAY */
 body {
     background: linear-gradient(rgba(9, 13, 22, 0.82), rgba(9, 13, 22, 0.88)), 
                 url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat fixed;
@@ -143,6 +144,44 @@ body {
     color: var(--primary-gold);
     border-left: 3px solid var(--primary-gold);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* SIDEBAR CONTACT INFO STYLING */
+.sidebar-contact {
+    padding: 14px 20px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.contact-item {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.25s ease;
+    word-break: break-all;
+}
+
+.contact-item i {
+    color: var(--primary-gold);
+    font-size: 0.85rem;
+    width: 16px;
+    text-align: center;
+}
+
+.contact-item:hover {
+    color: #fff;
+    transform: translateX(3px);
+}
+
+.contact-item:hover i {
+    color: var(--primary-gold-hover);
+    filter: drop-shadow(0 0 5px var(--gold-glow));
 }
 
 .sidebar-footer {
@@ -800,7 +839,7 @@ footer strong {
 }
 
 /* ==================================================================
-   12. RESPONSIVE MEDIA QUERIES
+   12. RESPONSIVE MEDIA QUERIES (MOBILE FIRST)
    ================================================================== */
 @media (max-width: 992px) {
     .booking-grid {
