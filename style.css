@@ -3,7 +3,6 @@
    ================================================================== */
 :root {
     --bg-dark: #090d16;
-    /* Translucent cards for glassmorphic luxury background view */
     --bg-card: rgba(15, 23, 42, 0.72);
     --bg-card-hover: rgba(30, 41, 59, 0.85);
     --primary-gold: #d4af37;
@@ -19,7 +18,6 @@
     --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.5);
     --font-main: 'Poppins', system-ui, -apple-system, sans-serif;
     --font-serif: 'Playfair Display', Georgia, serif;
-    /* Font stack for crisp emoji rendering across systems */
     --font-emoji: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
@@ -31,7 +29,6 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-/* FULL-SCREEN BACKGROUND WITH LUXURY DARK GRADIENT OVERLAY */
 body {
     background: linear-gradient(rgba(9, 13, 22, 0.82), rgba(9, 13, 22, 0.88)), 
                 url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat fixed;
@@ -41,7 +38,6 @@ body {
     line-height: 1.6;
 }
 
-/* Base Scrollbar */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -64,7 +60,7 @@ body {
 }
 
 /* ==================================================================
-   3. SIDEBAR NAVIGATION (GLASSMORPHISM)
+   3. SIDEBAR NAVIGATION
    ================================================================== */
 .sidebar {
     width: 280px;
@@ -146,42 +142,103 @@ body {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* SIDEBAR CONTACT INFO STYLING */
-.sidebar-contact {
-    padding: 14px 20px;
-    border-top: 1px solid var(--border-color);
+/* ==================================================================
+   PERFECT RESPONSIVE CONTACT CARD (NO TEXT CUT OFF)
+   ================================================================== */
+.sidebar-contact-card a {
+    text-decoration: none !important;
+    color: inherit;
+}
+
+.sidebar-contact-card {
+    margin: 12px 10px;
+    padding: 12px 10px;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 12px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    background: rgba(0, 0, 0, 0.15);
+    gap: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
-.contact-item {
-    color: var(--text-muted);
-    font-size: 0.8rem;
-    text-decoration: none;
+.contact-title {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--primary-gold);
+    font-weight: 700;
+    margin-bottom: 2px;
+    display: block;
+}
+
+.modern-contact-btn {
     display: flex;
     align-items: center;
-    gap: 10px;
-    transition: all 0.25s ease;
-    word-break: break-all;
+    gap: 8px;
+    padding: 7px 9px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
 }
 
-.contact-item i {
+.modern-contact-btn:hover {
+    background: rgba(212, 175, 55, 0.12);
+    border-color: rgba(212, 175, 55, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+}
+
+.contact-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    background: rgba(212, 175, 55, 0.15);
     color: var(--primary-gold);
-    font-size: 0.85rem;
-    width: 16px;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
 }
 
-.contact-item:hover {
-    color: #fff;
-    transform: translateX(3px);
+.modern-contact-btn:hover .contact-icon {
+    background: var(--primary-gold);
+    color: #000;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
 }
 
-.contact-item:hover i {
-    color: var(--primary-gold-hover);
-    filter: drop-shadow(0 0 5px var(--gold-glow));
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+}
+
+.contact-details small {
+    font-size: 0.60rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1;
+}
+
+.contact-details span {
+    font-size: 0.74rem;
+    color: #f8fafc;
+    font-weight: 500;
+    margin-top: 3px;
+    white-space: nowrap;
+}
+
+.contact-details span.email-text {
+    font-size: 0.67rem;
+    letter-spacing: -0.2px;
 }
 
 .sidebar-footer {
@@ -332,7 +389,6 @@ body {
     font-size: 0.88rem;
 }
 
-/* Hero Banner */
 .resort-hero-banner {
     position: relative;
     border-radius: var(--radius-md);
@@ -367,7 +423,7 @@ body {
 }
 
 /* ==================================================================
-   6. STATS GRID CARDS (TRANSLUCENT GLASS)
+   6. STATS GRID CARDS
    ================================================================== */
 .stats-grid {
     display: grid;
@@ -422,7 +478,7 @@ body {
 }
 
 /* ==================================================================
-   7. DATA TABLES & RECENT BOOKINGS
+   7. DATA TABLES
    ================================================================== */
 .recent-bookings-section {
     background: var(--bg-card);
@@ -733,7 +789,6 @@ body {
     color: #10B981;
 }
 
-/* Button Group */
 .btn-group {
     display: flex;
     gap: 12px;
@@ -948,102 +1003,42 @@ footer strong {
 @media (max-width: 480px) {
     .stats-grid { grid-template-columns: 1fr; }
 }
-
-
-.sidebar-contact-card a {
-    text-decoration: none !important;
-    color: inherit;
-}
-
-.sidebar-contact-card {
-    margin: 12px 10px;
-    padding: 12px 10px;
-    background: rgba(15, 23, 42, 0.65);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(212, 175, 55, 0.25);
-    border-radius: 12px;
+/* ==================================================================
+   SIDEBAR CONTACT INFO STYLING
+   ================================================================== */
+.sidebar-contact {
+    padding: 14px 20px;
+    border-top: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.15);
 }
 
-.contact-title {
-    font-size: 0.62rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: var(--primary-gold);
-    font-weight: 700;
-    margin-bottom: 2px;
-    display: block;
-}
-
-
-.modern-contact-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px; 
-    padding: 7px 9px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 8px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 100%;
-}
-
-.modern-contact-btn:hover {
-    background: rgba(212, 175, 55, 0.12);
-    border-color: rgba(212, 175, 55, 0.5);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
-}
-
-.contact-icon {
-    width: 30px; 
-    height: 30px;
-    border-radius: 6px;
-    background: rgba(212, 175, 55, 0.15);
-    color: var(--primary-gold);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    flex-shrink: 0;
-    transition: all 0.3s ease;
-}
-
-.modern-contact-btn:hover .contact-icon {
-    background: var(--primary-gold);
-    color: #000;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
-}
-
-.contact-details {
-    display: flex;
-    flex-direction: column;
-    min-width: 0; 
-    flex: 1;
-}
-
-.contact-details small {
-    font-size: 0.60rem;
+.contact-item {
     color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    line-height: 1;
+    font-size: 0.8rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.25s ease;
+    word-break: break-all;
 }
 
-.contact-details span {
-    font-size: 0.74rem;
-    color: #f8fafc;
-    font-weight: 500;
-    margin-top: 3px;
-    white-space: nowrap;
+.contact-item i {
+    color: var(--primary-gold);
+    font-size: 0.85rem;
+    width: 16px;
+    text-align: center;
 }
 
+.contact-item:hover {
+    color: #fff;
+    transform: translateX(3px);
+}
 
-.contact-details span.email-text {
-    font-size: 0.67rem; 
-    letter-spacing: -0.2px; 
+.contact-item:hover i {
+    color: var(--primary-gold-hover);
+    filter: drop-shadow(0 0 5px var(--gold-glow));
 }
