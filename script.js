@@ -102,7 +102,7 @@ const roomsDatabase = [
     }
 ];
 
-// SERVICES DATABASE WITH FULL DETAILS
+// SERVICES DATABASE WITH FULL DETAILS (INCLUDING DINING, POOL & GYM)
 const servicesDatabase = [
     {
         id: 'serv-1',
@@ -175,6 +175,24 @@ const servicesDatabase = [
         img: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600',
         desc: 'Rejuvenate your body and mind with authentic Thai oil massages, herbal steam baths, hot stone therapy, and Jacuzzi sessions.',
         specialties: ['Certified Thai Massage Therapists', 'Herbal Steam Bath & Sauna Rooms', 'Hot Stone & Aromatherapy', 'Private Couple Spa Rooms']
+    },
+    {
+        id: 'serv-9',
+        title: 'VIP Fitness & Gym Day Pass',
+        badge: 'Gym & Fitness',
+        timing: 'Open Daily: 06:00 AM – 10:00 PM',
+        img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600',
+        desc: 'Fully equipped modern health club with heavy weightlifting rigs, cardio treadmills, cross-fit stations, and protein smoothie bar access.',
+        specialties: ['State-of-the-Art Cardio & Strength Equipment', 'Certified On-Floor Fitness Instructors', 'Complimentary Locker & Clean Towels', 'Free Protein Shake at Juice Bar']
+    },
+    {
+        id: 'serv-10',
+        title: 'Personal Fitness Trainer Session',
+        badge: 'Gym & Fitness',
+        timing: 'By Appointment: 07:00 AM – 08:00 PM',
+        img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600',
+        desc: '1-on-1 private workout session with a certified personal fitness trainer tailored to your fitness goals with customized diet planning.',
+        specialties: ['Dedicated 1-on-1 Certified Fitness Trainer', 'Custom Body Assessment & Workout Routine', 'Personalized Diet & Nutrition Guidance', 'Post-Workout Stretch & Recovery Session']
     }
 ];
 
