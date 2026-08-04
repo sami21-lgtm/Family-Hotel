@@ -1,4 +1,6 @@
-
+/* ==================================================================
+   1. GLOBAL STATE & LOCALSTORAGE PERSISTENCE
+   ================================================================== */
 const defaultAdminUser = {
     name: "MD. EMTIAZ HOSSAIN SAMI",
     role: "Admin",
@@ -6,7 +8,7 @@ const defaultAdminUser = {
     email: "admin@luxuryresort.com"
 };
 
-
+// LocalStorage Check
 let currentUser = null;
 const storedUser = localStorage.getItem("currentUser");
 
@@ -24,10 +26,10 @@ if (storedUser === null) {
 }
 
 let defaultGuestProfile = {
-    fName: "Guest",
-    lName: "User",
-    email: "guest@example.com",
-    phone: "+8801700000000",
+    fName: "",
+    lName: "",
+    email: "",
+    phone: "",
     photo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400"
 };
 
@@ -248,12 +250,20 @@ function handleLoginSubmit(event) {
     switchTab("dashboard");
 }
 
-// 🟢 গেস্ট প্রবেশের জন্য আপডেট করা ফাংশন (কোনো নেভিগেশন করবে না)
-function handleGuestLogin() {
-    const fName = document.getElementById("fName")?.value.trim() || "Guest";
-    const lName = document.getElementById("lName")?.value.trim() || "User";
-    const email = document.getElementById("email")?.value.trim() || "guest@example.com";
-    const phone = document.getElementById("phone")?.value.trim() || "+8801700000000";
+// 🟢 গেস্ট প্রবেশের জন্য আপডেট করা ফাংশন (ফর্ম পূরণ না করা পর্যন্ত আটকে রাখবে)
+function handleGuestLogin(event) {
+    if (event) event.preventDefault();
+
+    const fName = document.getElementById("fName")?.value.trim();
+    const lName = document.getElementById("lName")?.value.trim();
+    const email = document.getElementById("email")?.value.trim();
+    const phone = document.getElementById("phone")?.value.trim();
+
+    // ⛔ কোনো ফিল্ড ফাঁকা থাকলে অ্যালার্ট দেবে এবং লগইন আটকে রাখবে
+    if (!fName || !lName || !email || !phone) {
+        alert("⚠️ Please fill up all the required fields (First Name, Last Name, Email, and Phone Number) to continue as guest!");
+        return; 
+    }
 
     guestProfileData.fName = fName;
     guestProfileData.lName = lName;
@@ -263,7 +273,7 @@ function handleGuestLogin() {
     currentUser = {
         name: `${fName} ${lName}`,
         role: "Guest User",
-        photo: guestProfileData.photo,
+        photo: guestProfileData.photo || "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400",
         email: email
     };
 
@@ -271,8 +281,7 @@ function handleGuestLogin() {
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
 
     updateUserUI();
-    closeLoginModal(); 
-    // ❌ কোনো switchTab রাখা হয়নি, ইউজার সরাসরি বর্তমান পেজেই থাকবেন
+    closeLoginModal(); // তথ্য সঠিক হলেই কেবল মোডাল বন্ধ হবে
 }
 
 function updateUserUI() {
