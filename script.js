@@ -13,9 +13,11 @@ let currentUser = null;
 const storedUser = localStorage.getItem("currentUser");
 
 if (storedUser === null) {
+    // প্রথমবার ভিজিট করলে ডিফল্টভাবে লগইন অবস্থায় রাখবে
     currentUser = defaultAdminUser;
     localStorage.setItem("currentUser", JSON.stringify(defaultAdminUser));
 } else if (storedUser === "LOGGED_OUT") {
+    // ম্যানুয়ালি লগআউট করা থাকলে লগআউট থাকবে
     currentUser = null;
 } else {
     try {
@@ -33,8 +35,40 @@ let defaultGuestProfile = {
     photo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400"
 };
 
-// ০ (জিরো) থেকে শুরু করার জন্য বুকিং লিস্ট একদম ফাঁকা রাখা হয়েছে
-let defaultBookingsList = [];
+let defaultBookingsList = [
+    {
+        id: "GP-1001",
+        fName: "Rahim",
+        lName: "Chowdhury",
+        email: "rahim@gmail.com",
+        phone: "+8801711223344",
+        photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400",
+        roomType: "Executive Double Ocean View",
+        checkIn: "2026-08-01",
+        checkOut: "2026-08-05",
+        nights: 4,
+        totalBill: 42000,
+        status: "Checked-In",
+        food: ["Bengali Traditional Feast"],
+        amenities: ["Morning Swimming Pool Pass"]
+    },
+    {
+        id: "GP-1002",
+        fName: "Tanvir",
+        lName: "Ahamed",
+        email: "tanvir@yahoo.com",
+        phone: "+8801899887766",
+        photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400",
+        roomType: "Deluxe Double Room",
+        checkIn: "2026-08-03",
+        checkOut: "2026-08-06",
+        nights: 3,
+        totalBill: 16500,
+        status: "Confirmed",
+        food: ["Continental 5-Star Buffet"],
+        amenities: ["VIP Fitness & Gym Day Pass"]
+    }
+];
 
 // LocalStorage Data Load
 let guestProfileData = JSON.parse(localStorage.getItem("guestProfileData")) || defaultGuestProfile;
@@ -52,56 +86,14 @@ const roomCatalog = [
     { title: "Royal Palace Villa", price: 50000, img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600", desc: "Private villa with infinity pool, personal chef and garden." }
 ];
 
-// Services Catalog Data (ছবিসহ আপডেট করা হলো)
+// Services Catalog Data
 const serviceCatalog = [
-    { 
-        title: "Bengali Traditional Feast", 
-        category: "Dining", 
-        price: 500, 
-        icon: "fa-utensils", 
-        img: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=600", 
-        desc: "Authentic Kacchi Biryani, Hilsha Fish, Borhani & Sweets." 
-    },
-    { 
-        title: "Authentic Thai Gourmet", 
-        category: "Dining", 
-        price: 750, 
-        icon: "fa-bowl-food", 
-        img: "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=600", 
-        desc: "Spicy Tom Yum Goong, Pad Thai, and Mango Sticky Rice." 
-    },
-    { 
-        title: "Continental Buffet", 
-        category: "Dining", 
-        price: 1200, 
-        icon: "fa-concierge-bell", 
-        img: "https://images.unsplash.com/photo-1555244162-803834f70033?w=600", 
-        desc: "Unlimited global cuisines prepared by international chefs." 
-    },
-    { 
-        title: "Morning Swimming Pool Pass", 
-        category: "Pool", 
-        price: 300, 
-        icon: "fa-water", 
-        img: "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=600", 
-        desc: "Access to Olympic Pool (06:00 AM - 11:00 AM)." 
-    },
-    { 
-        title: "Night Infinity Pool Pass", 
-        category: "Pool", 
-        price: 500, 
-        icon: "fa-person-swimming", 
-        img: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600", 
-        desc: "Access to Rooftop Infinity Pool (04:00 PM - 10:00 PM)." 
-    },
-    { 
-        title: "VIP Fitness & Gym Day Pass", 
-        category: "Fitness", 
-        price: 400, 
-        icon: "fa-dumbbell", 
-        img: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600", 
-        desc: "Full access to modern gym equipment & personal trainer." 
-    }
+    { title: "Bengali Traditional Feast", category: "Dining", price: 500, icon: "fa-utensils", desc: "Authentic Kacchi Biryani, Hilsha Fish, Borhani & Sweets." },
+    { title: "Authentic Thai Gourmet", category: "Dining", price: 750, icon: "fa-bowl-food", desc: "Spicy Tom Yum Goong, Pad Thai, and Mango Sticky Rice." },
+    { title: "Continental Buffet", category: "Dining", price: 1200, icon: "fa-concierge-bell", desc: "Unlimited global cuisines prepared by international chefs." },
+    { title: "Morning Swimming Pool Pass", category: "Pool", price: 300, icon: "fa-water", desc: "Access to Olympic Pool (06:00 AM - 11:00 AM)." },
+    { title: "Night Infinity Pool Pass", category: "Pool", price: 500, icon: "fa-person-swimming", desc: "Access to Rooftop Infinity Pool (04:00 PM - 10:00 PM)." },
+    { title: "VIP Fitness & Gym Day Pass", category: "Fitness", price: 400, icon: "fa-dumbbell", desc: "Full access to modern gym equipment & personal trainer." }
 ];
 
 /* ==================================================================
@@ -110,10 +102,11 @@ const serviceCatalog = [
 document.addEventListener("DOMContentLoaded", () => {
     initClock();
     
+    // পেজ লোড বা রিফ্রেশ হলে সরাসরি ড্যাশবোর্ডে থাকা নিশ্চিত করা
     if (currentUser) {
         updateUserUI();
         closeLoginModal();
-        switchTab("dashboard");
+        switchTab("dashboard"); // ড্যাশবোর্ড ট্যাব সরাসরি ওপেন রাখবে
     } else {
         openLoginModal();
     }
@@ -295,11 +288,12 @@ function updateUserUI() {
     if (tAuthText) tAuthText.innerText = "Logout";
 }
 
+// শুধুমাত্র Logout বাটনে চাপ দিলে নিশ্চিতকরণের মাধ্যমে লগআউট হবে
 function handleAuthButtonClick() {
     if (currentUser) {
         if (confirm("Are you sure you want to logout?")) {
             currentUser = null;
-            localStorage.setItem("currentUser", "LOGGED_OUT");
+            localStorage.setItem("currentUser", "LOGGED_OUT"); // চিহ্নিত করে রাখা হলো যে ইউজার নিজ থেকে লগআউট করেছে
 
             const sName = document.getElementById("sidebarUserName");
             const sRole = document.getElementById("sidebarUserRole");
@@ -460,11 +454,6 @@ function renderDashboard() {
     const tbody = document.getElementById("dashboardTableBody");
     if (!tbody) return;
 
-    if (bookingsList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px; color: var(--text-muted);">No recent check-ins found.</td></tr>`;
-        return;
-    }
-
     tbody.innerHTML = bookingsList.slice(0, 5).map(b => `
         <tr>
             <td>
@@ -485,7 +474,7 @@ function renderGuestDirectory() {
     if (!tbody) return;
 
     if (bookingsList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px; color: var(--text-muted);">No reservations found.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center;">No reservations found.</td></tr>`;
         return;
     }
 
@@ -535,23 +524,18 @@ function renderRoomsCard() {
     `).join('');
 }
 
-// সার্ভিস/ফুড/জিম সেকশনে ছবিসহ কার্ড রেন্ডারিং
 function renderServicesCard() {
     const grid = document.getElementById("servicesCardsGrid");
     if (!grid) return;
 
     grid.innerHTML = serviceCatalog.map(srv => `
-        <div class="stat-card" style="flex-direction: column; align-items: flex-start; padding: 0; overflow: hidden; background: var(--bg-card); border: 1px solid rgba(212,175,55,0.2); border-radius: 8px;">
-            <div style="position: relative; width: 100%;">
-                <img src="${srv.img}" alt="${srv.title}" style="width: 100%; height: 160px; object-fit: cover;">
-                <span style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: var(--primary-gold); padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; border: 1px solid var(--primary-gold);">
-                    <i class="fa-solid ${srv.icon}"></i> ${srv.category}
-                </span>
-            </div>
-            <div style="padding: 16px; width: 100%;">
-                <h4 style="color: #fff; font-size: 1rem; margin-bottom: 6px;">${srv.title}</h4>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">${srv.desc}</p>
-                <strong style="color: #10B981; font-size: 0.95rem;">+৳${srv.price.toLocaleString()} / day</strong>
+        <div class="stat-card" style="align-items: flex-start; gap: 14px;">
+            <div class="stat-icon gold"><i class="fa-solid ${srv.icon}"></i></div>
+            <div style="flex-grow: 1;">
+                <span style="font-size: 0.65rem; color: var(--primary-gold); font-weight: bold; text-transform: uppercase;">${srv.category}</span>
+                <h4 style="color: #fff; font-size: 0.95rem; margin: 2px 0 6px 0;">${srv.title}</h4>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px;">${srv.desc}</p>
+                <strong style="color: #10B981; font-size: 0.9rem;">+৳${srv.price} / day</strong>
             </div>
         </div>
     `).join('');
