@@ -31,7 +31,7 @@
 /* ব্যাকগ্রাউন্ডে GitHub Repository-এর ফাইল যুক্ত করা হয়েছে */
 body {
     background: linear-gradient(rgba(8, 11, 17, 0.85), rgba(8, 11, 17, 0.88)), 
-                url('./premium_photo-1661964071015-d97428970584.jpg') no-repeat center center fixed;
+                url('premium_photo-1661964071015-d97428970584.jpg') no-repeat center center fixed;
     background-size: cover;
     color: var(--text-light);
     min-height: 100vh;
