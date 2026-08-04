@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Grand Palace Resort & Spa Management System - Luxury Stay & Hospitality Management">
+    <meta name="description" content="Grand Palace Resort & Spa Management System">
     <meta name="theme-color" content="#d4af37">
     <title>Grand Palace | Luxury Resort & Spa</title>
     
@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Main App Container -->
     <div id="appContainer" class="app-container">
         
         <!-- Mobile Top Bar -->
@@ -60,7 +59,6 @@
             <div class="sidebar-contact-card">
                 <span class="contact-title">Direct Support</span>
                 
-                <!-- Phone Button -->
                 <a href="tel:+8801723434535" class="modern-contact-btn">
                     <div class="contact-icon">
                         <i class="fa-solid fa-phone"></i>
@@ -70,7 +68,6 @@
                         <span>+880 1723-434535</span>
                     </div>
                 </a>
-                <!-- Email Button -->
                 <a href="mailto:support@luxuryresort.com" class="modern-contact-btn">
                     <div class="contact-icon">
                         <i class="fa-solid fa-envelope"></i>
@@ -85,10 +82,10 @@
             <!-- Sidebar Footer -->
             <div class="sidebar-footer">
                 <div class="user-info" id="sidebarUserInfo">
-                    <img src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="MD. EMTIAZ HOSSAIN SAMI" class="admin-avatar" id="sidebarAvatar" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Emtiaz+Sami&background=d4af37&color=fff';">
+                    <img src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="MD. EMTIAZ HOSSAIN SAMI" class="admin-avatar" id="sidebarAvatar" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Admin&background=d4af37&color=fff';">
                     <div>
                         <strong class="admin-name" id="sidebarUserName">MD. EMTIAZ HOSSAIN SAMI</strong>
-                        <small class="admin-role" id="sidebarUserRole">Owner & Admin</small>
+                        <small class="admin-role" id="sidebarUserRole">Admin</small>
                     </div>
                 </div>
             </div>
@@ -104,10 +101,8 @@
             <header class="topbar">
                 <div class="topbar-actions">
                     <div class="badge-status"><span class="pulse"></span> Live Sync</div>
-                    <!-- Real-time Live Clock Container -->
                     <div class="date-display" id="currentDateDisplay">Loading Live Clock...</div>
                     
-                    <!-- Login / Logout Button in TopBar -->
                     <button class="btn-topbar-login" id="topbarAuthBtn" onclick="toggleAuthModal()">
                         <img id="topbarAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="User Avatar" class="topbar-avatar" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Admin&background=d4af37&color=fff';">
                         <span id="topbarAuthText">Login</span>
@@ -122,7 +117,6 @@
                     <p>Live status of resort reservations, guests, and services.</p>
                 </div>
                 
-                <!-- Resort Hero Banner -->
                 <div class="resort-hero-banner custom-hero-bg">
                     <div class="hero-content">
                         <span class="hero-subtitle">WELCOME TO GRAND PALACE</span>
@@ -131,7 +125,6 @@
                     </div>
                 </div>
 
-                <!-- Key Stat Cards -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-icon gold"><i class="fa-solid fa-bed" aria-hidden="true"></i></div>
@@ -163,7 +156,6 @@
                     </div>
                 </div>
 
-                <!-- Recent Check-Ins Table -->
                 <div class="recent-bookings-section">
                     <h2 class="section-title">Recent Check-Ins</h2>
                     <div class="table-wrapper">
@@ -176,12 +168,10 @@
                                     <th>ROOM TYPE</th>
                                     <th>DATES</th>
                                     <th>BILL</th>
-                                    <th>ACTION</th>
+                                    <th>STATUS</th>
                                 </tr>
                             </thead>
-                            <tbody id="dashboardTableBody">
-                                <!-- Dynamic JS Rows -->
-                            </tbody>
+                            <tbody id="dashboardTableBody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -193,9 +183,7 @@
                     <h1>Rooms & Custom Photos</h1>
                     <p>Manage resort inventory and custom room photography.</p>
                 </div>
-                <div class="cards-grid" id="roomsCardsGrid">
-                    <!-- Dynamic Room Cards -->
-                </div>
+                <div class="cards-grid" id="roomsCardsGrid"></div>
             </section>
 
             <!-- TAB 3: NEW BOOKING -->
@@ -231,7 +219,7 @@
                             <label><i class="fa-solid fa-camera" aria-hidden="true"></i> Photo Upload</label>
                             <div class="image-upload-wrapper">
                                 <div class="img-preview-box">
-                                    <img id="previewImg" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&auto=format&fit=crop&q=80" alt="Guest Preview">
+                                    <img id="previewImg" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400" alt="Guest Preview">
                                 </div>
                                 <div class="upload-controls">
                                     <label class="btn-file-upload">
@@ -295,7 +283,7 @@
                                 </div>
                             </label>
                         </div>
-                        <!-- POOL, GYM & WELLNESS SLOTS -->
+                        
                         <h3 class="card-title mt-20"><i class="fa-solid fa-dumbbell" aria-hidden="true"></i> Pool, Gym & Fitness Slots</h3>
                         <div class="checkbox-group">
                             <label class="checkbox-card">
@@ -320,7 +308,7 @@
                                 </div>
                             </label>
                         </div>
-                        <!-- ONLINE PAYMENT METHOD SELECTION -->
+
                         <h3 class="card-title mt-20"><i class="fa-solid fa-wallet" aria-hidden="true"></i> Payment Options</h3>
                         <div class="form-group">
                             <label for="paymentMethodSelect">Select Payment Gateway *</label>
@@ -331,7 +319,7 @@
                                 <option value="card">Credit / Debit Card</option>
                             </select>
                         </div>
-                        <!-- bKash / Nagad / Card Details Box -->
+                        
                         <div id="onlinePaymentDetails" style="display: none; margin-top: 15px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 8px; border: 1px solid #d4af37;">
                             <p id="paymentInstructions" style="font-size: 13px; margin-bottom: 12px; color: #fff;">
                                 Please Pay/Send Money to bKash/Nagad Number: <strong>+8801700000000</strong>
@@ -347,7 +335,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- INVOICE BOX -->
+
                         <div class="invoice-box mt-20">
                             <h4><i class="fa-solid fa-receipt" aria-hidden="true"></i> Real-time Invoice Calculation</h4>
                             <div class="invoice-row">
@@ -390,7 +378,7 @@
                                 <th>Booking ID</th>
                                 <th>Guest Details</th>
                                 <th>Room Type</th>
-                                <th>Services & Payment</th>
+                                <th>Dates</th>
                                 <th>Total Bill</th>
                                 <th>Action</th>
                             </tr>
@@ -409,7 +397,6 @@
                 <div class="cards-grid" id="servicesCardsGrid"></div>
             </section>
 
-            <!-- Developer Credit Footer -->
             <footer>
                 <p>Developed by <strong>MD. EMTIAZ HOSSAIN SAMI</strong> | Dept. of Software Engineering, Daffodil International University</p>
             </footer>
@@ -422,21 +409,19 @@
             <button class="modal-close-btn" onclick="closeModal()" aria-label="Close modal">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <div id="modalContent">
-                <!-- Dynamic Content injected via JS -->
-            </div>
+            <div id="modalContent"></div>
         </div>
     </div>
 
-    <!-- LOGIN MODAL POPUP -->
-    <div class="modal-overlay" id="loginModal" onclick="closeLoginModalOnOutsideClick(event)">
+    <!-- LOGIN MODAL POPUP (Shows First on Load) -->
+    <div class="modal-overlay active" id="loginModal" onclick="closeLoginModalOnOutsideClick(event)">
         <div class="modal-container login-modal-box">
             <button class="modal-close-btn" onclick="closeLoginModal()" aria-label="Close modal">
                 <i class="fa-solid fa-xmark"></i>
             </button>
             <div class="login-modal-header">
                 <div class="login-avatar-wrapper">
-                    <img id="loginFormAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="Admin Logo" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Emtiaz+Sami&background=d4af37&color=fff';">
+                    <img id="loginFormAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="Admin Logo" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Admin&background=d4af37&color=fff';">
                 </div>
                 <h2>Grand Palace Admin Login</h2>
                 <p>Access management panel with your credentials</p>
@@ -444,11 +429,11 @@
             <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="login-form-body">
                 <div class="form-group">
                     <label for="loginEmail"><i class="fa-solid fa-envelope"></i> Email Address</label>
-                    <input type="email" id="loginEmail" placeholder="admin@grandpalace.com" required>
+                    <input type="email" id="loginEmail" placeholder="admin@grandpalace.com" required value="admin@grandpalace.com">
                 </div>
                 <div class="form-group">
                     <label for="loginPassword"><i class="fa-solid fa-lock"></i> Password</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required value="12345678">
                 </div>
                 <button type="submit" class="btn-primary btn-block-gold mt-10">
                     <i class="fa-solid fa-right-to-bracket"></i> Login Now
