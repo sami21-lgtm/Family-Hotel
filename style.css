@@ -3,11 +3,11 @@
    ================================================================== */
 :root {
     --bg-dark: #090d16;
-    --bg-card: rgba(15, 23, 42, 0.72);
-    --bg-card-hover: rgba(30, 41, 59, 0.85);
+    --bg-card: rgba(15, 23, 42, 0.75);
+    --bg-card-hover: rgba(30, 41, 59, 0.88);
     --primary-gold: #d4af37;
     --primary-gold-hover: #f1c40f;
-    --gold-glow: rgba(212, 175, 55, 0.3);
+    --gold-glow: rgba(212, 175, 55, 0.35);
     --text-light: #f8fafc;
     --text-muted: #94a3b8;
     --border-color: rgba(212, 175, 55, 0.25);
@@ -27,12 +27,15 @@
     -webkit-tap-highlight-color: transparent;
 }
 body {
-    background: linear-gradient(rgba(9, 13, 22, 0.82), rgba(9, 13, 22, 0.88)), 
-                url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600') center/cover no-repeat fixed;
+    background: linear-gradient(rgba(9, 13, 22, 0.85), rgba(9, 13, 22, 0.90)), 
+                url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat fixed;
     color: var(--text-light);
     min-height: 100vh;
     overflow-x: hidden;
     line-height: 1.6;
+}
+body.locked {
+    overflow: hidden;
 }
 ::-webkit-scrollbar {
     width: 6px;
@@ -46,13 +49,6 @@ body {
     border-radius: 4px;
 }
 
-/* Unauthenticated blur lock */
-body.locked .app-container {
-    filter: blur(10px);
-    pointer-events: none;
-    user-select: none;
-}
-
 /* ==================================================================
    2. APP CONTAINER & LAYOUT
    ================================================================== */
@@ -60,7 +56,6 @@ body.locked .app-container {
     display: flex;
     min-height: 100vh;
     position: relative;
-    transition: filter 0.3s ease;
 }
 
 /* ==================================================================
@@ -68,7 +63,7 @@ body.locked .app-container {
    ================================================================== */
 .sidebar {
     width: 280px;
-    background: rgba(10, 15, 29, 0.85);
+    background: rgba(10, 15, 29, 0.88);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     border-right: 1px solid var(--border-color);
@@ -299,35 +294,80 @@ body.locked .app-container {
     color: var(--text-light);
 }
 
-.btn-topbar-login {
+/* PILL SHAPED LOGOUT / LOGIN BUTTON (Image 1 Exact Design) */
+.pill-auth-btn {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 6px 16px;
-    background: rgba(239, 68, 68, 0.15);
-    border: 1px solid rgba(239, 68, 68, 0.5);
-    color: #ef4444;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
+    gap: 12px;
+    background: #d4af37;
+    border: 2px solid #ffffff;
+    outline: 2px solid #000000;
+    border-radius: 50px;
+    padding: 4px 22px 4px 5px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: all 0.25s ease-in-out;
 }
-.btn-topbar-login:hover {
-    background: #ef4444;
-    color: #fff;
-    box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+.pill-auth-btn:hover {
+    background: #e5be38;
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
 }
-.topbar-avatar {
-    width: 28px;
-    height: 28px;
+.pill-avatar-wrapper {
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
+    background: #ffffff;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d4af37;
+}
+.pill-avatar-wrapper img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border: 1px solid var(--primary-gold);
+}
+.pill-auth-btn span {
+    color: #000000;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
 }
 
 /* ==================================================================
-   5. TAB PAGES & DASHBOARD
+   5. HERO BANNER WITH SPECIFIED IMAGE
+   ================================================================== */
+.resort-hero-banner.custom-hero-bg {
+    border-radius: var(--radius-md);
+    padding: 40px 30px;
+    margin-bottom: 30px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.82), rgba(10, 15, 29, 0.90)), 
+                url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat;
+    border: 1px solid var(--border-bright);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+.hero-subtitle {
+    color: var(--primary-gold);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+}
+.hero-title {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    color: #fff;
+    margin: 6px 0 10px 0;
+}
+.hero-desc {
+    color: #cbd5e1;
+    font-size: 0.88rem;
+    max-width: 650px;
+}
+
+/* ==================================================================
+   6. TAB PAGES & DASHBOARD
    ================================================================== */
 .tab-page {
     display: none;
@@ -349,31 +389,6 @@ body.locked .app-container {
 .page-header p {
     color: var(--text-muted);
     font-size: 0.88rem;
-}
-.resort-hero-banner {
-    border-radius: var(--radius-md);
-    padding: 35px 30px;
-    margin-bottom: 30px;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(10, 15, 29, 0.92)), 
-                url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1200') center/cover;
-    border: 1px solid var(--border-bright);
-}
-.hero-subtitle {
-    color: var(--primary-gold);
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    font-weight: 700;
-}
-.hero-title {
-    font-family: var(--font-serif);
-    font-size: 1.8rem;
-    color: #fff;
-    margin: 6px 0 10px 0;
-}
-.hero-desc {
-    color: #cbd5e1;
-    font-size: 0.88rem;
-    max-width: 650px;
 }
 
 .stats-grid {
@@ -412,7 +427,7 @@ body.locked .app-container {
 .stat-icon.purple { background: rgba(168, 85, 247, 0.2); color: #A855F7; }
 
 /* ==================================================================
-   6. TABLES & CARDS
+   7. TABLES & CARDS
    ================================================================== */
 .recent-bookings-section {
     background: var(--bg-card);
@@ -493,7 +508,7 @@ body.locked .app-container {
 }
 
 /* ==================================================================
-   7. BOOKING FORM
+   8. BOOKING FORM
    ================================================================== */
 .booking-grid {
     display: grid;
@@ -668,18 +683,17 @@ body.locked .app-container {
     cursor: pointer;
 }
 .mt-20 { margin-top: 20px; }
-.mt-10 { margin-top: 10px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 
 /* ==================================================================
-   8. MODAL POPUP & STRICT LOGIN OVERLAY
+   9. MODAL POPUP & LOGIN PORTAL (Image 2 exact match)
    ================================================================== */
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(5, 8, 16, 0.94);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
+    background: rgba(5, 8, 16, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     z-index: 9999;
     display: flex;
     align-items: center;
@@ -694,7 +708,7 @@ body.locked .app-container {
     visibility: visible;
 }
 .modal-container {
-    background: #0f172a;
+    background: #0d1322;
     border: 1px solid var(--border-bright);
     width: 100%;
     max-width: 580px;
@@ -702,7 +716,7 @@ body.locked .app-container {
     position: relative;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
 }
 .modal-close-btn {
     position: absolute;
@@ -721,34 +735,27 @@ body.locked .app-container {
     justify-content: center;
 }
 
-/* Strict Non-Dismissible Login Box */
 .login-modal-box {
     max-width: 440px;
-    padding: 0;
-    background: rgba(15, 23, 42, 0.98);
-    backdrop-filter: blur(25px);
-    border: 1px solid var(--primary-gold);
+    padding: 35px 28px;
+    background: #0f172a;
+    border: 1px solid #d4af37;
+    border-radius: 16px;
     box-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
-    overflow: hidden;
 }
 .login-modal-header {
-    position: relative;
     text-align: center;
-    padding: 35px 20px 20px 20px;
-    background: linear-gradient(180deg, rgba(9, 13, 22, 0.4) 0%, rgba(15, 23, 42, 0.95) 100%), 
-                url('premium_photo-1661964071015-d97428970584.jpg'),
-                url('https://images.unsplash.com/premium_photo-1661964071015-d97428970584?w=800') center/cover no-repeat;
-    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 22px;
 }
 .login-avatar-wrapper {
     margin: 0 auto 15px auto;
-    width: 85px;
-    height: 85px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    border: 3px solid var(--primary-gold);
-    box-shadow: 0 0 20px var(--gold-glow);
+    border: 3px solid #d4af37;
+    box-shadow: 0 0 15px var(--gold-glow);
     overflow: hidden;
-    background: var(--bg-dark);
+    background: #fff;
 }
 .login-avatar-wrapper img {
     width: 100%;
@@ -757,37 +764,80 @@ body.locked .app-container {
 }
 .login-modal-header h2 {
     font-family: var(--font-serif);
-    font-size: 1.4rem;
+    font-size: 1.45rem;
     color: #fff;
-    margin-bottom: 5px;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    margin-bottom: 4px;
 }
 .login-modal-header p {
     font-size: 0.8rem;
-    color: #cbd5e1;
+    color: var(--text-muted);
 }
 .login-form-body {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    padding: 25px;
+    gap: 14px;
 }
 .btn-block-gold {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(135deg, #d4af37, #b89628);
+    background: #d4af37;
     color: #000;
     font-weight: bold;
     border-radius: var(--radius-sm);
     border: none;
     cursor: pointer;
+    font-size: 0.95rem;
     transition: all 0.3s ease;
 }
 .btn-block-gold:hover {
+    background: #f1c40f;
     box-shadow: 0 0 15px var(--gold-glow);
 }
 
-/* Mobile Nav Styles */
+.auth-separator {
+    text-align: center;
+    margin: 18px 0;
+    position: relative;
+}
+.auth-separator::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    height: 1px;
+    background: var(--border-color);
+}
+.auth-separator span {
+    position: relative;
+    background: #0f172a;
+    padding: 0 12px;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.guest-access-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.btn-guest-enter {
+    width: 100%;
+    padding: 11px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border: 1px solid var(--border-bright);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-guest-enter:hover {
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--primary-gold);
+}
+
+/* Responsive Mobile Layout */
 .mobile-top-bar, .mobile-bottom-nav { display: none; }
 footer {
     text-align: center;
