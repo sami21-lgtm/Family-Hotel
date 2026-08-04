@@ -16,12 +16,94 @@ const firebaseConfig = {
     appId: "1:49149127790:web:130fcb29b6819e9297ca7f",
     measurementId: "G-N5GVZK1HQ5"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // ==================================================================
-// 2. SYSTEM CONSTANTS & COMPLETE DATABASE
+// 2. AUTHENTICATION & LOGIN STATE
+// ==================================================================
+let currentUser = {
+    isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
+    name: localStorage.getItem('userName') || 'MD. EMTIAZ HOSSAIN SAMI',
+    role: localStorage.getItem('userRole') || 'Owner & Admin',
+    avatar: localStorage.getItem('userAvatar') || 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
+};
+
+function updateAuthUI() {
+    const topbarText = document.getElementById('topbarAuthText');
+    const topbarAvatar = document.getElementById('topbarAvatar');
+    const sidebarAvatar = document.getElementById('sidebarAvatar');
+    const sidebarUserName = document.getElementById('sidebarUserName');
+    const sidebarUserRole = document.getElementById('sidebarUserRole');
+
+    if (currentUser.isLoggedIn) {
+        if (topbarText) topbarText.innerText = "Logout";
+        if (topbarAvatar) topbarAvatar.src = currentUser.avatar;
+        if (sidebarAvatar) sidebarAvatar.src = currentUser.avatar;
+        if (sidebarUserName) sidebarUserName.innerText = currentUser.name;
+        if (sidebarUserRole) sidebarUserRole.innerText = currentUser.role;
+    } else {
+        if (topbarText) topbarText.innerText = "Login";
+        if (topbarAvatar) topbarAvatar.src = 'https://ui-avatars.com/api/?name=Guest+User&background=334155&color=fff';
+        if (sidebarAvatar) sidebarAvatar.src = 'https://ui-avatars.com/api/?name=Guest+User&background=334155&color=fff';
+        if (sidebarUserName) sidebarUserName.innerText = "Guest User";
+        if (sidebarUserRole) sidebarUserRole.innerText = "Visitor";
+    }
+}
+
+function toggleAuthModal() {
+    if (currentUser.isLoggedIn) {
+        if (confirm("Are you sure you want to log out?")) {
+            currentUser.isLoggedIn = false;
+            localStorage.setItem('isLoggedIn', 'false');
+            updateAuthUI();
+            showToast("Successfully Logged Out!");
+        }
+    } else {
+        openLoginModal();
+    }
+}
+
+function openLoginModal() {
+    document.getElementById('loginModal')?.classList.add('active');
+}
+
+function closeLoginModal() {
+    document.getElementById('loginModal')?.classList.remove('active');
+}
+
+function closeLoginModalOnOutsideClick(e) {
+    if (e.target.classList.contains('modal-overlay')) {
+        closeLoginModal();
+    }
+}
+
+function handleLoginSubmit(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail')?.value;
+    const password = document.getElementById('loginPassword')?.value;
+
+    if (email && password) {
+        currentUser.isLoggedIn = true;
+        currentUser.name = "MD. EMTIAZ HOSSAIN SAMI";
+        currentUser.role = "Owner & Admin";
+        currentUser.avatar = "Md. EmTIAZ hOSSAIN sAMI LOGO.png";
+
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userName', currentUser.name);
+        localStorage.setItem('userRole', currentUser.role);
+        localStorage.setItem('userAvatar', currentUser.avatar);
+
+        updateAuthUI();
+        closeLoginModal();
+        showToast("Welcome Back! Logged in successfully.");
+    } else {
+        showToast("Please enter email and password", "error");
+    }
+}
+
+// ==================================================================
+// 3. SYSTEM CONSTANTS & COMPLETE DATABASE
 // ==================================================================
 const TAX_RATE = 0.15;
 const SERVICE_CHARGE_RATE = 0.10;
@@ -204,7 +286,7 @@ let reservations = [
 let uploadedGuestPhoto = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400';
 
 // ==================================================================
-// 3. LIVE CLOCK & TOAST NOTIFICATIONS
+// 4. LIVE CLOCK & TOAST NOTIFICATIONS
 // ==================================================================
 function startClock() {
     function updateClock() {
@@ -241,7 +323,6 @@ function showToast(message, type = 'success') {
         toast.style.opacity = '1';
         toast.style.transform = 'translateY(0)';
     }, 50);
-
     setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(-20px)';
@@ -250,7 +331,7 @@ function showToast(message, type = 'success') {
 }
 
 // ==================================================================
-// 4. REALTIME FIRESTORE SYNC
+// 5. REALTIME FIRESTORE SYNC
 // ==================================================================
 function initRealtimeSync() {
     onSnapshot(collection(db, "reservations"), (snapshot) => {
@@ -267,17 +348,18 @@ function initRealtimeSync() {
 }
 
 // ==================================================================
-// 5. INITIALIZATION & TAB SWITCHING
+// 6. INITIALIZATION & TAB SWITCHING
 // ==================================================================
 window.addEventListener('DOMContentLoaded', () => {
     startClock();
+    updateAuthUI();
     renderRooms();
     renderServices();
     renderTables();
     setTodayDates();
     calcTotal();
     initRealtimeSync();
-
+    
     const bookingForm = document.getElementById('reservationForm');
     if (bookingForm) {
         bookingForm.addEventListener('submit', handleBookingSubmit);
@@ -288,10 +370,10 @@ function switchTab(tabId) {
     document.querySelectorAll('.tab-page').forEach(page => page.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.querySelectorAll('.m-nav-item').forEach(item => item.classList.remove('active'));
-
+    
     const targetTab = document.getElementById(`tab-${tabId}`);
     if (targetTab) targetTab.classList.add('active');
-
+    
     const navIndex = ['dashboard', 'rooms', 'booking', 'guests', 'services'].indexOf(tabId);
     if (navIndex !== -1) {
         const navItems = document.querySelectorAll('.nav-item');
@@ -306,7 +388,6 @@ function toggleSidebar(forceState) {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
     if (!sidebar || !overlay) return;
-
     if (typeof forceState === 'boolean') {
         sidebar.classList.toggle('active', forceState);
         overlay.classList.toggle('active', forceState);
@@ -317,7 +398,7 @@ function toggleSidebar(forceState) {
 }
 
 // ==================================================================
-// 6. PHOTO PREVIEW & IMAGE HANDLERS
+// 7. PHOTO PREVIEW & IMAGE HANDLERS
 // ==================================================================
 function previewUploadImage(e) {
     const file = e.target.files[0];
@@ -346,7 +427,7 @@ function updateGuestImageFromUrl() {
 }
 
 // ==================================================================
-// 7. RENDERING ROOMS & SERVICES WITH MODAL TRIGGERS
+// 8. RENDERING ROOMS & SERVICES WITH MODAL TRIGGERS
 // ==================================================================
 function renderRooms() {
     const grid = document.getElementById('roomsCardsGrid');
@@ -395,7 +476,7 @@ function renderServices() {
 }
 
 // ==================================================================
-// 8. POPUP MODAL LOGIC (ROOM & SERVICE DETAILS)
+// 9. POPUP MODAL LOGIC (ROOM & SERVICE DETAILS)
 // ==================================================================
 function openRoomModal(roomId) {
     const room = roomsDatabase.find(r => r.id === roomId);
@@ -432,7 +513,6 @@ function openRoomModal(roomId) {
 function openServiceModal(servId) {
     const serv = servicesDatabase.find(s => s.id === servId);
     if (!serv) return;
-
     const content = document.getElementById('modalContent');
     content.innerHTML = `
         <div style="position:relative;">
@@ -445,12 +525,10 @@ function openServiceModal(servId) {
             <h2 style="font-family:'Playfair Display', serif; color:#fff; font-size:1.6rem; margin-bottom:8px;">${serv.title}</h2>
             <p style="color:var(--primary-gold); font-size:0.85rem; font-weight:500; margin-bottom:15px;"><i class="fa-solid fa-clock"></i> Timings: ${serv.timing}</p>
             <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.6; margin-bottom:20px;">${serv.desc}</p>
-
             <h4 style="color:var(--primary-gold); font-size:1rem; margin-bottom:12px; font-family:'Playfair Display', serif;"><i class="fa-solid fa-utensils"></i> Menu & Facility Highlights:</h4>
             <ul style="list-style:none; padding:0; display:flex; flex-direction:column; gap:10px; margin-bottom:25px;">
                 ${serv.specialties.map(s => `<li style="color:#e2e8f0; font-size:0.85rem; display:flex; align-items:center; gap:10px;"><i class="fa-solid fa-fire-flame-curved" style="color:var(--primary-gold);"></i> ${s}</li>`).join('')}
             </ul>
-
             <button class="btn-primary-block" onclick="closeModal(); switchTab('booking');">
                 <i class="fa-solid fa-calendar-plus"></i> Go To Booking & Order Services
             </button>
@@ -480,7 +558,7 @@ function selectRoomAndBook(roomValue) {
 }
 
 // ==================================================================
-// 9. DYNAMIC BILLING & FORM SUBMISSION
+// 10. DYNAMIC BILLING & FORM SUBMISSION
 // ==================================================================
 function setTodayDates() {
     const checkInEl = document.getElementById('checkIn');
@@ -497,35 +575,33 @@ function setTodayDates() {
 function calcTotal() {
     const checkInVal = document.getElementById('checkIn')?.value;
     const checkOutVal = document.getElementById('checkOut')?.value;
-
     const d1 = checkInVal ? new Date(checkInVal) : new Date();
     const d2 = checkOutVal ? new Date(checkOutVal) : new Date();
-
     let nights = Math.ceil((d2 - d1) / (1000 * 60 * 60 * 24));
     if (isNaN(nights) || nights < 1) nights = 1;
-
+    
     const selectEl = document.getElementById('roomTypeSelect');
     const roomVal = selectEl ? selectEl.value : 'Single Standard Room|800';
     const roomPrice = parseInt(roomVal.split('|')[1]) || 800;
-
+    
     let addOnPrice = 0;
     document.querySelectorAll('input[name="foodMenu"]:checked, input[name="amenities"]:checked').forEach(cb => {
         const price = cb.getAttribute('data-price');
         if (price) addOnPrice += parseInt(price);
     });
-
+    
     const roomSubtotal = roomPrice * nights;
     const servicesSubtotal = addOnPrice * nights;
     const subtotal = roomSubtotal + servicesSubtotal;
     const vat = subtotal * TAX_RATE;
     const serviceCharge = subtotal * SERVICE_CHARGE_RATE;
     const grandTotal = Math.round(subtotal + vat + serviceCharge);
-
+    
     if (document.getElementById('billNights')) document.getElementById('billNights').innerText = `${nights} Night(s)`;
     if (document.getElementById('billRoom')) document.getElementById('billRoom').innerText = `৳${roomSubtotal.toLocaleString()}`;
     if (document.getElementById('billAddons')) document.getElementById('billAddons').innerText = `৳${servicesSubtotal.toLocaleString()}`;
     if (document.getElementById('billTotal')) document.getElementById('billTotal').innerText = `৳${grandTotal.toLocaleString()} (Inc. VAT & Service Charge)`;
-
+    
     return { nights, roomSubtotal, servicesSubtotal, grandTotal };
 }
 
@@ -537,9 +613,8 @@ async function handleBookingSubmit(e) {
     const roomVal = roomSelect ? roomSelect.value.split('|')[0] : 'Single Standard Room';
     const checkIn = document.getElementById('checkIn')?.value || new Date().toISOString().split('T')[0];
     const checkOut = document.getElementById('checkOut')?.value || new Date().toISOString().split('T')[0];
-
     const billing = calcTotal();
-
+    
     const newBooking = {
         id: `GP-${Math.floor(100000 + Math.random() * 900000)}`,
         name: `${fName} ${lName}`.trim(),
@@ -551,7 +626,7 @@ async function handleBookingSubmit(e) {
         status: 'Confirmed',
         createdAt: new Date().toISOString()
     };
-
+    
     try {
         await addDoc(collection(db, "reservations"), newBooking);
         showToast(`🎉 Reservation ${newBooking.id} Completed Successfully!`);
@@ -561,7 +636,6 @@ async function handleBookingSubmit(e) {
         renderTables();
         updateDashboardStats();
     }
-
     resetForm();
     switchTab('guests');
 }
@@ -580,11 +654,9 @@ function togglePaymentDetails() {
     const methodSelect = document.getElementById('paymentMethodSelect');
     const detailsBox = document.getElementById('onlinePaymentDetails');
     const instructions = document.getElementById('paymentInstructions');
-
     if (!methodSelect || !detailsBox || !instructions) return;
-
+    
     const method = methodSelect.value;
-
     if (method === 'bkash') {
         detailsBox.style.display = 'block';
         instructions.innerHTML = 'Please Pay/Send Money to bKash Number: <strong>+8801700000000</strong>';
@@ -597,7 +669,7 @@ function togglePaymentDetails() {
 }
 
 // ==================================================================
-// 10. DIRECTORY TABLES, STATS, SEARCH & DELETE
+// 11. DIRECTORY TABLES, STATS, SEARCH & DELETE
 // ==================================================================
 function updateDashboardStats() {
     const totalStat = document.getElementById('statTotalBookings');
@@ -616,7 +688,6 @@ function updateDashboardStats() {
 function renderTables() {
     const dashBody = document.getElementById('dashboardTableBody');
     const guestBody = document.getElementById('fullBookingsTableBody');
-
     const rows = reservations.map(g => {
         const docId = g.docId || '';
         return `
@@ -633,7 +704,7 @@ function renderTables() {
             </tr>
         `;
     }).join('');
-
+    
     if (dashBody) dashBody.innerHTML = rows;
     if (guestBody) guestBody.innerHTML = rows;
 }
@@ -645,7 +716,6 @@ function searchGuests() {
         (g.room || '').toLowerCase().includes(query) || 
         (g.id || '').toLowerCase().includes(query)
     );
-
     const guestBody = document.getElementById('fullBookingsTableBody');
     if (guestBody) {
         guestBody.innerHTML = filtered.map(g => `
@@ -678,7 +748,7 @@ async function deleteBooking(docId) {
 }
 
 // ==================================================================
-// 11. EXPOSE FUNCTIONS TO WINDOW FOR INLINE HTML EVENT HANDLERS
+// 12. EXPOSE FUNCTIONS TO WINDOW FOR INLINE HTML EVENT HANDLERS
 // ==================================================================
 Object.assign(window, {
     switchTab,
@@ -693,5 +763,10 @@ Object.assign(window, {
     calcTotal,
     togglePaymentDetails,
     searchGuests,
-    deleteBooking
+    deleteBooking,
+    toggleAuthModal,
+    openLoginModal,
+    closeLoginModal,
+    closeLoginModalOnOutsideClick,
+    handleLoginSubmit
 });
