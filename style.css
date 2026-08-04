@@ -2,9 +2,9 @@
    1. ROOT VARIABLES & GLOBAL RESET
    ================================================================== */
 :root {
-    --bg-dark: #090d16;
-    --bg-card: rgba(15, 23, 42, 0.75);
-    --bg-card-hover: rgba(30, 41, 59, 0.88);
+    --bg-dark: #080b11;
+    --bg-card: rgba(15, 23, 42, 0.85);
+    --bg-card-hover: rgba(30, 41, 59, 0.90);
     --primary-gold: #d4af37;
     --primary-gold-hover: #f1c40f;
     --gold-glow: rgba(212, 175, 55, 0.35);
@@ -26,9 +26,10 @@
     font-family: var(--font-main);
     -webkit-tap-highlight-color: transparent;
 }
+
+/* ব্যাকগ্রাউন্ড সম্পূর্ণ সলিড ডার্ক থিম (ছবি রিমুভ করা হয়েছে) */
 body {
-    background: linear-gradient(rgba(9, 13, 22, 0.85), rgba(9, 13, 22, 0.90)), 
-                url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat fixed;
+    background-color: var(--bg-dark);
     color: var(--text-light);
     min-height: 100vh;
     overflow-x: hidden;
@@ -63,9 +64,7 @@ body.locked {
    ================================================================== */
 .sidebar {
     width: 280px;
-    background: rgba(10, 15, 29, 0.88);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    background: #0b0f19;
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
@@ -286,7 +285,6 @@ body.locked {
 }
 .date-display {
     background: var(--bg-card);
-    backdrop-filter: blur(12px);
     border: 1px solid var(--border-color);
     padding: 8px 16px;
     border-radius: var(--radius-sm);
@@ -294,7 +292,7 @@ body.locked {
     color: var(--text-light);
 }
 
-/* PILL SHAPED LOGOUT / LOGIN BUTTON (Image 1 Exact Design) */
+/* PILL SHAPED LOGOUT / LOGIN BUTTON */
 .pill-auth-btn {
     display: flex;
     align-items: center;
@@ -336,15 +334,12 @@ body.locked {
     letter-spacing: 0.5px;
 }
 
-/* ==================================================================
-   5. HERO BANNER WITH SPECIFIED IMAGE
-   ================================================================== */
+/* HERO BANNER (ছবি রিমুভ করে ডার্ক গ্র্যাডিয়েন্ট থিম) */
 .resort-hero-banner.custom-hero-bg {
     border-radius: var(--radius-md);
     padding: 40px 30px;
     margin-bottom: 30px;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.82), rgba(10, 15, 29, 0.90)), 
-                url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(10, 15, 29, 0.98));
     border: 1px solid var(--border-bright);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
@@ -367,7 +362,7 @@ body.locked {
 }
 
 /* ==================================================================
-   6. TAB PAGES & DASHBOARD
+   5. TAB PAGES & DASHBOARD
    ================================================================== */
 .tab-page {
     display: none;
@@ -427,7 +422,7 @@ body.locked {
 .stat-icon.purple { background: rgba(168, 85, 247, 0.2); color: #A855F7; }
 
 /* ==================================================================
-   7. TABLES & CARDS
+   6. TABLES & CARDS
    ================================================================== */
 .recent-bookings-section {
     background: var(--bg-card);
@@ -464,51 +459,15 @@ body.locked {
     font-size: 0.85rem;
     color: #e2e8f0;
 }
-.guest-avatar-td {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid var(--primary-gold);
-}
 
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 22px;
 }
-.room-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.3s ease;
-}
-.room-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--primary-gold);
-    box-shadow: 0 12px 30px var(--gold-glow);
-}
-.btn-primary-block {
-    width: 100%;
-    padding: 10px;
-    background: linear-gradient(135deg, #d4af37, #b89628);
-    color: #000;
-    font-weight: 600;
-    font-size: 0.85rem;
-    border: none;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
 
 /* ==================================================================
-   8. BOOKING FORM
+   7. BOOKING FORM
    ================================================================== */
 .booking-grid {
     display: grid;
@@ -686,14 +645,12 @@ body.locked {
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 
 /* ==================================================================
-   9. MODAL POPUP & LOGIN PORTAL (Image 2 exact match)
+   8. MODAL POPUP & LOGIN PORTAL
    ================================================================== */
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(5, 8, 16, 0.92);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(5, 8, 16, 0.95);
     z-index: 9999;
     display: flex;
     align-items: center;
@@ -857,9 +814,9 @@ footer strong { color: var(--primary-gold); }
     .sidebar.active { transform: translateX(0); }
     .main-content { margin-left: 0; width: 100%; padding: 70px 15px 90px 15px; }
     .mobile-top-bar {
-        display: flex; justify-between: space-between; align-items: center;
+        display: flex; justify-content: space-between; align-items: center;
         position: fixed; top: 0; left: 0; right: 0; height: 56px;
-        background: rgba(10, 15, 29, 0.95); backdrop-filter: blur(12px);
+        background: rgba(10, 15, 29, 0.95);
         border-bottom: 1px solid var(--border-color); padding: 0 16px; z-index: 900;
     }
     .mobile-brand {
@@ -868,9 +825,9 @@ footer strong { color: var(--primary-gold); }
     }
     .menu-toggle { background: none; border: none; color: #fff; font-size: 1.3rem; cursor: pointer; }
     .mobile-bottom-nav {
-        display: flex; justify-around: space-around; align-items: center;
+        display: flex; justify-content: space-around; align-items: center;
         position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
-        background: rgba(10, 15, 29, 0.95); backdrop-filter: blur(12px);
+        background: rgba(10, 15, 29, 0.95);
         border-top: 1px solid var(--border-color); z-index: 900;
     }
     .m-nav-item {
