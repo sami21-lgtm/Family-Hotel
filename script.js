@@ -1,8 +1,9 @@
 /* ==================================================================
-   1. GLOBAL STATE & DUMMY DATA
+   1. GLOBAL STATE & DUMMY DATA WITH LOCALSTORAGE SUPPORT
    ================================================================== */
 let currentUser = null; // Admin or Guest User state
-let guestProfileData = {
+
+let defaultGuestProfile = {
     fName: "Guest",
     lName: "User",
     email: "guest@example.com",
@@ -10,8 +11,7 @@ let guestProfileData = {
     photo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400"
 };
 
-// Initial Sample Bookings
-let bookingsList = [
+let defaultBookingsList = [
     {
         id: "GP-1001",
         fName: "Rahim",
@@ -46,6 +46,10 @@ let bookingsList = [
     }
 ];
 
+// LocalStorage থেকে ডাটা লোড করা
+let guestProfileData = JSON.parse(localStorage.getItem("guestProfileData")) || defaultGuestProfile;
+let bookingsList = JSON.parse(localStorage.getItem("bookingsList")) || defaultBookingsList;
+
 // Room Catalog Data
 const roomCatalog = [
     { title: "Single Standard Room", price: 800, img: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600", desc: "Cozy room with free Wi-Fi and basic amenities." },
@@ -73,6 +77,14 @@ const serviceCatalog = [
    ================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
     initClock();
+    
+    // পেজ লোড হবার সময় গ্লোবাল স্টেট চেক ও UI আপডেট
+    const savedUser = localStorage.getItem("currentUser");
+    if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        updateUserUI();
+    }
+
     renderDashboard();
     renderGuestDirectory();
     renderRoomsCard();
@@ -150,7 +162,7 @@ function toggleSidebar(forceState) {
 }
 
 /* ==================================================================
-   4. AUTHENTICATION & LOGIN/GUEST MODAL
+   4. AUTHENTICATION & LOGIN/GUEST MODAL (WITH PERSISTENCE)
    ================================================================== */
 function previewUploadImage(event) {
     const file = event.target.files[0];
@@ -159,6 +171,7 @@ function previewUploadImage(event) {
         reader.onload = function(e) {
             document.getElementById("previewImg").src = e.target.result;
             guestProfileData.photo = e.target.result;
+            localStorage.setItem("guestProfileData", JSON.stringify(guestProfileData));
         };
         reader.readAsDataURL(file);
     }
@@ -169,6 +182,7 @@ function updateGuestImageFromUrl() {
     if (urlInput) {
         document.getElementById("previewImg").src = urlInput;
         guestProfileData.photo = urlInput;
+        localStorage.setItem("guestProfileData", JSON.stringify(guestProfileData));
     }
 }
 
@@ -183,6 +197,9 @@ function handleLoginSubmit(event) {
         photo: "Md. EmTIAZ hOSSAIN sAMI LOGO.png",
         email: email
     };
+    
+    // Save to LocalStorage
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
     
     updateUserUI();
     closeLoginModal();
@@ -212,6 +229,10 @@ function handleGuestLogin() {
         email: email
     };
 
+    // Save to LocalStorage
+    localStorage.setItem("guestProfileData", JSON.stringify(guestProfileData));
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+
     updateUserUI();
     closeLoginModal();
 }
@@ -220,13 +241,20 @@ function updateUserUI() {
     if (!currentUser) return;
 
     // Update Sidebar
-    document.getElementById("sidebarUserName").innerText = currentUser.name;
-    document.getElementById("sidebarUserRole").innerText = currentUser.role;
-    document.getElementById("sidebarAvatar").src = currentUser.photo;
+    const sName = document.getElementById("sidebarUserName");
+    const sRole = document.getElementById("sidebarUserRole");
+    const sAvatar = document.getElementById("sidebarAvatar");
+
+    if (sName) sName.innerText = currentUser.name;
+    if (sRole) sRole.innerText = currentUser.role;
+    if (sAvatar) sAvatar.src = currentUser.photo;
 
     // Update Topbar
-    document.getElementById("topbarAvatar").src = currentUser.photo;
-    document.getElementById("topbarAuthText").innerText = "Logout";
+    const tAvatar = document.getElementById("topbarAvatar");
+    const tAuthText = document.getElementById("topbarAuthText");
+
+    if (tAvatar) tAvatar.src = currentUser.photo;
+    if (tAuthText) tAuthText.innerText = "Logout";
 }
 
 function handleAuthButtonClick() {
@@ -234,11 +262,22 @@ function handleAuthButtonClick() {
         // Logout action
         if (confirm("Are you sure you want to logout?")) {
             currentUser = null;
-            document.getElementById("sidebarUserName").innerText = "Guest User";
-            document.getElementById("sidebarUserRole").innerText = "Visitor";
-            document.getElementById("sidebarAvatar").src = "https://ui-avatars.com/api/?name=Guest&background=d4af37&color=fff";
-            document.getElementById("topbarAvatar").src = "https://ui-avatars.com/api/?name=Guest&background=d4af37&color=fff";
-            document.getElementById("topbarAuthText").innerText = "Login";
+            
+            // Clear current user from LocalStorage
+            localStorage.removeItem("currentUser");
+
+            const sName = document.getElementById("sidebarUserName");
+            const sRole = document.getElementById("sidebarUserRole");
+            const sAvatar = document.getElementById("sidebarAvatar");
+            const tAvatar = document.getElementById("topbarAvatar");
+            const tAuthText = document.getElementById("topbarAuthText");
+
+            if (sName) sName.innerText = "Guest User";
+            if (sRole) sRole.innerText = "Visitor";
+            if (sAvatar) sAvatar.src = "https://ui-avatars.com/api/?name=Guest&background=d4af37&color=fff";
+            if (tAvatar) tAvatar.src = "https://ui-avatars.com/api/?name=Guest&background=d4af37&color=fff";
+            if (tAuthText) tAuthText.innerText = "Login";
+
             openLoginModal();
         }
     } else {
@@ -247,22 +286,24 @@ function handleAuthButtonClick() {
 }
 
 function openLoginModal() {
-    document.getElementById("loginModal").classList.add("active");
+    const modal = document.getElementById("loginModal");
+    if (modal) modal.classList.add("active");
 }
 
 function closeLoginModal() {
-    document.getElementById("loginModal").classList.remove("active");
+    const modal = document.getElementById("loginModal");
+    if (modal) modal.classList.remove("active");
 }
 
 /* ==================================================================
    5. BOOKING FORM & BILLING CALCULATION
    ================================================================== */
 function calculateBilling() {
-    const checkInVal = document.getElementById("checkIn").value;
-    const checkOutVal = document.getElementById("checkOut").value;
-    const roomSelectVal = document.getElementById("roomTypeSelect").value;
+    const checkInVal = document.getElementById("checkIn")?.value;
+    const checkOutVal = document.getElementById("checkOut")?.value;
+    const roomSelectVal = document.getElementById("roomTypeSelect")?.value;
     
-    if (!checkInVal || !checkOutVal) return;
+    if (!checkInVal || !checkOutVal || !roomSelectVal) return;
 
     const startDate = new Date(checkInVal);
     const endDate = new Date(checkOutVal);
@@ -290,10 +331,10 @@ function calculateBilling() {
     const grandTotal = totalRoomCharge + addonsTotal;
 
     // Update UI elements
-    document.getElementById("billNights").innerText = `${nights} Night(s)`;
-    document.getElementById("billRoom").innerText = `৳${totalRoomCharge.toLocaleString()}`;
-    document.getElementById("billAddons").innerText = `৳${addonsTotal.toLocaleString()}`;
-    document.getElementById("billTotal").innerText = `৳${grandTotal.toLocaleString()} (Inc. Tax & Service Charge)`;
+    if (document.getElementById("billNights")) document.getElementById("billNights").innerText = `${nights} Night(s)`;
+    if (document.getElementById("billRoom")) document.getElementById("billRoom").innerText = `৳${totalRoomCharge.toLocaleString()}`;
+    if (document.getElementById("billAddons")) document.getElementById("billAddons").innerText = `৳${addonsTotal.toLocaleString()}`;
+    if (document.getElementById("billTotal")) document.getElementById("billTotal").innerText = `৳${grandTotal.toLocaleString()} (Inc. Tax & Service Charge)`;
 }
 
 function togglePaymentDetails() {
@@ -368,6 +409,9 @@ function handleBookingSubmit(event) {
 
     bookingsList.unshift(newBooking);
 
+    // Save bookings list to LocalStorage
+    localStorage.setItem("bookingsList", JSON.stringify(bookingsList));
+
     // Refresh UI
     renderDashboard();
     renderGuestDirectory();
@@ -399,10 +443,10 @@ function renderDashboard() {
         if (b.food && b.food.length > 0) diningCount++;
     });
 
-    document.getElementById("statTotalBookings").innerText = totalBookings;
-    document.getElementById("statRevenue").innerText = `৳${totalRevenue.toLocaleString()}`;
-    document.getElementById("statPoolPass").innerText = poolCount;
-    document.getElementById("statDiningOrders").innerText = diningCount;
+    if (document.getElementById("statTotalBookings")) document.getElementById("statTotalBookings").innerText = totalBookings;
+    if (document.getElementById("statRevenue")) document.getElementById("statRevenue").innerText = `৳${totalRevenue.toLocaleString()}`;
+    if (document.getElementById("statPoolPass")) document.getElementById("statPoolPass").innerText = poolCount;
+    if (document.getElementById("statDiningOrders")) document.getElementById("statDiningOrders").innerText = diningCount;
 
     // Dashboard Recent Table Body
     const tbody = document.getElementById("dashboardTableBody");
@@ -512,6 +556,8 @@ function viewBookingDetails(bookingId) {
     if (!b) return;
 
     const modalContent = document.getElementById("modalContent");
+    if (!modalContent) return;
+
     modalContent.innerHTML = `
         <div style="padding: 24px;">
             <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
@@ -526,8 +572,8 @@ function viewBookingDetails(bookingId) {
                 <p><strong>Phone:</strong> ${b.phone}</p>
                 <p><strong>Room Category:</strong> ${b.roomType}</p>
                 <p><strong>Check-In / Out:</strong> ${b.checkIn} to ${b.checkOut} (${b.nights} Nights)</p>
-                <p><strong>Meals Included:</strong> ${b.food.length > 0 ? b.food.join(', ') : 'None'}</p>
-                <p><strong>Amenities:</strong> ${b.amenities.length > 0 ? b.amenities.join(', ') : 'None'}</p>
+                <p><strong>Meals Included:</strong> ${b.food && b.food.length > 0 ? b.food.join(', ') : 'None'}</p>
+                <p><strong>Amenities:</strong> ${b.amenities && b.amenities.length > 0 ? b.amenities.join(', ') : 'None'}</p>
                 <hr style="border-color: var(--border-color); margin: 10px 0;">
                 <p style="font-size: 1.1rem; color: #10B981;"><strong>Total Bill Paid:</strong> ৳${b.totalBill.toLocaleString()}</p>
             </div>
@@ -538,7 +584,8 @@ function viewBookingDetails(bookingId) {
 }
 
 function closeModal() {
-    document.getElementById("detailsModal").classList.remove("active");
+    const modal = document.getElementById("detailsModal");
+    if (modal) modal.classList.remove("active");
 }
 
 function closeModalOnOutsideClick(event) {
