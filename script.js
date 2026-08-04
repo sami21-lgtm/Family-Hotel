@@ -250,21 +250,42 @@ function handleLoginSubmit(event) {
     switchTab("dashboard");
 }
 
-// 🟢 গেস্ট প্রবেশের জন্য আপডেট করা ফাংশন (ফর্ম পূরণ না করা পর্যন্ত আটকে রাখবে)
+// 🟢 STRICT VALIDATION সহ গেস্ট প্রবেশের জন্য আপডেট করা ফাংশন
 function handleGuestLogin(event) {
     if (event) event.preventDefault();
 
-    const fName = document.getElementById("fName")?.value.trim();
-    const lName = document.getElementById("lName")?.value.trim();
-    const email = document.getElementById("email")?.value.trim();
-    const phone = document.getElementById("phone")?.value.trim();
+    const fNameInput = document.getElementById("fName");
+    const lNameInput = document.getElementById("lName");
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
 
-    // ⛔ কোনো ফিল্ড ফাঁকা থাকলে অ্যালার্ট দেবে এবং লগইন আটকে রাখবে
+    const fName = fNameInput ? fNameInput.value.trim() : "";
+    const lName = lNameInput ? lNameInput.value.trim() : "";
+    const email = emailInput ? emailInput.value.trim() : "";
+    const phone = phoneInput ? phoneInput.value.trim() : "";
+
+    // ⛔ ১. যেকোনো একটি ফিল্ড ফাঁকা থাকলে অ্যালার্ট দিয়ে প্রবেশ ব্লক করবে
     if (!fName || !lName || !email || !phone) {
         alert("⚠️ Please fill up all the required fields (First Name, Last Name, Email, and Phone Number) to continue as guest!");
-        return; 
+        
+        // ফাঁকা ফিল্ডে কার্সার ফোকাস করবে
+        if (!fName && fNameInput) fNameInput.focus();
+        else if (!lName && lNameInput) lNameInput.focus();
+        else if (!email && emailInput) emailInput.focus();
+        else if (!phone && phoneInput) phoneInput.focus();
+
+        return; // মোডাল বন্ধ হবে না, ইন্টারফেসে প্রবেশ ব্লকড
     }
 
+    // ⛔ ২. ইমেইল ফরম্যাট চেক
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("⚠️ Please enter a valid Email Address!");
+        if (emailInput) emailInput.focus();
+        return;
+    }
+
+    // ✅ ৩. তথ্য সঠিক হলে সেভ হয়ে ইন্টারফেসে ঢুকতে দেবে
     guestProfileData.fName = fName;
     guestProfileData.lName = lName;
     guestProfileData.email = email;
@@ -281,7 +302,8 @@ function handleGuestLogin(event) {
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
 
     updateUserUI();
-    closeLoginModal(); // তথ্য সঠিক হলেই কেবল মোডাল বন্ধ হবে
+    closeLoginModal(); // সফলভাবে ভ্যালিডেট করার পরই কেবল মোডাল বন্ধ হবে
+    switchTab("dashboard");
 }
 
 function updateUserUI() {
