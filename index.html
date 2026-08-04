@@ -70,7 +70,6 @@
                         <span>+880 1723-434535</span>
                     </div>
                 </a>
-
                 <!-- Email Button -->
                 <a href="mailto:support@luxuryresort.com" class="modern-contact-btn">
                     <div class="contact-icon">
@@ -85,11 +84,11 @@
 
             <!-- Sidebar Footer -->
             <div class="sidebar-footer">
-                <div class="user-info">
-                    <img src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="MD. EMTIAZ HOSSAIN SAMI" class="admin-avatar" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Emtiaz+Sami&background=d4af37&color=fff';">
+                <div class="user-info" id="sidebarUserInfo">
+                    <img src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="MD. EMTIAZ HOSSAIN SAMI" class="admin-avatar" id="sidebarAvatar" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Emtiaz+Sami&background=d4af37&color=fff';">
                     <div>
-                        <strong class="admin-name">MD. EMTIAZ HOSSAIN SAMI</strong>
-                        <small class="admin-role">Owner & Admin</small>
+                        <strong class="admin-name" id="sidebarUserName">MD. EMTIAZ HOSSAIN SAMI</strong>
+                        <small class="admin-role" id="sidebarUserRole">Owner & Admin</small>
                     </div>
                 </div>
             </div>
@@ -107,6 +106,12 @@
                     <div class="badge-status"><span class="pulse"></span> Live Sync</div>
                     <!-- Real-time Live Clock Container -->
                     <div class="date-display" id="currentDateDisplay">Loading Live Clock...</div>
+                    
+                    <!-- Login / Logout Button in TopBar -->
+                    <button class="btn-topbar-login" id="topbarAuthBtn" onclick="toggleAuthModal()">
+                        <img id="topbarAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="User Avatar" class="topbar-avatar" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Admin&background=d4af37&color=fff';">
+                        <span id="topbarAuthText">Login</span>
+                    </button>
                 </div>
             </header>
 
@@ -265,7 +270,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="form-card">
                         <h3 class="card-title"><i class="fa-solid fa-utensils" aria-hidden="true"></i> Cuisine Options</h3>
                         <div class="checkbox-group">
@@ -291,8 +295,7 @@
                                 </div>
                             </label>
                         </div>
-
-                        <!-- UPDATED: POOL, GYM & WELLNESS SLOTS -->
+                        <!-- POOL, GYM & WELLNESS SLOTS -->
                         <h3 class="card-title mt-20"><i class="fa-solid fa-dumbbell" aria-hidden="true"></i> Pool, Gym & Fitness Slots</h3>
                         <div class="checkbox-group">
                             <label class="checkbox-card">
@@ -309,7 +312,6 @@
                                     <span>04:00 PM - 10:00 PM (+৳500/day)</span>
                                 </div>
                             </label>
-                            <!-- GYM PASS OPTION INCLUDED -->
                             <label class="checkbox-card">
                                 <input type="checkbox" name="amenities" value="VIP Fitness & Gym Day Pass" data-price="400" onchange="calculateBilling()">
                                 <div class="card-info">
@@ -318,7 +320,6 @@
                                 </div>
                             </label>
                         </div>
-
                         <!-- ONLINE PAYMENT METHOD SELECTION -->
                         <h3 class="card-title mt-20"><i class="fa-solid fa-wallet" aria-hidden="true"></i> Payment Options</h3>
                         <div class="form-group">
@@ -330,7 +331,6 @@
                                 <option value="card">Credit / Debit Card</option>
                             </select>
                         </div>
-
                         <!-- bKash / Nagad / Card Details Box -->
                         <div id="onlinePaymentDetails" style="display: none; margin-top: 15px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 8px; border: 1px solid #d4af37;">
                             <p id="paymentInstructions" style="font-size: 13px; margin-bottom: 12px; color: #fff;">
@@ -347,7 +347,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- INVOICE BOX -->
                         <div class="invoice-box mt-20">
                             <h4><i class="fa-solid fa-receipt" aria-hidden="true"></i> Real-time Invoice Calculation</h4>
@@ -369,7 +368,6 @@
                                 <strong id="billTotal">৳800 (Inc. Tax & Service Charge)</strong>
                             </div>
                         </div>
-
                         <div class="btn-group">
                             <button type="submit" class="btn-primary" id="saveBtn"><i class="fa-solid fa-check" aria-hidden="true"></i> Complete Reservation</button>
                             <button type="button" class="btn-danger" onclick="resetForm()"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i> Reset</button>
@@ -427,6 +425,35 @@
             <div id="modalContent">
                 <!-- Dynamic Content injected via JS -->
             </div>
+        </div>
+    </div>
+
+    <!-- LOGIN MODAL POPUP -->
+    <div class="modal-overlay" id="loginModal" onclick="closeLoginModalOnOutsideClick(event)">
+        <div class="modal-container login-modal-box">
+            <button class="modal-close-btn" onclick="closeLoginModal()" aria-label="Close modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="login-modal-header">
+                <div class="login-avatar-wrapper">
+                    <img id="loginFormAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="Admin Logo" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Emtiaz+Sami&background=d4af37&color=fff';">
+                </div>
+                <h2>Grand Palace Admin Login</h2>
+                <p>Access management panel with your credentials</p>
+            </div>
+            <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="login-form-body">
+                <div class="form-group">
+                    <label for="loginEmail"><i class="fa-solid fa-envelope"></i> Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="admin@grandpalace.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword"><i class="fa-solid fa-lock"></i> Password</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-primary btn-block-gold mt-10">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login Now
+                </button>
+            </form>
         </div>
     </div>
 
