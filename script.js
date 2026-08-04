@@ -8,11 +8,23 @@ const defaultAdminUser = {
     email: "admin@luxuryresort.com"
 };
 
-// Check LocalStorage for logged in user; if not found, set Default Admin
-let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-if (!currentUser) {
+// LocalStorage Check (ডিফল্টভাবে অ্যাডমিন অ্যাকাউন্ট অ্যাক্টিভ থাকবে)
+let currentUser = null;
+const storedUser = localStorage.getItem("currentUser");
+
+if (storedUser === null) {
+    // প্রথমবার ভিজিট করলে ডিফল্টভাবে লগইন অবস্থায় রাখবে
     currentUser = defaultAdminUser;
     localStorage.setItem("currentUser", JSON.stringify(defaultAdminUser));
+} else if (storedUser === "LOGGED_OUT") {
+    // ম্যানুয়ালি লগআউট করা থাকলে লগআউট থাকবে
+    currentUser = null;
+} else {
+    try {
+        currentUser = JSON.parse(storedUser);
+    } catch (e) {
+        currentUser = defaultAdminUser;
+    }
 }
 
 let defaultGuestProfile = {
@@ -90,10 +102,11 @@ const serviceCatalog = [
 document.addEventListener("DOMContentLoaded", () => {
     initClock();
     
-    // লগইন স্টেট চেক করে পপআপ হাইড বা শো করা
+    // পেজ লোড বা রিফ্রেশ হলে সরাসরি ড্যাশবোর্ডে থাকা নিশ্চিত করা
     if (currentUser) {
         updateUserUI();
-        closeLoginModal(); // ইউজার লগইন থাকলে পপআপ মোডাল বন্ধ রাখবে
+        closeLoginModal();
+        switchTab("dashboard"); // ড্যাশবোর্ড ট্যাব সরাসরি ওপেন রাখবে
     } else {
         openLoginModal();
     }
@@ -187,7 +200,7 @@ function closeLoginModal() {
     const modal = document.getElementById("loginModal");
     if (modal) {
         modal.classList.remove("active");
-        modal.style.display = "none"; // নিশ্চিতভাবে পপআপ হাইড করা
+        modal.style.display = "none";
     }
 }
 
@@ -228,6 +241,7 @@ function handleLoginSubmit(event) {
     
     updateUserUI();
     closeLoginModal();
+    switchTab("dashboard");
 }
 
 function handleGuestLogin() {
@@ -253,6 +267,7 @@ function handleGuestLogin() {
 
     updateUserUI();
     closeLoginModal();
+    switchTab("dashboard");
 }
 
 function updateUserUI() {
@@ -273,11 +288,12 @@ function updateUserUI() {
     if (tAuthText) tAuthText.innerText = "Logout";
 }
 
+// শুধুমাত্র Logout বাটনে চাপ দিলে নিশ্চিতকরণের মাধ্যমে লগআউট হবে
 function handleAuthButtonClick() {
     if (currentUser) {
         if (confirm("Are you sure you want to logout?")) {
             currentUser = null;
-            localStorage.removeItem("currentUser");
+            localStorage.setItem("currentUser", "LOGGED_OUT"); // চিহ্নিত করে রাখা হলো যে ইউজার নিজ থেকে লগআউট করেছে
 
             const sName = document.getElementById("sidebarUserName");
             const sRole = document.getElementById("sidebarUserRole");
