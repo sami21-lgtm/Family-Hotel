@@ -1,6 +1,4 @@
-/* ==================================================================
-   1. GLOBAL STATE & LOCALSTORAGE PERSISTENCE
-   ================================================================== */
+
 const defaultAdminUser = {
     name: "MD. EMTIAZ HOSSAIN SAMI",
     role: "Admin",
@@ -8,7 +6,7 @@ const defaultAdminUser = {
     email: "admin@luxuryresort.com"
 };
 
-// LocalStorage Check (ডিফল্টভাবে অ্যাডমিন অ্যাকাউন্ট অ্যাক্টিভ থাকবে)
+
 let currentUser = null;
 const storedUser = localStorage.getItem("currentUser");
 
@@ -113,7 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (currentUser) {
         updateUserUI();
         closeLoginModal();
-        switchTab("dashboard");
     } else {
         openLoginModal();
     }
@@ -251,7 +248,7 @@ function handleLoginSubmit(event) {
     switchTab("dashboard");
 }
 
-// 🟢 গেস্ট লগইনের জন্য আপডেট করা ফাংশন
+// 🟢 গেস্ট প্রবেশের জন্য আপডেট করা ফাংশন (কোনো নেভিগেশন করবে না)
 function handleGuestLogin() {
     const fName = document.getElementById("fName")?.value.trim() || "Guest";
     const lName = document.getElementById("lName")?.value.trim() || "User";
@@ -274,11 +271,8 @@ function handleGuestLogin() {
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
 
     updateUserUI();
-    closeLoginModal();
-    
-    // ❌ Dashboard-এ নিয়ে যাবে না।
-    // 🟢 গেস্টকে সরাসরি 'Rooms' (রুম ক্যাটালগ) পেজে নিয়ে যাবে।
-    switchTab("rooms");
+    closeLoginModal(); 
+    // ❌ কোনো switchTab রাখা হয়নি, ইউজার সরাসরি বর্তমান পেজেই থাকবেন
 }
 
 function updateUserUI() {
