@@ -18,18 +18,17 @@
     --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.5);
     --font-main: 'Poppins', system-ui, -apple-system, sans-serif;
     --font-serif: 'Playfair Display', Georgia, serif;
-    --font-emoji: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: var(--font-main), var(--font-emoji);
+    font-family: var(--font-main);
     -webkit-tap-highlight-color: transparent;
 }
 body {
     background: linear-gradient(rgba(9, 13, 22, 0.82), rgba(9, 13, 22, 0.88)), 
-                url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat fixed;
+                url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600') center/cover no-repeat fixed;
     color: var(--text-light);
     min-height: 100vh;
     overflow-x: hidden;
@@ -46,6 +45,7 @@ body {
     background: var(--border-bright);
     border-radius: 4px;
 }
+
 /* ==================================================================
    2. APP CONTAINER & LAYOUT
    ================================================================== */
@@ -54,6 +54,7 @@ body {
     min-height: 100vh;
     position: relative;
 }
+
 /* ==================================================================
    3. SIDEBAR NAVIGATION
    ================================================================== */
@@ -67,9 +68,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
+    top: 0; bottom: 0; left: 0;
     z-index: 1000;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -128,25 +127,17 @@ body {
     border-left: 3px solid var(--primary-gold);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-/* ==================================================================
-   PERFECT RESPONSIVE CONTACT CARD (NO TEXT CUT OFF)
-   ================================================================== */
-.sidebar-contact-card a {
-    text-decoration: none !important;
-    color: inherit;
-}
+
 .sidebar-contact-card {
     margin: 12px 10px;
     padding: 12px 10px;
     background: rgba(15, 23, 42, 0.65);
     backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(212, 175, 55, 0.25);
     border-radius: 12px;
     display: flex;
     flex-direction: column;
     gap: 8px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 .contact-title {
     font-size: 0.62rem;
@@ -154,8 +145,6 @@ body {
     letter-spacing: 1.5px;
     color: var(--primary-gold);
     font-weight: 700;
-    margin-bottom: 2px;
-    display: block;
 }
 .modern-contact-btn {
     display: flex;
@@ -165,14 +154,13 @@ body {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.07);
     border-radius: 8px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 100%;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
 }
 .modern-contact-btn:hover {
     background: rgba(212, 175, 55, 0.12);
     border-color: rgba(212, 175, 55, 0.5);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
 }
 .contact-icon {
     width: 30px;
@@ -184,38 +172,22 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 0.8rem;
-    flex-shrink: 0;
-    transition: all 0.3s ease;
-}
-.modern-contact-btn:hover .contact-icon {
-    background: var(--primary-gold);
-    color: #000;
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
 }
 .contact-details {
     display: flex;
     flex-direction: column;
-    min-width: 0;
-    flex: 1;
 }
 .contact-details small {
     font-size: 0.60rem;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    line-height: 1;
 }
 .contact-details span {
     font-size: 0.74rem;
     color: #f8fafc;
     font-weight: 500;
-    margin-top: 3px;
-    white-space: nowrap;
 }
-.contact-details span.email-text {
-    font-size: 0.67rem;
-    letter-spacing: -0.2px;
-}
+
 .sidebar-footer {
     padding: 18px 20px;
     border-top: 1px solid var(--border-color);
@@ -227,11 +199,12 @@ body {
     gap: 12px;
 }
 .admin-avatar {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 2px solid var(--primary-gold);
     object-fit: cover;
+    box-shadow: 0 0 10px var(--gold-glow);
 }
 .admin-name {
     display: block;
@@ -243,9 +216,11 @@ body {
     max-width: 170px;
 }
 .admin-role {
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     color: var(--primary-gold);
+    font-weight: 600;
 }
+
 .sidebar-overlay {
     position: fixed;
     inset: 0;
@@ -260,8 +235,9 @@ body {
     opacity: 1;
     visibility: visible;
 }
+
 /* ==================================================================
-   4. MAIN CONTENT AREA & TOPBAR
+   4. MAIN CONTENT & TOPBAR
    ================================================================== */
 .main-content {
     margin-left: 280px;
@@ -292,14 +268,12 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    backdrop-filter: blur(10px);
 }
 .pulse {
     width: 8px;
     height: 8px;
     background: #10B981;
     border-radius: 50%;
-    box-shadow: 0 0 0 rgba(16, 185, 129, 0.4);
     animation: pulseAnimation 1.8s infinite;
 }
 @keyframes pulseAnimation {
@@ -317,7 +291,6 @@ body {
     color: var(--text-light);
 }
 
-/* TOPBAR LOGIN BUTTON STYLES */
 .btn-topbar-login {
     display: flex;
     align-items: center;
@@ -346,7 +319,7 @@ body {
 }
 
 /* ==================================================================
-   5. TAB PAGES & HERO BANNER
+   5. TAB PAGES & DASHBOARD
    ================================================================== */
 .tab-page {
     display: none;
@@ -359,31 +332,23 @@ body {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
 }
-.page-header {
-    margin-bottom: 25px;
-}
 .page-header h1 {
     font-family: var(--font-serif);
     font-size: 1.8rem;
     color: #fff;
     margin-bottom: 4px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
 .page-header p {
     color: var(--text-muted);
     font-size: 0.88rem;
 }
 .resort-hero-banner {
-    position: relative;
     border-radius: var(--radius-md);
     padding: 35px 30px;
     margin-bottom: 30px;
-    overflow: hidden;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.82), rgba(10, 15, 29, 0.90)), 
-                url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(10, 15, 29, 0.92)), 
+                url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=1200') center/cover;
     border: 1px solid var(--border-bright);
-    box-shadow: var(--shadow-soft);
-    backdrop-filter: blur(10px);
 }
 .hero-subtitle {
     color: var(--primary-gold);
@@ -402,9 +367,7 @@ body {
     font-size: 0.88rem;
     max-width: 650px;
 }
-/* ==================================================================
-   6. STATS GRID CARDS
-   ================================================================== */
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -413,8 +376,6 @@ body {
 }
 .stat-card {
     background: var(--bg-card);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
     border: 1px solid var(--border-color);
     padding: 20px;
     border-radius: var(--radius-md);
@@ -441,22 +402,12 @@ body {
 .stat-icon.green { background: rgba(16, 185, 129, 0.2); color: #10B981; }
 .stat-icon.blue { background: rgba(59, 130, 246, 0.2); color: #3B82F6; }
 .stat-icon.purple { background: rgba(168, 85, 247, 0.2); color: #A855F7; }
-.stat-card h3 {
-    font-size: 1.4rem;
-    color: #fff;
-    line-height: 1.2;
-}
-.stat-card p {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-}
+
 /* ==================================================================
-   7. DATA TABLES
+   6. TABLES & CARDS
    ================================================================== */
 .recent-bookings-section {
     background: var(--bg-card);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     padding: 22px;
@@ -470,7 +421,6 @@ body {
 .table-wrapper {
     width: 100%;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
 }
 .data-table {
     width: 100%;
@@ -482,7 +432,6 @@ body {
     background: rgba(0, 0, 0, 0.4);
     color: var(--primary-gold);
     font-size: 0.75rem;
-    letter-spacing: 1px;
     padding: 12px 14px;
     border-bottom: 1px solid var(--border-color);
 }
@@ -492,9 +441,6 @@ body {
     font-size: 0.85rem;
     color: #e2e8f0;
 }
-.data-table tr:hover td {
-    background: rgba(212, 175, 55, 0.08);
-}
 .guest-avatar-td {
     width: 36px;
     height: 36px;
@@ -502,9 +448,7 @@ body {
     object-fit: cover;
     border: 1px solid var(--primary-gold);
 }
-/* ==================================================================
-   8. ROOMS & SERVICES CARDS
-   ================================================================== */
+
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -512,8 +456,6 @@ body {
 }
 .room-card {
     background: var(--bg-card);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     overflow: hidden;
@@ -536,18 +478,14 @@ body {
     border: none;
     border-radius: var(--radius-sm);
     cursor: pointer;
-    transition: all 0.25s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
 }
-.btn-primary-block:hover {
-    background: linear-gradient(135deg, #f1c40f, #d4af37);
-    box-shadow: 0 4px 15px var(--gold-glow);
-}
+
 /* ==================================================================
-   9. BOOKING FORM & INVOICE
+   7. BOOKING FORM
    ================================================================== */
 .booking-grid {
     display: grid;
@@ -556,8 +494,6 @@ body {
 }
 .form-card {
     background: var(--bg-card);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     padding: 24px;
@@ -575,7 +511,6 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
-    margin-bottom: 14px;
 }
 .form-group {
     display: flex;
@@ -587,8 +522,7 @@ body {
     font-size: 0.8rem;
     color: var(--text-muted);
 }
-.form-group input, 
-.custom-select {
+.form-group input, .custom-select {
     width: 100%;
     padding: 10px 14px;
     background: rgba(10, 15, 29, 0.85);
@@ -597,16 +531,10 @@ body {
     color: #fff;
     font-size: 0.88rem;
     outline: none;
-    transition: border-color 0.2s ease;
 }
-.form-group input:focus, 
-.custom-select:focus {
+.form-group input:focus, .custom-select:focus {
     border-color: var(--primary-gold);
     box-shadow: 0 0 8px var(--gold-glow);
-}
-.custom-select option {
-    background: #0f172a;
-    color: #fff;
 }
 .image-upload-wrapper {
     display: flex;
@@ -631,7 +559,6 @@ body {
     flex-grow: 1;
 }
 .btn-file-upload {
-    display: inline-block;
     padding: 6px 12px;
     background: rgba(212, 175, 55, 0.2);
     color: var(--primary-gold);
@@ -642,9 +569,7 @@ body {
     cursor: pointer;
     text-align: center;
 }
-.btn-file-upload input[type="file"] {
-    display: none;
-}
+.btn-file-upload input[type="file"] { display: none; }
 .btn-secondary-sm {
     padding: 6px 10px;
     background: #334155;
@@ -668,29 +593,21 @@ body {
     padding: 10px 14px;
     border-radius: var(--radius-sm);
     cursor: pointer;
-    transition: all 0.2s ease;
-}
-.checkbox-card:hover {
-    border-color: var(--primary-gold);
 }
 .checkbox-card input[type="checkbox"] {
     accent-color: var(--primary-gold);
     width: 16px;
     height: 16px;
 }
-.card-info {
-    display: flex;
-    flex-direction: column;
-}
 .card-info strong {
     font-size: 0.85rem;
     color: #fff;
+    display: block;
 }
 .card-info span {
     font-size: 0.75rem;
     color: var(--text-muted);
 }
-/* Invoice Box */
 .invoice-box {
     background: rgba(0, 0, 0, 0.45);
     border: 1px solid var(--border-bright);
@@ -714,13 +631,7 @@ body {
     border-top: 1px solid var(--border-color);
     margin: 10px 0;
 }
-.total-row {
-    font-size: 0.95rem;
-    color: #fff;
-}
-.total-row strong {
-    color: #10B981;
-}
+.total-row strong { color: #10B981; }
 .btn-group {
     display: flex;
     gap: 12px;
@@ -752,13 +663,14 @@ body {
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 
 /* ==================================================================
-   10. MODAL POPUP & LOGIN MODAL
+   8. MODAL POPUP & LOGIN MODAL
    ================================================================== */
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
+    background: rgba(5, 8, 16, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     z-index: 9999;
     display: flex;
     align-items: center;
@@ -800,7 +712,6 @@ body {
     justify-content: center;
 }
 
-/* LOGIN MODAL SPECIFIC STYLES */
 .login-modal-box {
     max-width: 420px;
     padding: 30px 25px;
@@ -813,8 +724,8 @@ body {
 }
 .login-avatar-wrapper {
     margin: 0 auto 15px auto;
-    width: 80px;
-    height: 80px;
+    width: 85px;
+    height: 85px;
     border-radius: 50%;
     border: 3px solid var(--primary-gold);
     box-shadow: 0 0 20px var(--gold-glow);
@@ -855,11 +766,8 @@ body {
     box-shadow: 0 0 15px var(--gold-glow);
 }
 
-/* ==================================================================
-   11. MOBILE TOP BAR & BOTTOM NAVIGATION
-   ================================================================== */
-.mobile-top-bar { display: none; }
-.mobile-bottom-nav { display: none; }
+/* Mobile Nav Styles */
+.mobile-top-bar, .mobile-bottom-nav { display: none; }
 footer {
     text-align: center;
     margin-top: 40px;
@@ -868,136 +776,38 @@ footer {
     font-size: 0.78rem;
     color: var(--text-muted);
 }
-footer strong {
-    color: var(--primary-gold);
-}
-/* ==================================================================
-   12. RESPONSIVE MEDIA QUERIES (MOBILE FIRST)
-   ================================================================== */
+footer strong { color: var(--primary-gold); }
+
 @media (max-width: 992px) {
-    .booking-grid {
-        grid-template-columns: 1fr;
-    }
+    .booking-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
-    .sidebar.active {
-        transform: translateX(0);
-    }
-    .main-content {
-        margin-left: 0;
-        width: 100%;
-        padding: 70px 15px 90px 15px;
-    }
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.active { transform: translateX(0); }
+    .main-content { margin-left: 0; width: 100%; padding: 70px 15px 90px 15px; }
     .mobile-top-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: fixed;
-        top: 0; left: 0; right: 0;
-        height: 56px;
-        background: rgba(10, 15, 29, 0.95);
-        backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--border-color);
-        padding: 0 16px;
-        z-index: 900;
+        display: flex; justify-content: space-between; align-items: center;
+        position: fixed; top: 0; left: 0; right: 0; height: 56px;
+        background: rgba(10, 15, 29, 0.95); backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border-color); padding: 0 16px; z-index: 900;
     }
     .mobile-brand {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: var(--primary-gold);
-        font-family: var(--font-serif);
-        font-weight: 700;
-        font-size: 1rem;
+        display: flex; align-items: center; gap: 8px;
+        color: var(--primary-gold); font-family: var(--font-serif); font-weight: 700;
     }
-    .menu-toggle {
-        background: none;
-        border: none;
-        color: #fff;
-        font-size: 1.3rem;
-        cursor: pointer;
-    }
+    .menu-toggle { background: none; border: none; color: #fff; font-size: 1.3rem; cursor: pointer; }
     .mobile-bottom-nav {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        position: fixed;
-        bottom: 0; left: 0; right: 0;
-        height: 60px;
-        background: rgba(10, 15, 29, 0.95);
-        backdrop-filter: blur(12px);
-        border-top: 1px solid var(--border-color);
-        z-index: 900;
-        padding-bottom: env(safe-area-inset-bottom);
+        display: flex; justify-around: space-around; align-items: center;
+        position: fixed; bottom: 0; left: 0; right: 0; height: 60px;
+        background: rgba(10, 15, 29, 0.95); backdrop-filter: blur(12px);
+        border-top: 1px solid var(--border-color); z-index: 900;
     }
     .m-nav-item {
-        background: none;
-        border: none;
-        color: var(--text-muted);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 3px;
-        font-size: 0.68rem;
-        cursor: pointer;
-        flex: 1;
+        background: none; border: none; color: var(--text-muted);
+        display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 0.68rem; cursor: pointer; flex: 1;
     }
-    .m-nav-item i { font-size: 1.15rem; }
     .m-nav-item.active { color: var(--primary-gold); }
     .topbar { justify-content: center; flex-wrap: wrap; gap: 10px; }
     .form-row { grid-template-columns: 1fr; }
-    .resort-hero-banner { padding: 22px 18px; }
-    .hero-title { font-size: 1.35rem; }
-    .stats-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-    }
-    .stat-card { padding: 14px; gap: 10px; }
-    .stat-icon { width: 38px; height: 38px; font-size: 1rem; }
-    .stat-card h3 { font-size: 1.15rem; }
-    .image-upload-wrapper {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
-@media (max-width: 480px) {
-    .stats-grid { grid-template-columns: 1fr; }
-}
-/* ==================================================================
-   SIDEBAR CONTACT INFO STYLING
-   ================================================================== */
-.sidebar-contact {
-    padding: 14px 20px;
-    border-top: 1px solid var(--border-color);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    background: rgba(0, 0, 0, 0.15);
-}
-.contact-item {
-    color: var(--text-muted);
-    font-size: 0.8rem;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: all 0.25s ease;
-    word-break: break-all;
-}
-.contact-item i {
-    color: var(--primary-gold);
-    font-size: 0.85rem;
-    width: 16px;
-    text-align: center;
-}
-.contact-item:hover {
-    color: #fff;
-    transform: translateX(3px);
-}
-.contact-item:hover i {
-    color: var(--primary-gold-hover);
-    filter: drop-shadow(0 0 5px var(--gold-glow));
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
 }
