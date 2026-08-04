@@ -46,6 +46,13 @@ body {
     border-radius: 4px;
 }
 
+/* Unauthenticated blur lock */
+body.locked .app-container {
+    filter: blur(10px);
+    pointer-events: none;
+    user-select: none;
+}
+
 /* ==================================================================
    2. APP CONTAINER & LAYOUT
    ================================================================== */
@@ -53,6 +60,7 @@ body {
     display: flex;
     min-height: 100vh;
     position: relative;
+    transition: filter 0.3s ease;
 }
 
 /* ==================================================================
@@ -296,9 +304,9 @@ body {
     align-items: center;
     gap: 10px;
     padding: 6px 16px;
-    background: rgba(212, 175, 55, 0.15);
-    border: 1px solid var(--border-bright);
-    color: var(--primary-gold);
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: #ef4444;
     border-radius: 20px;
     font-size: 0.85rem;
     font-weight: 600;
@@ -306,9 +314,9 @@ body {
     transition: all 0.3s ease;
 }
 .btn-topbar-login:hover {
-    background: var(--primary-gold);
-    color: #000;
-    box-shadow: 0 0 15px var(--gold-glow);
+    background: #ef4444;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
 }
 .topbar-avatar {
     width: 28px;
@@ -660,17 +668,18 @@ body {
     cursor: pointer;
 }
 .mt-20 { margin-top: 20px; }
+.mt-10 { margin-top: 10px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 
 /* ==================================================================
-   8. MODAL POPUP & LOGIN MODAL
+   8. MODAL POPUP & STRICT LOGIN OVERLAY
    ================================================================== */
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(5, 8, 16, 0.92);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(5, 8, 16, 0.94);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     z-index: 9999;
     display: flex;
     align-items: center;
@@ -693,7 +702,7 @@ body {
     position: relative;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
 }
 .modal-close-btn {
     position: absolute;
@@ -712,15 +721,24 @@ body {
     justify-content: center;
 }
 
+/* Strict Non-Dismissible Login Box */
 .login-modal-box {
-    max-width: 420px;
-    padding: 30px 25px;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(20px);
+    max-width: 440px;
+    padding: 0;
+    background: rgba(15, 23, 42, 0.98);
+    backdrop-filter: blur(25px);
+    border: 1px solid var(--primary-gold);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
+    overflow: hidden;
 }
 .login-modal-header {
+    position: relative;
     text-align: center;
-    margin-bottom: 20px;
+    padding: 35px 20px 20px 20px;
+    background: linear-gradient(180deg, rgba(9, 13, 22, 0.4) 0%, rgba(15, 23, 42, 0.95) 100%), 
+                url('premium_photo-1661964071015-d97428970584.jpg'),
+                url('https://images.unsplash.com/premium_photo-1661964071015-d97428970584?w=800') center/cover no-repeat;
+    border-bottom: 1px solid var(--border-color);
 }
 .login-avatar-wrapper {
     margin: 0 auto 15px auto;
@@ -730,6 +748,7 @@ body {
     border: 3px solid var(--primary-gold);
     box-shadow: 0 0 20px var(--gold-glow);
     overflow: hidden;
+    background: var(--bg-dark);
 }
 .login-avatar-wrapper img {
     width: 100%;
@@ -741,15 +760,17 @@ body {
     font-size: 1.4rem;
     color: #fff;
     margin-bottom: 5px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8);
 }
 .login-modal-header p {
     font-size: 0.8rem;
-    color: var(--text-muted);
+    color: #cbd5e1;
 }
 .login-form-body {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    padding: 25px;
 }
 .btn-block-gold {
     width: 100%;
@@ -786,7 +807,7 @@ footer strong { color: var(--primary-gold); }
     .sidebar.active { transform: translateX(0); }
     .main-content { margin-left: 0; width: 100%; padding: 70px 15px 90px 15px; }
     .mobile-top-bar {
-        display: flex; justify-content: space-between; align-items: center;
+        display: flex; justify-between: space-between; align-items: center;
         position: fixed; top: 0; left: 0; right: 0; height: 56px;
         background: rgba(10, 15, 29, 0.95); backdrop-filter: blur(12px);
         border-bottom: 1px solid var(--border-color); padding: 0 16px; z-index: 900;
