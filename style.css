@@ -20,7 +20,6 @@
     --font-serif: 'Playfair Display', Georgia, serif;
     --font-emoji: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
-
 * {
     margin: 0;
     padding: 0;
@@ -28,7 +27,6 @@
     font-family: var(--font-main), var(--font-emoji);
     -webkit-tap-highlight-color: transparent;
 }
-
 body {
     background: linear-gradient(rgba(9, 13, 22, 0.82), rgba(9, 13, 22, 0.88)), 
                 url('premium_photo-1661964071015-d97428970584.jpg') center/cover no-repeat fixed;
@@ -37,7 +35,6 @@ body {
     overflow-x: hidden;
     line-height: 1.6;
 }
-
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -49,7 +46,6 @@ body {
     background: var(--border-bright);
     border-radius: 4px;
 }
-
 /* ==================================================================
    2. APP CONTAINER & LAYOUT
    ================================================================== */
@@ -58,7 +54,6 @@ body {
     min-height: 100vh;
     position: relative;
 }
-
 /* ==================================================================
    3. SIDEBAR NAVIGATION
    ================================================================== */
@@ -78,7 +73,6 @@ body {
     z-index: 1000;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 .brand-desktop {
     padding: 25px 20px;
     display: flex;
@@ -86,13 +80,11 @@ body {
     gap: 12px;
     border-bottom: 1px solid var(--border-color);
 }
-
 .brand-icon {
     font-size: 2rem;
     color: var(--primary-gold);
     filter: drop-shadow(0 0 10px var(--gold-glow));
 }
-
 .brand-desktop h2 {
     font-family: var(--font-serif);
     font-size: 1.25rem;
@@ -100,14 +92,12 @@ body {
     color: #fff;
     line-height: 1.2;
 }
-
 .brand-desktop span {
     font-size: 0.65rem;
     letter-spacing: 2px;
     color: var(--primary-gold);
     display: block;
 }
-
 .nav-menu {
     padding: 20px 12px;
     display: flex;
@@ -115,7 +105,6 @@ body {
     gap: 8px;
     flex-grow: 1;
 }
-
 .nav-item {
     display: flex;
     align-items: center;
@@ -128,20 +117,17 @@ body {
     border-radius: var(--radius-sm);
     transition: all 0.25s ease;
 }
-
 .nav-item i {
     font-size: 1.1rem;
     width: 20px;
     text-align: center;
 }
-
 .nav-item:hover, .nav-item.active {
     background: rgba(212, 175, 55, 0.18);
     color: var(--primary-gold);
     border-left: 3px solid var(--primary-gold);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-
 /* ==================================================================
    PERFECT RESPONSIVE CONTACT CARD (NO TEXT CUT OFF)
    ================================================================== */
@@ -149,7 +135,6 @@ body {
     text-decoration: none !important;
     color: inherit;
 }
-
 .sidebar-contact-card {
     margin: 12px 10px;
     padding: 12px 10px;
@@ -163,7 +148,6 @@ body {
     gap: 8px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
-
 .contact-title {
     font-size: 0.62rem;
     text-transform: uppercase;
@@ -173,7 +157,6 @@ body {
     margin-bottom: 2px;
     display: block;
 }
-
 .modern-contact-btn {
     display: flex;
     align-items: center;
@@ -185,14 +168,12 @@ body {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     width: 100%;
 }
-
 .modern-contact-btn:hover {
     background: rgba(212, 175, 55, 0.12);
     border-color: rgba(212, 175, 55, 0.5);
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
 }
-
 .contact-icon {
     width: 30px;
     height: 30px;
@@ -206,20 +187,17 @@ body {
     flex-shrink: 0;
     transition: all 0.3s ease;
 }
-
 .modern-contact-btn:hover .contact-icon {
     background: var(--primary-gold);
     color: #000;
     box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
 }
-
 .contact-details {
     display: flex;
     flex-direction: column;
     min-width: 0;
     flex: 1;
 }
-
 .contact-details small {
     font-size: 0.60rem;
     color: var(--text-muted);
@@ -227,7 +205,6 @@ body {
     letter-spacing: 0.5px;
     line-height: 1;
 }
-
 .contact-details span {
     font-size: 0.74rem;
     color: #f8fafc;
@@ -235,24 +212,20 @@ body {
     margin-top: 3px;
     white-space: nowrap;
 }
-
 .contact-details span.email-text {
     font-size: 0.67rem;
     letter-spacing: -0.2px;
 }
-
 .sidebar-footer {
     padding: 18px 20px;
     border-top: 1px solid var(--border-color);
     background: rgba(0, 0, 0, 0.3);
 }
-
 .user-info {
     display: flex;
     align-items: center;
     gap: 12px;
 }
-
 .admin-avatar {
     width: 42px;
     height: 42px;
@@ -260,7 +233,6 @@ body {
     border: 2px solid var(--primary-gold);
     object-fit: cover;
 }
-
 .admin-name {
     display: block;
     font-size: 0.85rem;
@@ -270,12 +242,10 @@ body {
     text-overflow: ellipsis;
     max-width: 170px;
 }
-
 .admin-role {
     font-size: 0.72rem;
     color: var(--primary-gold);
 }
-
 .sidebar-overlay {
     position: fixed;
     inset: 0;
@@ -286,12 +256,10 @@ body {
     visibility: hidden;
     transition: all 0.3s ease;
 }
-
 .sidebar-overlay.active {
     opacity: 1;
     visibility: visible;
 }
-
 /* ==================================================================
    4. MAIN CONTENT AREA & TOPBAR
    ================================================================== */
@@ -302,20 +270,17 @@ body {
     width: calc(100% - 280px);
     transition: all 0.3s ease;
 }
-
 .topbar {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     margin-bottom: 25px;
 }
-
 .topbar-actions {
     display: flex;
     align-items: center;
     gap: 15px;
 }
-
 .badge-status {
     background: rgba(16, 185, 129, 0.18);
     color: #10B981;
@@ -329,7 +294,6 @@ body {
     gap: 8px;
     backdrop-filter: blur(10px);
 }
-
 .pulse {
     width: 8px;
     height: 8px;
@@ -338,13 +302,11 @@ body {
     box-shadow: 0 0 0 rgba(16, 185, 129, 0.4);
     animation: pulseAnimation 1.8s infinite;
 }
-
 @keyframes pulseAnimation {
     0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
     70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
     100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
 }
-
 .date-display {
     background: var(--bg-card);
     backdrop-filter: blur(12px);
@@ -355,6 +317,34 @@ body {
     color: var(--text-light);
 }
 
+/* TOPBAR LOGIN BUTTON STYLES */
+.btn-topbar-login {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 16px;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid var(--border-bright);
+    color: var(--primary-gold);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-topbar-login:hover {
+    background: var(--primary-gold);
+    color: #000;
+    box-shadow: 0 0 15px var(--gold-glow);
+}
+.topbar-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--primary-gold);
+}
+
 /* ==================================================================
    5. TAB PAGES & HERO BANNER
    ================================================================== */
@@ -362,20 +352,16 @@ body {
     display: none;
     animation: fadeIn 0.35s ease-in-out;
 }
-
 .tab-page.active {
     display: block;
 }
-
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
 }
-
 .page-header {
     margin-bottom: 25px;
 }
-
 .page-header h1 {
     font-family: var(--font-serif);
     font-size: 1.8rem;
@@ -383,12 +369,10 @@ body {
     margin-bottom: 4px;
     text-shadow: 0 2px 10px rgba(0,0,0,0.5);
 }
-
 .page-header p {
     color: var(--text-muted);
     font-size: 0.88rem;
 }
-
 .resort-hero-banner {
     position: relative;
     border-radius: var(--radius-md);
@@ -401,27 +385,23 @@ body {
     box-shadow: var(--shadow-soft);
     backdrop-filter: blur(10px);
 }
-
 .hero-subtitle {
     color: var(--primary-gold);
     font-size: 0.75rem;
     letter-spacing: 2px;
     font-weight: 700;
 }
-
 .hero-title {
     font-family: var(--font-serif);
     font-size: 1.8rem;
     color: #fff;
     margin: 6px 0 10px 0;
 }
-
 .hero-desc {
     color: #cbd5e1;
     font-size: 0.88rem;
     max-width: 650px;
 }
-
 /* ==================================================================
    6. STATS GRID CARDS
    ================================================================== */
@@ -431,7 +411,6 @@ body {
     gap: 18px;
     margin-bottom: 30px;
 }
-
 .stat-card {
     background: var(--bg-card);
     backdrop-filter: blur(14px);
@@ -444,13 +423,11 @@ body {
     gap: 16px;
     transition: all 0.3s ease;
 }
-
 .stat-card:hover {
     transform: translateY(-4px);
     border-color: var(--border-bright);
     box-shadow: 0 10px 25px var(--gold-glow);
 }
-
 .stat-icon {
     width: 48px;
     height: 48px;
@@ -460,23 +437,19 @@ body {
     justify-content: center;
     font-size: 1.3rem;
 }
-
 .stat-icon.gold { background: rgba(212, 175, 55, 0.2); color: var(--primary-gold); }
 .stat-icon.green { background: rgba(16, 185, 129, 0.2); color: #10B981; }
 .stat-icon.blue { background: rgba(59, 130, 246, 0.2); color: #3B82F6; }
 .stat-icon.purple { background: rgba(168, 85, 247, 0.2); color: #A855F7; }
-
 .stat-card h3 {
     font-size: 1.4rem;
     color: #fff;
     line-height: 1.2;
 }
-
 .stat-card p {
     font-size: 0.8rem;
     color: var(--text-muted);
 }
-
 /* ==================================================================
    7. DATA TABLES
    ================================================================== */
@@ -488,27 +461,23 @@ body {
     border-radius: var(--radius-md);
     padding: 22px;
 }
-
 .section-title {
     font-family: var(--font-serif);
     font-size: 1.25rem;
     color: #fff;
     margin-bottom: 16px;
 }
-
 .table-wrapper {
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
-
 .data-table {
     width: 100%;
     border-collapse: collapse;
     min-width: 650px;
     text-align: left;
 }
-
 .data-table th {
     background: rgba(0, 0, 0, 0.4);
     color: var(--primary-gold);
@@ -517,18 +486,15 @@ body {
     padding: 12px 14px;
     border-bottom: 1px solid var(--border-color);
 }
-
 .data-table td {
     padding: 12px 14px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     font-size: 0.85rem;
     color: #e2e8f0;
 }
-
 .data-table tr:hover td {
     background: rgba(212, 175, 55, 0.08);
 }
-
 .guest-avatar-td {
     width: 36px;
     height: 36px;
@@ -536,7 +502,6 @@ body {
     object-fit: cover;
     border: 1px solid var(--primary-gold);
 }
-
 /* ==================================================================
    8. ROOMS & SERVICES CARDS
    ================================================================== */
@@ -545,7 +510,6 @@ body {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 22px;
 }
-
 .room-card {
     background: var(--bg-card);
     backdrop-filter: blur(14px);
@@ -557,13 +521,11 @@ body {
     flex-direction: column;
     transition: all 0.3s ease;
 }
-
 .room-card:hover {
     transform: translateY(-5px);
     border-color: var(--primary-gold);
     box-shadow: 0 12px 30px var(--gold-glow);
 }
-
 .btn-primary-block {
     width: 100%;
     padding: 10px;
@@ -580,12 +542,10 @@ body {
     justify-content: center;
     gap: 8px;
 }
-
 .btn-primary-block:hover {
     background: linear-gradient(135deg, #f1c40f, #d4af37);
     box-shadow: 0 4px 15px var(--gold-glow);
 }
-
 /* ==================================================================
    9. BOOKING FORM & INVOICE
    ================================================================== */
@@ -594,7 +554,6 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 22px;
 }
-
 .form-card {
     background: var(--bg-card);
     backdrop-filter: blur(16px);
@@ -603,7 +562,6 @@ body {
     border-radius: var(--radius-md);
     padding: 24px;
 }
-
 .card-title {
     font-size: 1.05rem;
     color: var(--primary-gold);
@@ -613,26 +571,22 @@ body {
     gap: 10px;
     font-family: var(--font-serif);
 }
-
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
     margin-bottom: 14px;
 }
-
 .form-group {
     display: flex;
     flex-direction: column;
     gap: 6px;
     margin-bottom: 14px;
 }
-
 .form-group label {
     font-size: 0.8rem;
     color: var(--text-muted);
 }
-
 .form-group input, 
 .custom-select {
     width: 100%;
@@ -645,18 +599,15 @@ body {
     outline: none;
     transition: border-color 0.2s ease;
 }
-
 .form-group input:focus, 
 .custom-select:focus {
     border-color: var(--primary-gold);
     box-shadow: 0 0 8px var(--gold-glow);
 }
-
 .custom-select option {
     background: #0f172a;
     color: #fff;
 }
-
 .image-upload-wrapper {
     display: flex;
     align-items: center;
@@ -666,7 +617,6 @@ body {
     border-radius: var(--radius-sm);
     border: 1px dashed var(--border-bright);
 }
-
 .img-preview-box img {
     width: 65px;
     height: 65px;
@@ -674,14 +624,12 @@ body {
     object-fit: cover;
     border: 2px solid var(--primary-gold);
 }
-
 .upload-controls {
     display: flex;
     flex-direction: column;
     gap: 8px;
     flex-grow: 1;
 }
-
 .btn-file-upload {
     display: inline-block;
     padding: 6px 12px;
@@ -694,11 +642,9 @@ body {
     cursor: pointer;
     text-align: center;
 }
-
 .btn-file-upload input[type="file"] {
     display: none;
 }
-
 .btn-secondary-sm {
     padding: 6px 10px;
     background: #334155;
@@ -708,13 +654,11 @@ body {
     font-size: 0.75rem;
     cursor: pointer;
 }
-
 .checkbox-group {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-
 .checkbox-card {
     display: flex;
     align-items: center;
@@ -726,32 +670,26 @@ body {
     cursor: pointer;
     transition: all 0.2s ease;
 }
-
 .checkbox-card:hover {
     border-color: var(--primary-gold);
 }
-
 .checkbox-card input[type="checkbox"] {
     accent-color: var(--primary-gold);
     width: 16px;
     height: 16px;
 }
-
 .card-info {
     display: flex;
     flex-direction: column;
 }
-
 .card-info strong {
     font-size: 0.85rem;
     color: #fff;
 }
-
 .card-info span {
     font-size: 0.75rem;
     color: var(--text-muted);
 }
-
 /* Invoice Box */
 .invoice-box {
     background: rgba(0, 0, 0, 0.45);
@@ -759,13 +697,11 @@ body {
     padding: 16px;
     border-radius: var(--radius-sm);
 }
-
 .invoice-box h4 {
     color: var(--primary-gold);
     font-size: 0.9rem;
     margin-bottom: 10px;
 }
-
 .invoice-row {
     display: flex;
     justify-content: space-between;
@@ -773,28 +709,23 @@ body {
     margin-bottom: 6px;
     color: #cbd5e1;
 }
-
 .divider {
     border: 0;
     border-top: 1px solid var(--border-color);
     margin: 10px 0;
 }
-
 .total-row {
     font-size: 0.95rem;
     color: #fff;
 }
-
 .total-row strong {
     color: #10B981;
 }
-
 .btn-group {
     display: flex;
     gap: 12px;
     margin-top: 20px;
 }
-
 .btn-primary {
     flex: 2;
     padding: 12px;
@@ -806,7 +737,6 @@ body {
     border-radius: var(--radius-sm);
     cursor: pointer;
 }
-
 .btn-danger {
     flex: 1;
     padding: 12px;
@@ -818,12 +748,11 @@ body {
     border-radius: var(--radius-sm);
     cursor: pointer;
 }
-
 .mt-20 { margin-top: 20px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
 
 /* ==================================================================
-   10. MODAL POPUP
+   10. MODAL POPUP & LOGIN MODAL
    ================================================================== */
 .modal-overlay {
     position: fixed;
@@ -839,12 +768,10 @@ body {
     visibility: hidden;
     transition: all 0.3s ease;
 }
-
 .modal-overlay.active {
     opacity: 1;
     visibility: visible;
 }
-
 .modal-container {
     background: #0f172a;
     border: 1px solid var(--border-bright);
@@ -856,7 +783,6 @@ body {
     overflow-y: auto;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
 }
-
 .modal-close-btn {
     position: absolute;
     top: 15px;
@@ -874,12 +800,66 @@ body {
     justify-content: center;
 }
 
+/* LOGIN MODAL SPECIFIC STYLES */
+.login-modal-box {
+    max-width: 420px;
+    padding: 30px 25px;
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(20px);
+}
+.login-modal-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.login-avatar-wrapper {
+    margin: 0 auto 15px auto;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--primary-gold);
+    box-shadow: 0 0 20px var(--gold-glow);
+    overflow: hidden;
+}
+.login-avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.login-modal-header h2 {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    color: #fff;
+    margin-bottom: 5px;
+}
+.login-modal-header p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+.login-form-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.btn-block-gold {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #d4af37, #b89628);
+    color: #000;
+    font-weight: bold;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-block-gold:hover {
+    box-shadow: 0 0 15px var(--gold-glow);
+}
+
 /* ==================================================================
    11. MOBILE TOP BAR & BOTTOM NAVIGATION
    ================================================================== */
 .mobile-top-bar { display: none; }
 .mobile-bottom-nav { display: none; }
-
 footer {
     text-align: center;
     margin-top: 40px;
@@ -888,11 +868,9 @@ footer {
     font-size: 0.78rem;
     color: var(--text-muted);
 }
-
 footer strong {
     color: var(--primary-gold);
 }
-
 /* ==================================================================
    12. RESPONSIVE MEDIA QUERIES (MOBILE FIRST)
    ================================================================== */
@@ -901,22 +879,18 @@ footer strong {
         grid-template-columns: 1fr;
     }
 }
-
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
     }
-
     .sidebar.active {
         transform: translateX(0);
     }
-
     .main-content {
         margin-left: 0;
         width: 100%;
         padding: 70px 15px 90px 15px;
     }
-
     .mobile-top-bar {
         display: flex;
         justify-content: space-between;
@@ -930,7 +904,6 @@ footer strong {
         padding: 0 16px;
         z-index: 900;
     }
-
     .mobile-brand {
         display: flex;
         align-items: center;
@@ -940,7 +913,6 @@ footer strong {
         font-weight: 700;
         font-size: 1rem;
     }
-
     .menu-toggle {
         background: none;
         border: none;
@@ -948,7 +920,6 @@ footer strong {
         font-size: 1.3rem;
         cursor: pointer;
     }
-
     .mobile-bottom-nav {
         display: flex;
         justify-content: space-around;
@@ -962,7 +933,6 @@ footer strong {
         z-index: 900;
         padding-bottom: env(safe-area-inset-bottom);
     }
-
     .m-nav-item {
         background: none;
         border: none;
@@ -975,31 +945,24 @@ footer strong {
         cursor: pointer;
         flex: 1;
     }
-
     .m-nav-item i { font-size: 1.15rem; }
     .m-nav-item.active { color: var(--primary-gold); }
-
-    .topbar { justify-content: center; }
+    .topbar { justify-content: center; flex-wrap: wrap; gap: 10px; }
     .form-row { grid-template-columns: 1fr; }
-
     .resort-hero-banner { padding: 22px 18px; }
     .hero-title { font-size: 1.35rem; }
-
     .stats-grid {
         grid-template-columns: 1fr 1fr;
         gap: 12px;
     }
-
     .stat-card { padding: 14px; gap: 10px; }
     .stat-icon { width: 38px; height: 38px; font-size: 1rem; }
     .stat-card h3 { font-size: 1.15rem; }
-
     .image-upload-wrapper {
         flex-direction: column;
         align-items: flex-start;
     }
 }
-
 @media (max-width: 480px) {
     .stats-grid { grid-template-columns: 1fr; }
 }
@@ -1014,7 +977,6 @@ footer strong {
     gap: 10px;
     background: rgba(0, 0, 0, 0.15);
 }
-
 .contact-item {
     color: var(--text-muted);
     font-size: 0.8rem;
@@ -1025,19 +987,16 @@ footer strong {
     transition: all 0.25s ease;
     word-break: break-all;
 }
-
 .contact-item i {
     color: var(--primary-gold);
     font-size: 0.85rem;
     width: 16px;
     text-align: center;
 }
-
 .contact-item:hover {
     color: #fff;
     transform: translateX(3px);
 }
-
 .contact-item:hover i {
     color: var(--primary-gold-hover);
     filter: drop-shadow(0 0 5px var(--gold-glow));
