@@ -1,7 +1,19 @@
 /* ==================================================================
-   1. GLOBAL STATE & DUMMY DATA WITH LOCALSTORAGE SUPPORT
+   1. GLOBAL STATE & LOCALSTORAGE PERSISTENCE
    ================================================================== */
-let currentUser = null; // Admin or Guest User state
+const defaultAdminUser = {
+    name: "MD. EMTIAZ HOSSAIN SAMI",
+    role: "Admin",
+    photo: "Md. EmTIAZ hOSSAIN sAMI LOGO.png",
+    email: "admin@luxuryresort.com"
+};
+
+// Check LocalStorage for logged in user; if not found, set Default Admin
+let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+if (!currentUser) {
+    currentUser = defaultAdminUser;
+    localStorage.setItem("currentUser", JSON.stringify(defaultAdminUser));
+}
 
 let defaultGuestProfile = {
     fName: "Guest",
@@ -46,7 +58,7 @@ let defaultBookingsList = [
     }
 ];
 
-// LocalStorage থেকে ডাটা লোড করা
+// LocalStorage Data Load
 let guestProfileData = JSON.parse(localStorage.getItem("guestProfileData")) || defaultGuestProfile;
 let bookingsList = JSON.parse(localStorage.getItem("bookingsList")) || defaultBookingsList;
 
@@ -78,12 +90,8 @@ const serviceCatalog = [
 document.addEventListener("DOMContentLoaded", () => {
     initClock();
     
-    // পেজ লোড হবার সময় গ্লোবাল স্টেট চেক ও UI আপডেট
-    const savedUser = localStorage.getItem("currentUser");
-    if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        updateUserUI();
-    }
+    // UI Update on load
+    updateUserUI();
 
     renderDashboard();
     renderGuestDirectory();
@@ -147,6 +155,8 @@ function toggleSidebar(forceState) {
     const sidebar = document.getElementById("sidebar");
     const overlay = document.getElementById("sidebarOverlay");
     
+    if (!sidebar || !overlay) return;
+
     if (forceState !== undefined) {
         if (forceState) {
             sidebar.classList.add("active");
@@ -162,7 +172,7 @@ function toggleSidebar(forceState) {
 }
 
 /* ==================================================================
-   4. AUTHENTICATION & LOGIN/GUEST MODAL (WITH PERSISTENCE)
+   4. AUTHENTICATION & LOGIN/GUEST MODAL
    ================================================================== */
 function previewUploadImage(event) {
     const file = event.target.files[0];
@@ -198,7 +208,6 @@ function handleLoginSubmit(event) {
         email: email
     };
     
-    // Save to LocalStorage
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
     
     updateUserUI();
@@ -229,7 +238,6 @@ function handleGuestLogin() {
         email: email
     };
 
-    // Save to LocalStorage
     localStorage.setItem("guestProfileData", JSON.stringify(guestProfileData));
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
 
@@ -262,8 +270,6 @@ function handleAuthButtonClick() {
         // Logout action
         if (confirm("Are you sure you want to logout?")) {
             currentUser = null;
-            
-            // Clear current user from LocalStorage
             localStorage.removeItem("currentUser");
 
             const sName = document.getElementById("sidebarUserName");
@@ -409,7 +415,7 @@ function handleBookingSubmit(event) {
 
     bookingsList.unshift(newBooking);
 
-    // Save bookings list to LocalStorage
+    // Save to LocalStorage
     localStorage.setItem("bookingsList", JSON.stringify(bookingsList));
 
     // Refresh UI
