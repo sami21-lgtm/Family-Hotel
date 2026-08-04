@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="style.css">
     
     <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -23,7 +25,7 @@
                 <i class="fa-solid fa-crown" aria-hidden="true"></i>
                 <span>GRAND PALACE</span>
             </div>
-            <button class="menu-toggle" id="menuToggleBtn" onclick="toggleSidebar()" aria-label="Toggle Menu">
+            <button class="menu-toggle" id="menuToggleBtn" onclick="toggleSidebar()" aria-label="Toggle Navigation Menu">
                 <i class="fa-solid fa-bars" aria-hidden="true"></i>
             </button>
         </header>
@@ -61,7 +63,7 @@
                 
                 <a href="tel:+8801723434535" class="modern-contact-btn">
                     <div class="contact-icon">
-                        <i class="fa-solid fa-phone"></i>
+                        <i class="fa-solid fa-phone" aria-hidden="true"></i>
                     </div>
                     <div class="contact-details">
                         <small>Call Us 24/7</small>
@@ -70,7 +72,7 @@
                 </a>
                 <a href="mailto:support@luxuryresort.com" class="modern-contact-btn">
                     <div class="contact-icon">
-                        <i class="fa-solid fa-envelope"></i>
+                        <i class="fa-solid fa-envelope" aria-hidden="true"></i>
                     </div>
                     <div class="contact-details">
                         <small>Email Support</small>
@@ -120,7 +122,7 @@
                     <p>Live status of resort reservations, guests, and services.</p>
                 </div>
                 
-                <!-- Resort Hero Banner (Solid Dark Gradient) -->
+                <!-- Resort Hero Banner -->
                 <div class="resort-hero-banner custom-hero-bg">
                     <div class="hero-content">
                         <span class="hero-subtitle">WELCOME TO GRAND PALACE</span>
@@ -190,7 +192,7 @@
                 <div class="cards-grid" id="roomsCardsGrid"></div>
             </section>
 
-            <!-- TAB 3: NEW BOOKING (Guest Info সেকশন রিমুভ করা হয়েছে) -->
+            <!-- TAB 3: NEW BOOKING -->
             <section id="tab-booking" class="tab-page">
                 <div class="page-header">
                     <h1>New Guest Booking</h1>
@@ -373,13 +375,13 @@
     <div class="modal-overlay" id="detailsModal" onclick="closeModalOnOutsideClick(event)">
         <div class="modal-container">
             <button class="modal-close-btn" onclick="closeModal()" aria-label="Close modal">
-                <i class="fa-solid fa-xmark"></i>
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
             </button>
             <div id="modalContent"></div>
         </div>
     </div>
 
-    <!-- AUTH / LOGIN MODAL POPUP (Guest Info এখানে স্থানান্তরিত করা হয়েছে) -->
+    <!-- AUTH / LOGIN MODAL POPUP -->
     <div class="modal-overlay active" id="loginModal">
         <div class="modal-container login-modal-box">
             <div class="login-modal-header">
@@ -393,15 +395,15 @@
             <!-- Admin Login Form -->
             <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="login-form-body">
                 <div class="form-group">
-                    <label for="loginEmail"><i class="fa-solid fa-envelope"></i> Admin Email</label>
+                    <label for="loginEmail"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Admin Email</label>
                     <input type="email" id="loginEmail" placeholder="admin@grandpalace.com" required value="admin@grandpalace.com">
                 </div>
                 <div class="form-group">
-                    <label for="loginPassword"><i class="fa-solid fa-lock"></i> Password</label>
+                    <label for="loginPassword"><i class="fa-solid fa-lock" aria-hidden="true"></i> Password</label>
                     <input type="password" id="loginPassword" placeholder="••••••••" required value="12345678">
                 </div>
                 <button type="submit" class="btn-block-gold mt-10">
-                    <i class="fa-solid fa-right-to-bracket"></i> Authenticate & Enter
+                    <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Authenticate & Enter
                 </button>
             </form>
 
@@ -409,7 +411,7 @@
                 <span>OR</span>
             </div>
 
-            <!-- Guest Entrance Section (এখানে Guest Info & Photo যুক্ত করা হলো) -->
+            <!-- Guest Entrance Section -->
             <div class="guest-access-box">
                 <h3 class="card-title" style="font-size: 0.95rem; margin-bottom: 10px;"><i class="fa-solid fa-user-tag" aria-hidden="true"></i> Guest Info & Photo</h3>
                 
@@ -452,7 +454,7 @@
                 </div>
 
                 <button type="button" class="btn-guest-enter mt-10" onclick="handleGuestLogin()">
-                    <i class="fa-solid fa-door-open"></i> Continue as Guest
+                    <i class="fa-solid fa-door-open" aria-hidden="true"></i> Continue as Guest
                 </button>
             </div>
         </div>
