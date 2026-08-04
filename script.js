@@ -33,7 +33,7 @@ let defaultGuestProfile = {
     photo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400"
 };
 
-// ০ (জিরো) থেকে শুরু করার জন্য বুকিং লিস্ট একদম ফাঁকা রাখা হয়েছে
+// জিরো (0) থেকে শুরু করার জন্য বুকিং লিস্ট ফাঁকা
 let defaultBookingsList = [];
 
 // LocalStorage Data Load
@@ -52,7 +52,7 @@ const roomCatalog = [
     { title: "Royal Palace Villa", price: 50000, img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600", desc: "Private villa with infinity pool, personal chef and garden." }
 ];
 
-// Services Catalog Data (ছবিসহ আপডেট করা হলো)
+// Services Catalog Data
 const serviceCatalog = [
     { 
         title: "Bengali Traditional Feast", 
@@ -123,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderRoomsCard();
     renderServicesCard();
     
-    // Set default dates in Booking Form
+    // Default dates in Booking Form
     const today = new Date().toISOString().split("T")[0];
     const tomorrow = new Date(Date.now() + 86400000).toISOString().split("T")[0];
     
@@ -251,6 +251,7 @@ function handleLoginSubmit(event) {
     switchTab("dashboard");
 }
 
+// 🟢 গেস্ট লগইনের জন্য আপডেট করা ফাংশন
 function handleGuestLogin() {
     const fName = document.getElementById("fName")?.value.trim() || "Guest";
     const lName = document.getElementById("lName")?.value.trim() || "User";
@@ -274,7 +275,10 @@ function handleGuestLogin() {
 
     updateUserUI();
     closeLoginModal();
-    switchTab("dashboard");
+    
+    // ❌ Dashboard-এ নিয়ে যাবে না।
+    // 🟢 গেস্টকে সরাসরি 'Rooms' (রুম ক্যাটালগ) পেজে নিয়ে যাবে।
+    switchTab("rooms");
 }
 
 function updateUserUI() {
@@ -535,7 +539,6 @@ function renderRoomsCard() {
     `).join('');
 }
 
-// সার্ভিস/ফুড/জিম সেকশনে ছবিসহ কার্ড রেন্ডারিং
 function renderServicesCard() {
     const grid = document.getElementById("servicesCardsGrid");
     if (!grid) return;
