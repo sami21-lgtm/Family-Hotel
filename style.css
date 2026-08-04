@@ -27,9 +27,11 @@
     -webkit-tap-highlight-color: transparent;
 }
 
-/* ব্যাকগ্রাউন্ড সম্পূর্ণ সলিড ডার্ক থিম (ছবি রিমুভ করা হয়েছে) */
+/* ব্যাকগ্রাউন্ডে রিসোর্টের লাক্সারি ইমেজ ফিক্স করা হয়েছে */
 body {
-    background-color: var(--bg-dark);
+    background: linear-gradient(rgba(8, 11, 17, 0.88), rgba(8, 11, 17, 0.88)), 
+                url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+    background-size: cover;
     color: var(--text-light);
     min-height: 100vh;
     overflow-x: hidden;
@@ -64,7 +66,8 @@ body.locked {
    ================================================================== */
 .sidebar {
     width: 280px;
-    background: #0b0f19;
+    background: rgba(11, 15, 25, 0.95);
+    backdrop-filter: blur(10px);
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
@@ -334,7 +337,7 @@ body.locked {
     letter-spacing: 0.5px;
 }
 
-/* HERO BANNER (ছবি রিমুভ করে ডার্ক গ্র্যাডিয়েন্ট থিম) */
+/* HERO BANNER */
 .resort-hero-banner.custom-hero-bg {
     border-radius: var(--radius-md);
     padding: 40px 30px;
@@ -693,8 +696,8 @@ body.locked {
 }
 
 .login-modal-box {
-    max-width: 440px;
-    padding: 35px 28px;
+    max-width: 520px;
+    padding: 30px 25px;
     background: #0f172a;
     border: 1px solid #d4af37;
     border-radius: 16px;
