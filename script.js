@@ -20,7 +20,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // ==================================================================
-// 2. AUTHENTICATION & LOGIN STATE
+// 2. AUTHENTICATION & STRICT ACCESS LOCK
 // ==================================================================
 let currentUser = {
     isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
@@ -28,6 +28,18 @@ let currentUser = {
     role: localStorage.getItem('userRole') || 'Admin',
     avatar: localStorage.getItem('userAvatar') || 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
 };
+
+function enforceAuthLock() {
+    const loginModal = document.getElementById('loginModal');
+    if (!currentUser.isLoggedIn) {
+        document.body.classList.add('locked');
+        if (loginModal) loginModal.classList.add('active');
+    } else {
+        document.body.classList.remove('locked');
+        if (loginModal) loginModal.classList.remove('active');
+    }
+    updateAuthUI();
+}
 
 function updateAuthUI() {
     const topbarText = document.getElementById('topbarAuthText');
@@ -44,47 +56,25 @@ function updateAuthUI() {
         if (sidebarUserRole) sidebarUserRole.innerText = currentUser.role;
     } else {
         if (topbarText) topbarText.innerText = "Login";
-        if (topbarAvatar) topbarAvatar.src = currentUser.avatar;
-        if (sidebarAvatar) sidebarAvatar.src = currentUser.avatar;
-        if (sidebarUserName) sidebarUserName.innerText = "Guest User";
-        if (sidebarUserRole) sidebarUserRole.innerText = "Visitor";
     }
 }
 
-function toggleAuthModal() {
-    if (currentUser.isLoggedIn) {
-        if (confirm("Are you sure you want to log out?")) {
-            currentUser.isLoggedIn = false;
-            localStorage.setItem('isLoggedIn', 'false');
-            updateAuthUI();
-            openLoginModal();
-            showToast("Successfully Logged Out!");
-        }
-    } else {
-        openLoginModal();
-    }
-}
-
-function openLoginModal() {
-    document.getElementById('loginModal')?.classList.add('active');
-}
-
-function closeLoginModal() {
-    document.getElementById('loginModal')?.classList.remove('active');
-}
-
-function closeLoginModalOnOutsideClick(e) {
-    if (e.target.classList.contains('modal-overlay')) {
-        closeLoginModal();
+function handleLogout() {
+    if (confirm("Are you sure you want to log out of Admin System?")) {
+        currentUser.isLoggedIn = false;
+        localStorage.setItem('isLoggedIn', 'false');
+        enforceAuthLock();
+        showToast("Logged out successfully!", "warning");
     }
 }
 
 function handleLoginSubmit(e) {
     e.preventDefault();
-    const email = document.getElementById('loginEmail')?.value;
-    const password = document.getElementById('loginPassword')?.value;
+    const email = document.getElementById('loginEmail')?.value.trim();
+    const password = document.getElementById('loginPassword')?.value.trim();
 
-    if (email && password) {
+    // Strict Credentials Check
+    if (email === "admin@grandpalace.com" && password === "12345678") {
         currentUser.isLoggedIn = true;
         currentUser.name = "MD. EMTIAZ HOSSAIN SAMI";
         currentUser.role = "Admin";
@@ -95,13 +85,19 @@ function handleLoginSubmit(e) {
         localStorage.setItem('userRole', currentUser.role);
         localStorage.setItem('userAvatar', currentUser.avatar);
 
-        updateAuthUI();
-        closeLoginModal();
-        showToast("Welcome Back! Logged in as Admin.");
+        enforceAuthLock();
+        showToast("Authentication Successful! Welcome Admin.");
     } else {
-        showToast("Please enter email and password", "error");
+        showToast("Invalid Admin Email or Password!", "error");
     }
 }
+
+// Prevent closing modal on Escape Key
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !currentUser.isLoggedIn) {
+        e.preventDefault();
+    }
+});
 
 // ==================================================================
 // 3. SYSTEM CONSTANTS & DATABASES
@@ -263,7 +259,7 @@ function startClock() {
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.style.cssText = `
-        position: fixed; top: 20px; right: 20px; z-index: 9999;
+        position: fixed; top: 20px; right: 20px; z-index: 99999;
         padding: 14px 24px; border-radius: 10px; color: #fff;
         font-weight: 600; font-family: system-ui, -apple-system, sans-serif;
         box-shadow: 0 10px 25px rgba(0,0,0,0.25);
@@ -382,7 +378,7 @@ function updateDashboardStats() {
 // ==================================================================
 window.addEventListener('DOMContentLoaded', () => {
     startClock();
-    updateAuthUI();
+    enforceAuthLock();
     renderRooms();
     renderServices();
     renderTables();
@@ -390,11 +386,6 @@ window.addEventListener('DOMContentLoaded', () => {
     calcTotal();
     initRealtimeSync();
 
-    // Auto-open Login Modal if user is not logged in
-    if (!currentUser.isLoggedIn) {
-        openLoginModal();
-    }
-    
     const bookingForm = document.getElementById('reservationForm');
     if (bookingForm) {
         bookingForm.addEventListener('submit', handleBookingSubmit);
@@ -402,6 +393,11 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function switchTab(tabId) {
+    if (!currentUser.isLoggedIn) {
+        showToast("Access Denied! Please login first.", "error");
+        return;
+    }
+
     document.querySelectorAll('.tab-page').forEach(page => page.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
     document.querySelectorAll('.m-nav-item').forEach(item => item.classList.remove('active'));
@@ -511,7 +507,7 @@ function renderServices() {
 }
 
 // ==================================================================
-// 9. MODALS (ROOM & SERVICE DETAILS)
+// 9. DETAILS MODALS (ROOM & SERVICE DETAILS)
 // ==================================================================
 function openRoomModal(roomId) {
     const room = roomsDatabase.find(r => r.id === roomId);
@@ -585,7 +581,7 @@ function selectRoomAndBook(roomValue) {
 }
 
 // ==================================================================
-// 10. BILLING & BOOKING SUBMISSION
+// 10. BILLING, PAYMENT & BOOKING SUBMISSION
 // ==================================================================
 function setTodayDates() {
     const checkInEl = document.getElementById('checkIn');
@@ -597,6 +593,10 @@ function setTodayDates() {
         tomorrow.setDate(tomorrow.getDate() + 1);
         checkOutEl.valueAsDate = tomorrow;
     }
+}
+
+function calculateBilling() {
+    calcTotal();
 }
 
 function calcTotal() {
@@ -632,6 +632,39 @@ function calcTotal() {
     return { nights, roomSubtotal, servicesSubtotal, grandTotal };
 }
 
+function togglePaymentDetails() {
+    const select = document.getElementById('paymentMethodSelect');
+    const details = document.getElementById('onlinePaymentDetails');
+    const instructions = document.getElementById('paymentInstructions');
+
+    if (!select || !details) return;
+
+    if (select.value === 'bkash' || select.value === 'nagad') {
+        details.style.display = 'block';
+        if (instructions) {
+            instructions.innerHTML = `Please Send Money to ${select.value.toUpperCase()} Number: <strong>+8801723434535</strong>`;
+        }
+    } else if (select.value === 'card') {
+        details.style.display = 'block';
+        if (instructions) {
+            instructions.innerHTML = `Enter your Credit/Debit Card Details:`;
+        }
+    } else {
+        details.style.display = 'none';
+    }
+}
+
+function resetForm() {
+    const form = document.getElementById('reservationForm');
+    if (form) form.reset();
+    uploadedGuestPhoto = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400';
+    const preview = document.getElementById('previewImg');
+    if (preview) preview.src = uploadedGuestPhoto;
+    setTodayDates();
+    calcTotal();
+    togglePaymentDetails();
+}
+
 async function handleBookingSubmit(e) {
     e.preventDefault();
     const fName = document.getElementById('fName')?.value || 'Guest';
@@ -641,7 +674,7 @@ async function handleBookingSubmit(e) {
     const checkIn = document.getElementById('checkIn')?.value || new Date().toISOString().split('T')[0];
     const checkOut = document.getElementById('checkOut')?.value || new Date().toISOString().split('T')[0];
     const billing = calcTotal();
-    
+
     const newBooking = {
         id: `GP-${Math.floor(100000 + Math.random() * 900000)}`,
         name: `${fName} ${lName}`.trim(),
@@ -653,53 +686,33 @@ async function handleBookingSubmit(e) {
     };
 
     try {
-        await addDoc(collection(db, "reservations"), newBooking);
-        showToast("Reservation saved successfully!");
+        const docRef = await addDoc(collection(db, "reservations"), newBooking);
+        newBooking.docId = docRef.id;
     } catch (err) {
-        console.warn("Saving locally:", err);
-        reservations.unshift(newBooking);
-        renderTables();
-        updateDashboardStats();
-        showToast("Reservation saved locally!");
+        console.warn("Firestore sync error, saving locally:", err.message);
     }
 
+    reservations.unshift(newBooking);
+    renderTables();
+    updateDashboardStats();
+    showToast("Reservation created successfully!");
     resetForm();
+    switchTab('guests');
 }
 
-function resetForm() {
-    const form = document.getElementById('reservationForm');
-    if (form) form.reset();
-    setTodayDates();
-    calcTotal();
-}
-
-function togglePaymentDetails() {
-    const select = document.getElementById('paymentMethodSelect');
-    const detailsBox = document.getElementById('onlinePaymentDetails');
-    if (select && detailsBox) {
-        if (select.value === 'bkash' || select.value === 'nagad' || select.value === 'card') {
-            detailsBox.style.display = 'block';
-        } else {
-            detailsBox.style.display = 'none';
-        }
-    }
-}
-
-// Window Exposures
+// Global scope window binding
 window.switchTab = switchTab;
 window.toggleSidebar = toggleSidebar;
-window.toggleAuthModal = toggleAuthModal;
-window.closeLoginModal = closeLoginModal;
-window.closeLoginModalOnOutsideClick = closeLoginModalOnOutsideClick;
+window.handleLogout = handleLogout;
 window.handleLoginSubmit = handleLoginSubmit;
 window.previewUploadImage = previewUploadImage;
 window.updateGuestImageFromUrl = updateGuestImageFromUrl;
+window.calculateBilling = calculateBilling;
+window.togglePaymentDetails = togglePaymentDetails;
+window.resetForm = resetForm;
 window.openRoomModal = openRoomModal;
 window.openServiceModal = openServiceModal;
 window.closeModal = closeModal;
 window.closeModalOnOutsideClick = closeModalOnOutsideClick;
 window.selectRoomAndBook = selectRoomAndBook;
-window.calculateBilling = calcTotal;
-window.resetForm = resetForm;
-window.togglePaymentDetails = togglePaymentDetails;
 window.deleteReservation = deleteReservation;
