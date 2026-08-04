@@ -38,19 +38,19 @@
                 </div>
             </div>
             <nav class="nav-menu">
-                <a href="#" class="nav-item active" onclick="switchTab('dashboard')">
+                <a href="#" class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
                     <i class="fa-solid fa-chart-line" aria-hidden="true"></i> <span>Dashboard</span>
                 </a>
-                <a href="#" class="nav-item" onclick="switchTab('rooms')">
+                <a href="#" class="nav-item" data-tab="rooms" onclick="switchTab('rooms')">
                     <i class="fa-solid fa-bed" aria-hidden="true"></i> <span>Rooms & Custom Photos</span>
                 </a>
-                <a href="#" class="nav-item" onclick="switchTab('booking')">
+                <a href="#" class="nav-item" data-tab="booking" onclick="switchTab('booking')">
                     <i class="fa-solid fa-calendar-plus" aria-hidden="true"></i> <span>New Booking</span>
                 </a>
-                <a href="#" class="nav-item" onclick="switchTab('guests')">
+                <a href="#" class="nav-item" data-tab="guests" onclick="switchTab('guests')">
                     <i class="fa-solid fa-users" aria-hidden="true"></i> <span>Guest Directory</span>
                 </a>
-                <a href="#" class="nav-item" onclick="switchTab('services')">
+                <a href="#" class="nav-item" data-tab="services" onclick="switchTab('services')">
                     <i class="fa-solid fa-utensils" aria-hidden="true"></i> <span>Food, Pool & Gym</span>
                 </a>
             </nav>
@@ -120,7 +120,7 @@
                     <p>Live status of resort reservations, guests, and services.</p>
                 </div>
                 
-                <!-- Resort Hero Banner with Specified Image -->
+                <!-- Resort Hero Banner (Solid Dark Gradient) -->
                 <div class="resort-hero-banner custom-hero-bg">
                     <div class="hero-content">
                         <span class="hero-subtitle">WELCOME TO GRAND PALACE</span>
@@ -196,7 +196,7 @@
                     <h1>New Guest Booking</h1>
                     <p>Create room reservations, food orders, and activity slots.</p>
                 </div>
-                <form id="reservationForm" class="booking-grid">
+                <form id="reservationForm" class="booking-grid" onsubmit="handleBookingSubmit(event)">
                     <div class="form-card">
                         <h3 class="card-title"><i class="fa-solid fa-user-tag" aria-hidden="true"></i> Guest Info & Photo</h3>
                         <div class="form-row">
@@ -417,7 +417,7 @@
         </div>
     </div>
 
-    <!-- AUTH / LOGIN MODAL POPUP (Image 2 Design + Guest Option) -->
+    <!-- AUTH / LOGIN MODAL POPUP -->
     <div class="modal-overlay active" id="loginModal">
         <div class="modal-container login-modal-box">
             <div class="login-modal-header">
@@ -451,7 +451,7 @@
             <div class="guest-access-box">
                 <div class="form-group">
                     <label for="guestInputName"><i class="fa-solid fa-user-circle"></i> Guest Name (Optional)</label>
-                    <input type="text" id="guestInputName" placeholder="Enter Your Name">
+                    <input type="text" id="guestInputName" placeholder="Sami">
                 </div>
                 <button type="button" class="btn-guest-enter" onclick="handleGuestLogin()">
                     <i class="fa-solid fa-door-open"></i> Continue as Guest
@@ -462,29 +462,29 @@
 
     <!-- Mobile Bottom Navigation Bar -->
     <div class="mobile-bottom-nav">
-        <button class="m-nav-item active" onclick="switchTab('dashboard')">
+        <button class="m-nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
             <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
             <span>Home</span>
         </button>
-        <button class="m-nav-item" onclick="switchTab('rooms')">
+        <button class="m-nav-item" data-tab="rooms" onclick="switchTab('rooms')">
             <i class="fa-solid fa-bed" aria-hidden="true"></i>
             <span>Rooms</span>
         </button>
-        <button class="m-nav-item" onclick="switchTab('booking')">
+        <button class="m-nav-item" data-tab="booking" onclick="switchTab('booking')">
             <i class="fa-solid fa-plus-circle" aria-hidden="true"></i>
             <span>Book</span>
         </button>
-        <button class="m-nav-item" onclick="switchTab('guests')">
+        <button class="m-nav-item" data-tab="guests" onclick="switchTab('guests')">
             <i class="fa-solid fa-users" aria-hidden="true"></i>
             <span>Guests</span>
         </button>
-        <button class="m-nav-item" onclick="switchTab('services')">
+        <button class="m-nav-item" data-tab="services" onclick="switchTab('services')">
             <i class="fa-solid fa-utensils" aria-hidden="true"></i>
             <span>Menu</span>
         </button>
     </div>
 
     <!-- JS Main Script File -->
-    <script type="module" src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
