@@ -1,641 +1,604 @@
-/* ==================================================================
-   1. GLOBAL STATE & LOCALSTORAGE PERSISTENCE
-   ================================================================== */
-const defaultAdminUser = {
-    name: "MD. EMTIAZ HOSSAIN SAMI",
-    role: "Admin",
-    photo: "Md. EmTIAZ hOSSAIN sAMI LOGO.png",
-    email: "admin@luxuryresort.com"
+// --- GLOBAL APPLICATION STATE & TRANSLATIONS ---
+let currentLang = 'en'; // 'en' or 'bn'
+let currentRole = 'admin'; // 'admin', 'frontdesk', 'housekeeping', 'finance', 'guest'
+
+let currentUser = {
+    role: 'Administrator',
+    name: 'MD. EMTIAZ HOSSAIN SAMI',
+    email: 'admin@grandpalace.com',
+    photo: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
 };
 
-// LocalStorage Check
-let currentUser = null;
-const storedUser = localStorage.getItem("currentUser");
-
-if (storedUser === null) {
-    currentUser = defaultAdminUser;
-    localStorage.setItem("currentUser", JSON.stringify(defaultAdminUser));
-} else if (storedUser === "LOGGED_OUT") {
-    currentUser = null;
-} else {
-    try {
-        currentUser = JSON.parse(storedUser);
-    } catch (e) {
-        currentUser = defaultAdminUser;
-    }
-}
-
-let defaultGuestProfile = {
-    fName: "",
-    lName: "",
-    email: "",
-    phone: "",
-    photo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400"
-};
-
-// জিরো (0) থেকে শুরু করার জন্য বুকিং লিস্ট ফাঁকা
-let defaultBookingsList = [];
-
-// LocalStorage Data Load
-let guestProfileData = JSON.parse(localStorage.getItem("guestProfileData")) || defaultGuestProfile;
-let bookingsList = JSON.parse(localStorage.getItem("bookingsList")) || defaultBookingsList;
-
-// Room Catalog Data
-const roomCatalog = [
-    { title: "Single Standard Room", price: 800, img: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600", desc: "Cozy room with free Wi-Fi and basic amenities." },
-    { title: "Single Executive Room", price: 1000, img: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600", desc: "Work desk, high-speed internet, and ergonomic chair." },
-    { title: "Deluxe Double Room", price: 5000, img: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600", desc: "Spacious room with king bed and balcony view." },
-    { title: "Super Deluxe Double Room", price: 7500, img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600", desc: "Luxury bedding, city view, and complimentary breakfast." },
-    { title: "Executive Double Ocean View", price: 10000, img: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=600", desc: "Panoramic view of the ocean with luxury Jacuzzi." },
-    { title: "Royal Family Suite", price: 20000, img: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=600", desc: "2 Bedrooms, living hall, dining area and private butler." },
-    { title: "Presidential VIP Suite", price: 35000, img: "https://images.unsplash.com/photo-1631049552057-403cdb8f0658?w=600", desc: "Top floor penthouse view, private lounge & helicopter pad access." },
-    { title: "Royal Palace Villa", price: 50000, img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600", desc: "Private villa with infinity pool, personal chef and garden." }
+// Rooms Database with Room Status Tracking (Available, Occupied, Dirty, Maintenance)
+let roomList = [
+    { id: "101", title: "Single Standard Room", price: 800, status: "available", img: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=500", desc: "Cozy room with free Wi-Fi and king bed." },
+    { id: "102", title: "Single Executive Room", price: 1000, status: "occupied", img: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=500", desc: "Executive workspace & smart TV." },
+    { id: "201", title: "Deluxe Double Room", price: 5000, status: "dirty", img: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=500", desc: "Spacious luxury room designed for couples." },
+    { id: "202", title: "Super Deluxe Double Room", price: 7500, status: "available", img: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=500", desc: "Balcony access and complimentary breakfast." },
+    { id: "301", title: "Executive Double Ocean View", price: 10000, status: "maintenance", img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500", desc: "Panoramic view with luxury ocean deck." },
+    { id: "401", title: "Royal Family Suite", price: 20000, status: "occupied", img: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=500", desc: "Multi-bedroom suite for families." },
+    { id: "501", title: "Presidential VIP Suite", price: 35000, status: "available", img: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=500", desc: "VIP suite with private lounge." },
+    { id: "601", title: "Royal Palace Villa", price: 50000, status: "available", img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500", desc: "Private villa with infinity pool." }
 ];
 
-// Services Catalog Data
-const serviceCatalog = [
-    { 
-        title: "Bengali Traditional Feast", 
-        category: "Dining", 
-        price: 500, 
-        icon: "fa-utensils", 
-        img: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=600", 
-        desc: "Authentic Kacchi Biryani, Hilsha Fish, Borhani & Sweets." 
+let bookings = [
+    {
+        id: "GP-8801",
+        guestName: "Arif Chowdhury",
+        guestPhoto: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100",
+        roomNumber: "401",
+        roomType: "Royal Family Suite",
+        checkIn: "2026-08-01",
+        checkOut: "2026-08-05",
+        totalBill: 80000,
+        paymentMethod: "bKash",
+        status: "Checked-In"
     },
-    { 
-        title: "Authentic Thai Gourmet", 
-        category: "Dining", 
-        price: 750, 
-        icon: "fa-bowl-food", 
-        img: "https://images.unsplash.com/photo-1559314809-0d155014e29e?w=600", 
-        desc: "Spicy Tom Yum Goong, Pad Thai, and Mango Sticky Rice." 
-    },
-    { 
-        title: "Continental Buffet", 
-        category: "Dining", 
-        price: 1200, 
-        icon: "fa-concierge-bell", 
-        img: "https://images.unsplash.com/photo-1555244162-803834f70033?w=600", 
-        desc: "Unlimited global cuisines prepared by international chefs." 
-    },
-    { 
-        title: "Morning Swimming Pool Pass", 
-        category: "Pool", 
-        price: 300, 
-        icon: "fa-water", 
-        img: "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=600", 
-        desc: "Access to Olympic Pool (06:00 AM - 11:00 AM)." 
-    },
-    { 
-        title: "Night Infinity Pool Pass", 
-        category: "Pool", 
-        price: 500, 
-        icon: "fa-person-swimming", 
-        img: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600", 
-        desc: "Access to Rooftop Infinity Pool (04:00 PM - 10:00 PM)." 
-    },
-    { 
-        title: "VIP Fitness & Gym Day Pass", 
-        category: "Fitness", 
-        price: 400, 
-        icon: "fa-dumbbell", 
-        img: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600", 
-        desc: "Full access to modern gym equipment & personal trainer." 
+    {
+        id: "GP-8802",
+        guestName: "Sultana Rahman",
+        guestPhoto: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100",
+        roomNumber: "102",
+        roomType: "Single Executive Room",
+        checkIn: "2026-08-06",
+        checkOut: "2026-08-08",
+        totalBill: 2000,
+        paymentMethod: "SSLCommerz",
+        status: "Confirmed"
     }
 ];
 
-/* ==================================================================
-   2. INITIALIZATION & LIVE CLOCK
-   ================================================================== */
-document.addEventListener("DOMContentLoaded", () => {
-    initClock();
-    
-    if (currentUser) {
-        updateUserUI();
-        closeLoginModal();
-    } else {
-        openLoginModal();
-    }
+const serviceItems = [
+    { name: "Bengali Traditional Feast", price: 500, category: "Dining", icon: "fa-utensils" },
+    { name: "Authentic Thai Gourmet", price: 750, category: "Dining", icon: "fa-bowl-rice" },
+    { name: "Continental 5-Star Buffet", price: 1200, category: "Dining", icon: "fa-champagne-glasses" },
+    { name: "Infinity Swimming Pool Pass", price: 500, category: "Wellness", icon: "fa-person-swimming" },
+    { name: "VIP Fitness & Gym Day Pass", price: 400, category: "Fitness", icon: "fa-dumbbell" }
+];
 
-    renderDashboard();
-    renderGuestDirectory();
-    renderRoomsCard();
-    renderServicesCard();
-    
-    // Default dates in Booking Form
-    const today = new Date().toISOString().split("T")[0];
-    const tomorrow = new Date(Date.now() + 86400000).toISOString().split("T")[0];
-    
-    if (document.getElementById("checkIn")) document.getElementById("checkIn").value = today;
-    if (document.getElementById("checkOut")) document.getElementById("checkOut").value = tomorrow;
-    
+// Bilingual Dictionary
+const i18nData = {
+    en: {
+        brand: "GRAND PALACE",
+        subbrand: "RESORT & SPA",
+        activeRole: "Active System Role:",
+        navDashboard: "Dashboard",
+        navRooms: "Rooms & Inventory",
+        navBooking: "New Booking",
+        navFrontDesk: "Front Desk Status",
+        navHousekeeping: "Housekeeping",
+        navFinance: "Finance & Reports",
+        navGuests: "Guest Directory",
+        navServices: "Food & Facilities",
+        supportTitle: "Direct Support",
+        callUs: "Call Us 24/7",
+        emailUs: "Email Support",
+        dashTitle: "Executive Dashboard",
+        dashSub: "Live status of resort reservations, guests, and services.",
+        heroSub: "WELCOME TO GRAND PALACE",
+        heroTitle: "World-Class Hospitality & Luxury Stay",
+        heroDesc: "Manage real-time guest bookings, luxury suites, gourmet dining, and exclusive wellness amenities.",
+        statTotalBookings: "Total Bookings",
+        statRevenue: "Total Revenue",
+        statPoolPass: "Pool Passes",
+        statDiningOrders: "Dining Orders",
+        recentCheckins: "Recent Check-Ins",
+        tblPhoto: "Photo",
+        tblId: "ID",
+        tblName: "Guest Name",
+        tblRoom: "Room Type",
+        tblDates: "Dates",
+        tblBill: "Bill",
+        tblStatus: "Status",
+        tblAction: "Action",
+        roomsTitle: "Rooms & Custom Photos",
+        roomsSub: "Manage resort inventory and custom room photography.",
+        newBookingTitle: "New Guest Booking",
+        newBookingSub: "Create room reservations, food orders, and activity slots.",
+        roomCat: "Room Category",
+        lblCheckIn: "Check-In *",
+        lblCheckOut: "Check-Out *",
+        lblRoomType: "Select Room *",
+        cuisineOpt: "Cuisine & Services",
+        amenitiesOpt: "Pool & Gym Access",
+        payOptions: "Payment Gateways",
+        lblGateway: "Select Gateway *",
+        calcSummary: "Real-time Calculation",
+        invNights: "Stay Duration:",
+        invRoomCharge: "Room Charge:",
+        invAddons: "Services Total:",
+        invGrandTotal: "Grand Total Amount:",
+        btnCompleteBooking: "Complete Reservation",
+        btnReset: "Reset",
+        fdTitle: "Front Desk & Real-time Room Status",
+        fdSub: "Manage live Check-ins, Check-outs, and Room Conditions.",
+        hkTitle: "Housekeeping Dashboard",
+        hkSub: "Cleanliness status updates and maintenance requests.",
+        hkClean: "Available & Clean",
+        hkDirty: "Needs Cleaning (Dirty)",
+        hkMaintenance: "Under Maintenance",
+        finTitle: "Finance & Financial Summary",
+        finSub: "Automatic revenue breakdown and printable invoice generation.",
+        guestsTitle: "Guest Directory",
+        guestsSub: "All recorded guest check-ins and active stays.",
+        servicesTitle: "Food, Pool & Gym",
+        servicesSub: "Manage dining packages and facility access."
+    },
+    bn: {
+        brand: "গ্র্যান্ড প্যালেস",
+        subbrand: "রিসোর্ট ও স্পা",
+        activeRole: "সক্রিয় সিস্টেম রোল:",
+        navDashboard: "ড্যাশবোর্ড",
+        navRooms: "রুম ও ইনভেন্টরি",
+        navBooking: "নতুন বুকিং",
+        navFrontDesk: "ফ্রন্ট ডেস্ক স্ট্যাটাস",
+        navHousekeeping: "হাউসকেপিং",
+        navFinance: "ফাইন্যান্স ও রিপোর্ট",
+        navGuests: "গেস্ট তালিকা",
+        navServices: "খাবার ও সার্ভিস",
+        supportTitle: "সরাসরি সহায়তা",
+        callUs: "কল করুন ২৪/৭",
+        emailUs: "ইমেইল সাপোর্ট",
+        dashTitle: "এক্সিকিউটিভ ড্যাশবোর্ড",
+        dashSub: "রিসোর্ট বুকিং, গেস্ট এবং সার্ভিসসমূহের লাইভ অবস্থা।",
+        heroSub: "গ্র্যান্ড প্যালেসে স্বাগতম",
+        heroTitle: "আন্তর্জাতিক মানের আতিথেয়তা ও লাক্সারি স্টে",
+        heroDesc: "রিয়েল-টাইম গেস্ট বুকিং, লাক্সারি স্যুট, রেস্টুরেন্ট এবং ওয়েলনেস সুবিধা পরিচালনা করুন।",
+        statTotalBookings: "মোট বুকিং",
+        statRevenue: "মোট আয়",
+        statPoolPass: "পুল পাস",
+        statDiningOrders: "ডাইনিং অর্ডার",
+        recentCheckins: "সাম্প্রতিক চেক-ইন সমূহ",
+        tblPhoto: "ছবি",
+        tblId: "আইডি",
+        tblName: "গেস্টের নাম",
+        tblRoom: "রুমের ধরন",
+        tblDates: "তারিখ",
+        tblBill: "বিল",
+        tblStatus: "অবস্থা",
+        tblAction: "অ্যাকশন",
+        roomsTitle: "রুম ও কাস্টম ছবি",
+        roomsSub: "রিসোর্ট রুম গ্যালারি এবং ফটো ইনভেন্টরি।",
+        newBookingTitle: "নতুন গেস্ট বুকিং",
+        newBookingSub: "রুম রিজার্ভেশন, খাবার ও ফ্যাসিলিটি বুক করুন।",
+        roomCat: "রুম ক্যাটাগরি",
+        lblCheckIn: "চেক-ইন *",
+        lblCheckOut: "চেক-আউট *",
+        lblRoomType: "রুম সিলেক্ট করুন *",
+        cuisineOpt: "খাবার ও রেস্টুরেন্ট সুবিধা",
+        amenitiesOpt: "পুল ও জিম অ্যাক্সেস",
+        payOptions: "পেমেন্ট গেটওয়েসমূহ",
+        lblGateway: "পেমেন্ট পদ্ধতি বেছে নিন *",
+        calcSummary: "রিয়েল-টাইম বিল গণনা",
+        invNights: "অবস্থানের সময়কাল:",
+        invRoomCharge: "রুম ভাড়া:",
+        invAddons: "সার্ভিস চার্জ:",
+        invGrandTotal: "সর্বমোট প্রদেয় বিল:",
+        btnCompleteBooking: "বুকিং নিশ্চিত করুন",
+        btnReset: "রিসেট",
+        fdTitle: "ফ্রন্ট ডেস্ক ও রুম ট্র্যাকিং",
+        fdSub: "লাইভ চেক-ইন, চেক-আউট ও রুমের বর্তমান অবস্থা ট্র্যাক করুন।",
+        hkTitle: "হাউসকেপিং ড্যাশবোর্ড",
+        hkSub: "রুম পরিচ্ছন্নতার আপডেট এবং মেইনটেন্যান্স রিকোয়েস্ট।",
+        hkClean: "পরিষ্কার ও খালি রুম",
+        hkDirty: "পরিষ্কার করা প্রয়োজন (Dirty)",
+        hkMaintenance: "রক্ষণাবেক্ষণে আছে (Maintenance)",
+        finTitle: "ফাইন্যান্স ও রিপোর্টস",
+        finSub: "স্বয়ংক্রিয় রেভিনিউ রিপোর্ট ও ইনভয়েস প্রিন্ট সুবিধা।",
+        guestsTitle: "গেস্ট ডিরেক্টরি",
+        guestsSub: "সকল রেজিস্টার্ড গেস্ট ও বুকিং রেকর্ড।",
+        servicesTitle: "খাবার, পুল ও জিম",
+        servicesSub: "ফুড প্যাকেজ ও ফ্যাসিলিটি অ্যাক্সেস সার্ভিস।"
+    }
+};
+
+// --- INITIALIZATION ---
+document.addEventListener('DOMContentLoaded', () => {
+    initLiveClock();
+    renderRooms();
+    renderServices();
+    renderFrontDesk();
+    renderHousekeeping();
+    renderFinance();
+    refreshDashboard();
     calculateBilling();
 });
 
-function initClock() {
-    function updateTime() {
-        const now = new Date();
-        const dateOptions = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
-        const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-        const dateStr = now.toLocaleDateString('en-US', dateOptions);
-        const timeStr = now.toLocaleTimeString('en-US', timeOptions);
-        
-        const clockEl = document.getElementById("currentDateDisplay");
-        if (clockEl) {
-            clockEl.innerHTML = `<i class="fa-regular fa-clock"></i> ${dateStr} | ${timeStr}`;
+// --- BILINGUAL TOGGLE SYSTEM ---
+function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'bn' : 'en';
+    document.getElementById('mobileLangToggle').textContent = currentLang === 'en' ? '🇧🇩 BN' : '🇬🇧 EN';
+    document.getElementById('langText').textContent = currentLang === 'en' ? 'English / বাংলা' : 'বাংলা / English';
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (i18nData[currentLang][key]) {
+            el.textContent = i18nData[currentLang][key];
         }
-    }
-    updateTime();
-    setInterval(updateTime, 1000);
+    });
 }
 
-/* ==================================================================
-   3. NAVIGATION & SIDEBAR CONTROLS
-   ================================================================== */
-function switchTab(tabId) {
-    const pages = document.querySelectorAll(".tab-page");
-    pages.forEach(page => page.classList.remove("active"));
+// --- ROLE BASED ACCESS CONTROL (RBAC) ---
+function switchUserRole(role) {
+    currentRole = role;
+    const navItems = document.querySelectorAll('.nav-menu .nav-item');
     
-    const targetPage = document.getElementById(`tab-${tabId}`);
-    if (targetPage) targetPage.classList.add("active");
-    
-    const navItems = document.querySelectorAll(".nav-item, .m-nav-item");
     navItems.forEach(item => {
-        if (item.getAttribute("data-tab") === tabId) {
-            item.classList.add("active");
+        if (role === 'admin') {
+            item.style.display = 'flex';
         } else {
-            item.classList.remove("active");
+            if (item.classList.contains(`role-${role}`)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
         }
     });
 
-    toggleSidebar(false);
+    currentUser.role = role.toUpperCase();
+    document.getElementById('sidebarUserRole').textContent = `Role: ${role.toUpperCase()}`;
+    
+    // Switch to first visible tab
+    if (role === 'housekeeping') switchTab('housekeeping');
+    else if (role === 'finance') switchTab('finance');
+    else switchTab('dashboard');
+}
+
+// --- CLOCK & NAVIGATION ---
+function initLiveClock() {
+    const dateEl = document.getElementById('currentDateDisplay');
+    setInterval(() => {
+        const now = new Date();
+        dateEl.textContent = now.toLocaleString(currentLang === 'bn' ? 'bn-BD' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' });
+    }, 1000);
 }
 
 function toggleSidebar(forceState) {
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("sidebarOverlay");
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const isOpen = forceState !== undefined ? forceState : !sidebar.classList.contains('open');
     
-    if (!sidebar || !overlay) return;
+    sidebar.classList.toggle('open', isOpen);
+    overlay.classList.toggle('active', isOpen);
+}
 
-    if (forceState !== undefined) {
-        if (forceState) {
-            sidebar.classList.add("active");
-            overlay.classList.add("active");
-        } else {
-            sidebar.classList.remove("active");
-            overlay.classList.remove("active");
-        }
+function switchTab(tabId) {
+    document.querySelectorAll('.tab-page').forEach(page => page.classList.remove('active'));
+    document.querySelectorAll('.nav-item, .m-nav-item').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+    });
+
+    const targetTab = document.getElementById(`tab-${tabId}`);
+    if (targetTab) targetTab.classList.add('active');
+    toggleSidebar(false);
+}
+
+// --- BILLING CALCULATOR & PAYMENTS ---
+function calculateBilling() {
+    const roomVal = document.getElementById('roomTypeSelect').value.split('|');
+    const roomPrice = parseInt(roomVal[2]) || 800;
+
+    const checkIn = new Date(document.getElementById('checkIn').value);
+    const checkOut = new Date(document.getElementById('checkOut').value);
+    
+    let nights = 1;
+    if (!isNaN(checkIn) && !isNaN(checkOut) && checkOut > checkIn) {
+        nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+    }
+
+    let addonsTotal = 0;
+    document.querySelectorAll('input[name="foodMenu"]:checked, input[name="amenities"]:checked').forEach(item => {
+        addonsTotal += parseInt(item.getAttribute('data-price')) || 0;
+    });
+
+    const roomCharge = roomPrice * nights;
+    const grandTotal = roomCharge + (addonsTotal * nights);
+
+    document.getElementById('billNights').textContent = `${nights} Night(s)`;
+    document.getElementById('billRoom').textContent = `৳${roomCharge.toLocaleString()}`;
+    document.getElementById('billAddons').textContent = `৳${(addonsTotal * nights).toLocaleString()}`;
+    document.getElementById('billTotal').textContent = `৳${grandTotal.toLocaleString()}`;
+}
+
+function togglePaymentDetails() {
+    const method = document.getElementById('paymentMethodSelect').value;
+    const onlineBox = document.getElementById('onlinePaymentDetails');
+    const instructions = document.getElementById('paymentInstructions');
+
+    if (method === 'bkash' || method === 'nagad') {
+        onlineBox.style.display = 'block';
+        instructions.innerHTML = `Please Pay/Send Money to ${method.toUpperCase()} Number: <strong>+8801723434535</strong>`;
+    } else if (method === 'sslcommerz' || method === 'stripe') {
+        onlineBox.style.display = 'block';
+        instructions.innerHTML = `Redirecting to secure gateway: <strong>${method.toUpperCase()} Online Gateway</strong>`;
     } else {
-        sidebar.classList.toggle("active");
-        overlay.classList.toggle("active");
+        onlineBox.style.display = 'none';
     }
 }
 
-/* ==================================================================
-   4. AUTHENTICATION & LOGIN/GUEST MODAL
-   ================================================================== */
-function openLoginModal() {
-    const modal = document.getElementById("loginModal");
-    if (modal) {
-        modal.classList.add("active");
-        modal.style.display = "flex";
+// --- BOOKING SUBMISSION & ROOM STATUS UPDATES ---
+function handleBookingSubmit(event) {
+    event.preventDefault();
+    const roomVal = document.getElementById('roomTypeSelect').value.split('|');
+    const roomNo = roomVal[0];
+    const roomName = roomVal[1];
+    
+    const checkIn = document.getElementById('checkIn').value || new Date().toISOString().split('T')[0];
+    const checkOut = document.getElementById('checkOut').value || checkIn;
+    const payMethod = document.getElementById('paymentMethodSelect').value;
+
+    const newBooking = {
+        id: `GP-${Math.floor(1000 + Math.random() * 9000)}`,
+        guestName: currentUser.name,
+        guestPhoto: currentUser.photo,
+        roomNumber: roomNo,
+        roomType: roomName,
+        checkIn: checkIn,
+        checkOut: checkOut,
+        totalBill: parseInt(document.getElementById('billTotal').textContent.replace(/[^\d]/g, '')),
+        paymentMethod: payMethod.toUpperCase(),
+        status: 'Checked-In'
+    };
+
+    // Update Room Status in inventory
+    const targetRoom = roomList.find(r => r.id === roomNo);
+    if (targetRoom) targetRoom.status = 'occupied';
+
+    bookings.unshift(newBooking);
+    
+    refreshDashboard();
+    renderFrontDesk();
+    renderHousekeeping();
+    renderFinance();
+
+    alert(currentLang === 'bn' ? '🎉 বুকিং সফলভাবে তৈরি হয়েছে!' : '🎉 Reservation Successfully Created!');
+    resetForm();
+    switchTab('dashboard');
+}
+
+function resetForm() {
+    document.getElementById('reservationForm').reset();
+    calculateBilling();
+}
+
+// --- RENDERING MODULES ---
+function refreshDashboard() {
+    let totalRev = 0;
+    bookings.forEach(b => totalRev += b.totalBill);
+
+    document.getElementById('statTotalBookings').textContent = bookings.length;
+    document.getElementById('statRevenue').textContent = `৳${totalRev.toLocaleString()}`;
+    document.getElementById('statPoolPass').textContent = "12";
+    document.getElementById('statDiningOrders').textContent = "28";
+
+    renderTables();
+}
+
+function renderTables() {
+    const dashBody = document.getElementById('dashboardTableBody');
+    const fullBody = document.getElementById('fullBookingsTableBody');
+    dashBody.innerHTML = '';
+    fullBody.innerHTML = '';
+
+    bookings.forEach(b => {
+        const row = `
+            <tr>
+                <td><img src="${b.guestPhoto}" class="table-img" alt="Guest" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(b.guestName)}'"></td>
+                <td><strong>${b.id}</strong></td>
+                <td>${b.guestName}</td>
+                <td>Room ${b.roomNumber} - ${b.roomType}</td>
+                <td>${b.checkIn} to ${b.checkOut}</td>
+                <td>৳${b.totalBill.toLocaleString()}</td>
+                <td><span class="status-badge badge-occupied">${b.status}</span></td>
+                <td><button class="btn-secondary-sm" onclick="printInvoice('${b.id}')"><i class="fa-solid fa-print"></i></button></td>
+            </tr>
+        `;
+        dashBody.innerHTML += row;
+        fullBody.innerHTML += row;
+    });
+}
+
+function renderFrontDesk() {
+    const grid = document.getElementById('frontDeskRoomGrid');
+    grid.innerHTML = roomList.map(r => `
+        <div class="room-status-card ${r.status}">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3>Room ${r.id}</h3>
+                <span class="status-badge badge-${r.status}">${r.status}</span>
+            </div>
+            <p style="font-size:0.8rem; color:var(--text-gray); margin: 6px 0;">${r.title}</p>
+            <p style="font-size:0.85rem; font-weight:600; color:var(--gold);">৳${r.price.toLocaleString()} / night</p>
+            <div style="margin-top:10px;">
+                <select class="custom-select" onchange="updateRoomStatus('${r.id}', this.value)">
+                    <option value="available" ${r.status==='available'?'selected':''}>Set Available</option>
+                    <option value="occupied" ${r.status==='occupied'?'selected':''}>Set Occupied</option>
+                    <option value="dirty" ${r.status==='dirty'?'selected':''}>Set Dirty</option>
+                    <option value="maintenance" ${r.status==='maintenance'?'selected':''}>Set Maintenance</option>
+                </select>
+            </div>
+        </div>
+    `).join('');
+}
+
+function updateRoomStatus(roomId, newStatus) {
+    const room = roomList.find(r => r.id === roomId);
+    if (room) {
+        room.status = newStatus;
+        renderFrontDesk();
+        renderHousekeeping();
     }
+}
+
+function renderHousekeeping() {
+    const body = document.getElementById('housekeepingTableBody');
+    body.innerHTML = '';
+
+    let clean = 0, dirty = 0, maint = 0;
+
+    roomList.forEach(r => {
+        if (r.status === 'available') clean++;
+        if (r.status === 'dirty') dirty++;
+        if (r.status === 'maintenance') maint++;
+
+        body.innerHTML += `
+            <tr>
+                <td><strong>Room ${r.id}</strong></td>
+                <td>${r.title}</td>
+                <td><span class="status-badge badge-${r.status}">${r.status}</span></td>
+                <td>
+                    ${r.status === 'dirty' ? `<button class="btn-primary" onclick="updateRoomStatus('${r.id}', 'available')"><i class="fa-solid fa-broom"></i> Mark Cleaned</button>` : '—'}
+                </td>
+            </tr>
+        `;
+    });
+
+    document.getElementById('statCleanRooms').textContent = clean;
+    document.getElementById('statDirtyRooms').textContent = dirty;
+    document.getElementById('statMaintRooms').textContent = maint;
+}
+
+function renderFinance() {
+    const body = document.getElementById('financeTableBody');
+    body.innerHTML = '';
+    let grandRev = 0;
+
+    bookings.forEach(b => {
+        grandRev += b.totalBill;
+        body.innerHTML += `
+            <tr>
+                <td>INV-${b.id}</td>
+                <td>${b.guestName}</td>
+                <td>Room ${b.roomNumber}</td>
+                <td>${b.paymentMethod}</td>
+                <td>৳${b.totalBill.toLocaleString()}</td>
+                <td><button class="btn-primary" onclick="printInvoice('${b.id}')"><i class="fa-solid fa-file-invoice"></i> Print</button></td>
+            </tr>
+        `;
+    });
+
+    document.getElementById('finTotalRev').textContent = `৳${grandRev.toLocaleString()}`;
+    document.getElementById('finTotalInvoices').textContent = bookings.length;
+}
+
+function printInvoice(bookingId) {
+    const b = bookings.find(item => item.id === bookingId);
+    if (!b) return;
+
+    const modalContent = document.getElementById('modalContent');
+    modalContent.innerHTML = `
+        <div style="text-align:center; padding:10px;">
+            <i class="fa-solid fa-crown" style="font-size:2rem; color:var(--gold);"></i>
+            <h2 style="font-family:'Playfair Display', serif; color:var(--gold);">GRAND PALACE RESORT & SPA</h2>
+            <p style="font-size:0.8rem; color:var(--text-gray);">Official Invoice & Payment Receipt</p>
+            <hr class="divider">
+            <div style="text-align:left; font-size:0.85rem; margin:15px 0;">
+                <p><strong>Invoice No:</strong> INV-${b.id}</p>
+                <p><strong>Guest Name:</strong> ${b.guestName}</p>
+                <p><strong>Room Reserved:</strong> Room ${b.roomNumber} (${b.roomType})</p>
+                <p><strong>Stay Dates:</strong> ${b.checkIn} to ${b.checkOut}</p>
+                <p><strong>Payment Gateway:</strong> ${b.paymentMethod}</p>
+            </div>
+            <div class="invoice-box">
+                <div class="invoice-row total-row">
+                    <span>Total Amount Paid:</span>
+                    <strong>৳${b.totalBill.toLocaleString()}</strong>
+                </div>
+            </div>
+            <button class="btn-block-gold mt-20" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Document</button>
+        </div>
+    `;
+    document.getElementById('detailsModal').classList.add('active');
+}
+
+function renderRooms() {
+    const grid = document.getElementById('roomsCardsGrid');
+    grid.innerHTML = roomList.map(r => `
+        <div class="custom-card">
+            <img src="${r.img}" alt="${r.title}">
+            <div class="card-body">
+                <h3>${r.title}</h3>
+                <p>${r.desc}</p>
+                <strong>৳${r.price.toLocaleString()} / night</strong>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderServices() {
+    const grid = document.getElementById('servicesCardsGrid');
+    grid.innerHTML = serviceItems.map(s => `
+        <div class="custom-card">
+            <div class="card-body">
+                <i class="fa-solid ${s.icon}" style="font-size:2rem; color:var(--gold); margin-bottom:10px;"></i>
+                <h3>${s.name}</h3>
+                <p>Category: ${s.category}</p>
+                <strong>৳${s.price.toLocaleString()}</strong>
+            </div>
+        </div>
+    `).join('');
+}
+
+// --- AUTHENTICATION MODALS ---
+function handleLoginSubmit(e) {
+    e.preventDefault();
+    currentUser = {
+        role: 'ADMINISTRATOR',
+        name: 'MD. EMTIAZ HOSSAIN SAMI',
+        email: document.getElementById('loginEmail').value,
+        photo: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
+    };
+    updateUserUI();
+    closeLoginModal();
+}
+
+function handleGuestLogin() {
+    const fName = document.getElementById('fName').value || 'Guest';
+    const lName = document.getElementById('lName').value || 'User';
+    currentUser = {
+        role: 'GUEST',
+        name: `${fName} ${lName}`,
+        email: document.getElementById('email').value || 'guest@resort.com',
+        photo: document.getElementById('previewImg').src
+    };
+    updateUserUI();
+    closeLoginModal();
+}
+
+function updateUserUI() {
+    document.getElementById('sidebarUserName').textContent = currentUser.name;
+    document.getElementById('sidebarUserRole').textContent = `Role: ${currentUser.role}`;
+    document.getElementById('sidebarAvatar').src = currentUser.photo;
+    document.getElementById('topbarAvatar').src = currentUser.photo;
 }
 
 function closeLoginModal() {
-    const modal = document.getElementById("loginModal");
-    if (modal) {
-        modal.classList.remove("active");
-        modal.style.display = "none";
-    }
+    document.getElementById('loginModal').classList.remove('active');
 }
 
-function previewUploadImage(event) {
-    const file = event.target.files[0];
+function handleAuthButtonClick() {
+    document.getElementById('loginModal').classList.add('active');
+}
+
+function previewUploadImage(e) {
+    const file = e.target.files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById("previewImg").src = e.target.result;
-            guestProfileData.photo = e.target.result;
-            localStorage.setItem("guestProfileData", JSON.stringify(guestProfileData));
+        reader.onload = (event) => {
+            document.getElementById('previewImg').src = event.target.result;
         };
         reader.readAsDataURL(file);
     }
 }
 
 function updateGuestImageFromUrl() {
-    const urlInput = document.getElementById("imgUrlInput").value.trim();
-    if (urlInput) {
-        document.getElementById("previewImg").src = urlInput;
-        guestProfileData.photo = urlInput;
-        localStorage.setItem("guestProfileData", JSON.stringify(guestProfileData));
-    }
-}
-
-function handleLoginSubmit(event) {
-    event.preventDefault();
-    const email = document.getElementById("loginEmail").value;
-    
-    currentUser = {
-        name: "MD. EMTIAZ HOSSAIN SAMI",
-        role: "Admin",
-        photo: "Md. EmTIAZ hOSSAIN sAMI LOGO.png",
-        email: email || "admin@luxuryresort.com"
-    };
-    
-    localStorage.setItem("currentUser", JSON.stringify(currentUser));
-    
-    updateUserUI();
-    closeLoginModal();
-    switchTab("dashboard");
-}
-
-// 🟢 STRICT VALIDATION সহ গেস্ট প্রবেশের জন্য আপডেট করা ফাংশন
-function handleGuestLogin(event) {
-    if (event) event.preventDefault();
-
-    const fNameInput = document.getElementById("fName");
-    const lNameInput = document.getElementById("lName");
-    const emailInput = document.getElementById("email");
-    const phoneInput = document.getElementById("phone");
-
-    const fName = fNameInput ? fNameInput.value.trim() : "";
-    const lName = lNameInput ? lNameInput.value.trim() : "";
-    const email = emailInput ? emailInput.value.trim() : "";
-    const phone = phoneInput ? phoneInput.value.trim() : "";
-
-    // ⛔ ১. যেকোনো একটি ফিল্ড ফাঁকা থাকলে অ্যালার্ট দিয়ে প্রবেশ ব্লক করবে
-    if (!fName || !lName || !email || !phone) {
-        alert("⚠️ Please fill up all the required fields (First Name, Last Name, Email, and Phone Number) to continue as guest!");
-        
-        // ফাঁকা ফিল্ডে কার্সার ফোকাস করবে
-        if (!fName && fNameInput) fNameInput.focus();
-        else if (!lName && lNameInput) lNameInput.focus();
-        else if (!email && emailInput) emailInput.focus();
-        else if (!phone && phoneInput) phoneInput.focus();
-
-        return; // মোডাল বন্ধ হবে না, ইন্টারফেসে প্রবেশ ব্লকড
-    }
-
-    // ⛔ ২. ইমেইল ফরম্যাট চেক
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert("⚠️ Please enter a valid Email Address!");
-        if (emailInput) emailInput.focus();
-        return;
-    }
-
-    // ✅ ৩. তথ্য সঠিক হলে সেভ হয়ে ইন্টারফেসে ঢুকতে দেবে
-    guestProfileData.fName = fName;
-    guestProfileData.lName = lName;
-    guestProfileData.email = email;
-    guestProfileData.phone = phone;
-
-    currentUser = {
-        name: `${fName} ${lName}`,
-        role: "Guest User",
-        photo: guestProfileData.photo || "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400",
-        email: email
-    };
-
-    localStorage.setItem("guestProfileData", JSON.stringify(guestProfileData));
-    localStorage.setItem("currentUser", JSON.stringify(currentUser));
-
-    updateUserUI();
-    closeLoginModal(); // সফলভাবে ভ্যালিডেট করার পরই কেবল মোডাল বন্ধ হবে
-    switchTab("dashboard");
-}
-
-function updateUserUI() {
-    if (!currentUser) return;
-
-    const sName = document.getElementById("sidebarUserName");
-    const sRole = document.getElementById("sidebarUserRole");
-    const sAvatar = document.getElementById("sidebarAvatar");
-
-    if (sName) sName.innerText = currentUser.name;
-    if (sRole) sRole.innerText = currentUser.role;
-    if (sAvatar) sAvatar.src = currentUser.photo;
-
-    const tAvatar = document.getElementById("topbarAvatar");
-    const tAuthText = document.getElementById("topbarAuthText");
-
-    if (tAvatar) tAvatar.src = currentUser.photo;
-    if (tAuthText) tAuthText.innerText = "Logout";
-}
-
-function handleAuthButtonClick() {
-    if (currentUser) {
-        if (confirm("Are you sure you want to logout?")) {
-            currentUser = null;
-            localStorage.setItem("currentUser", "LOGGED_OUT");
-
-            const sName = document.getElementById("sidebarUserName");
-            const sRole = document.getElementById("sidebarUserRole");
-            const sAvatar = document.getElementById("sidebarAvatar");
-            const tAvatar = document.getElementById("topbarAvatar");
-            const tAuthText = document.getElementById("topbarAuthText");
-
-            if (sName) sName.innerText = "Guest User";
-            if (sRole) sRole.innerText = "Visitor";
-            if (sAvatar) sAvatar.src = "https://ui-avatars.com/api/?name=Guest&background=d4af37&color=fff";
-            if (tAvatar) tAvatar.src = "https://ui-avatars.com/api/?name=Guest&background=d4af37&color=fff";
-            if (tAuthText) tAuthText.innerText = "Login";
-
-            openLoginModal();
-        }
-    } else {
-        openLoginModal();
-    }
-}
-
-/* ==================================================================
-   5. BOOKING FORM & BILLING CALCULATION
-   ================================================================== */
-function calculateBilling() {
-    const checkInVal = document.getElementById("checkIn")?.value;
-    const checkOutVal = document.getElementById("checkOut")?.value;
-    const roomSelectVal = document.getElementById("roomTypeSelect")?.value;
-    
-    if (!checkInVal || !checkOutVal || !roomSelectVal) return;
-
-    const startDate = new Date(checkInVal);
-    const endDate = new Date(checkOutVal);
-    
-    let nights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-    if (nights <= 0) nights = 1;
-
-    const roomPrice = parseInt(roomSelectVal.split("|")[1]) || 800;
-    const totalRoomCharge = roomPrice * nights;
-
-    let addonsTotal = 0;
-    document.querySelectorAll('input[name="foodMenu"]:checked').forEach(cb => {
-        addonsTotal += (parseInt(cb.getAttribute("data-price")) || 0) * nights;
-    });
-
-    document.querySelectorAll('input[name="amenities"]:checked').forEach(cb => {
-        addonsTotal += (parseInt(cb.getAttribute("data-price")) || 0) * nights;
-    });
-
-    const grandTotal = totalRoomCharge + addonsTotal;
-
-    if (document.getElementById("billNights")) document.getElementById("billNights").innerText = `${nights} Night(s)`;
-    if (document.getElementById("billRoom")) document.getElementById("billRoom").innerText = `৳${totalRoomCharge.toLocaleString()}`;
-    if (document.getElementById("billAddons")) document.getElementById("billAddons").innerText = `৳${addonsTotal.toLocaleString()}`;
-    if (document.getElementById("billTotal")) document.getElementById("billTotal").innerText = `৳${grandTotal.toLocaleString()} (Inc. Tax & Service Charge)`;
-}
-
-function togglePaymentDetails() {
-    const method = document.getElementById("paymentMethodSelect").value;
-    const onlineBox = document.getElementById("onlinePaymentDetails");
-    const instructions = document.getElementById("paymentInstructions");
-
-    if (method === "bkash" || method === "nagad") {
-        onlineBox.style.display = "block";
-        instructions.innerHTML = `Please Send Money (৳) to ${method.toUpperCase()} Number: <strong>+8801723434535</strong>`;
-    } else if (method === "card") {
-        onlineBox.style.display = "block";
-        instructions.innerHTML = `Please provide your Card Details / Mobile Wallet reference below:`;
-    } else {
-        onlineBox.style.display = "none";
-    }
-}
-
-function handleBookingSubmit(event) {
-    event.preventDefault();
-
-    if (!guestProfileData.fName || !guestProfileData.phone) {
-        alert("Guest profile is missing! Please login first.");
-        openLoginModal();
-        return;
-    }
-
-    const checkIn = document.getElementById("checkIn").value;
-    const checkOut = document.getElementById("checkOut").value;
-    const roomSelectVal = document.getElementById("roomTypeSelect").value;
-    const roomTitle = roomSelectVal.split("|")[0];
-    const roomPrice = parseInt(roomSelectVal.split("|")[1]);
-
-    const startDate = new Date(checkIn);
-    const endDate = new Date(checkOut);
-    let nights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-    if (nights <= 0) nights = 1;
-
-    const foodList = [];
-    document.querySelectorAll('input[name="foodMenu"]:checked').forEach(cb => foodList.push(cb.value));
-
-    const amenityList = [];
-    document.querySelectorAll('input[name="amenities"]:checked').forEach(cb => amenityList.push(cb.value));
-
-    let addOnPrice = 0;
-    document.querySelectorAll('input[name="foodMenu"]:checked, input[name="amenities"]:checked').forEach(cb => {
-        addOnPrice += (parseInt(cb.getAttribute("data-price")) || 0) * nights;
-    });
-
-    const grandTotal = (roomPrice * nights) + addOnPrice;
-
-    const newBooking = {
-        id: "GP-" + Math.floor(1000 + Math.random() * 9000),
-        fName: guestProfileData.fName,
-        lName: guestProfileData.lName,
-        email: guestProfileData.email,
-        phone: guestProfileData.phone,
-        photo: guestProfileData.photo,
-        roomType: roomTitle,
-        checkIn: checkIn,
-        checkOut: checkOut,
-        nights: nights,
-        totalBill: grandTotal,
-        status: "Confirmed",
-        food: foodList,
-        amenities: amenityList
-    };
-
-    bookingsList.unshift(newBooking);
-    localStorage.setItem("bookingsList", JSON.stringify(bookingsList));
-
-    renderDashboard();
-    renderGuestDirectory();
-    
-    alert(`🎉 Reservation Confirmed Successfully!\nBooking ID: ${newBooking.id}\nTotal Bill: ৳${grandTotal.toLocaleString()}`);
-    switchTab("dashboard");
-}
-
-function resetForm() {
-    document.getElementById("reservationForm").reset();
-    calculateBilling();
-}
-
-/* ==================================================================
-   6. RENDERING DASHBOARD & TABLES
-   ================================================================== */
-function renderDashboard() {
-    const totalBookings = bookingsList.length;
-    const totalRevenue = bookingsList.reduce((sum, b) => sum + b.totalBill, 0);
-    
-    let poolCount = 0;
-    let diningCount = 0;
-
-    bookingsList.forEach(b => {
-        if (b.amenities && b.amenities.some(a => a.toLowerCase().includes("pool"))) poolCount++;
-        if (b.food && b.food.length > 0) diningCount++;
-    });
-
-    if (document.getElementById("statTotalBookings")) document.getElementById("statTotalBookings").innerText = totalBookings;
-    if (document.getElementById("statRevenue")) document.getElementById("statRevenue").innerText = `৳${totalRevenue.toLocaleString()}`;
-    if (document.getElementById("statPoolPass")) document.getElementById("statPoolPass").innerText = poolCount;
-    if (document.getElementById("statDiningOrders")) document.getElementById("statDiningOrders").innerText = diningCount;
-
-    const tbody = document.getElementById("dashboardTableBody");
-    if (!tbody) return;
-
-    if (bookingsList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px; color: var(--text-muted);">No recent check-ins found.</td></tr>`;
-        return;
-    }
-
-    tbody.innerHTML = bookingsList.slice(0, 5).map(b => `
-        <tr>
-            <td>
-                <img src="${b.photo}" alt="${b.fName}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid var(--primary-gold);">
-            </td>
-            <td><strong>${b.id}</strong></td>
-            <td>${b.fName} ${b.lName}</td>
-            <td>${b.roomType}</td>
-            <td><small>${b.checkIn} to ${b.checkOut}</small></td>
-            <td><strong style="color: #10B981;">৳${b.totalBill.toLocaleString()}</strong></td>
-            <td><span class="badge-status">${b.status}</span></td>
-        </tr>
-    `).join('');
-}
-
-function renderGuestDirectory() {
-    const tbody = document.getElementById("fullBookingsTableBody");
-    if (!tbody) return;
-
-    if (bookingsList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 20px; color: var(--text-muted);">No reservations found.</td></tr>`;
-        return;
-    }
-
-    tbody.innerHTML = bookingsList.map(b => `
-        <tr>
-            <td>
-                <img src="${b.photo}" alt="${b.fName}" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-gold);">
-            </td>
-            <td><strong>${b.id}</strong></td>
-            <td>
-                <strong>${b.fName} ${b.lName}</strong><br>
-                <small style="color: var(--text-muted);">${b.phone} | ${b.email}</small>
-            </td>
-            <td>${b.roomType}</td>
-            <td>${b.checkIn} → ${b.checkOut} (${b.nights} N)</td>
-            <td><strong style="color: #10B981;">৳${b.totalBill.toLocaleString()}</strong></td>
-            <td>
-                <button onclick="viewBookingDetails('${b.id}')" style="padding: 5px 10px; background: rgba(212,175,55,0.2); border: 1px solid #d4af37; color: #d4af37; border-radius: 4px; cursor: pointer; font-size: 0.78rem;">
-                    <i class="fa-solid fa-eye"></i> Details
-                </button>
-            </td>
-        </tr>
-    `).join('');
-}
-
-/* ==================================================================
-   7. ROOMS & SERVICES CARDS RENDER
-   ================================================================== */
-function renderRoomsCard() {
-    const grid = document.getElementById("roomsCardsGrid");
-    if (!grid) return;
-
-    grid.innerHTML = roomCatalog.map(room => `
-        <div class="stat-card" style="flex-direction: column; align-items: flex-start; padding: 0; overflow: hidden; background: var(--bg-card);">
-            <img src="${room.img}" alt="${room.title}" style="width: 100%; height: 180px; object-fit: cover;">
-            <div style="padding: 16px; width: 100%;">
-                <h3 style="font-family: var(--font-serif); font-size: 1.1rem; color: #fff; margin-bottom: 6px;">${room.title}</h3>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">${room.desc}</p>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <strong style="color: var(--primary-gold); font-size: 1rem;">৳${room.price.toLocaleString()} / night</strong>
-                    <button onclick="quickBookRoom('${room.title}', ${room.price})" style="padding: 6px 14px; background: #d4af37; color: #000; border: none; font-weight: bold; border-radius: 4px; cursor: pointer;">
-                        Book Now
-                    </button>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-function renderServicesCard() {
-    const grid = document.getElementById("servicesCardsGrid");
-    if (!grid) return;
-
-    grid.innerHTML = serviceCatalog.map(srv => `
-        <div class="stat-card" style="flex-direction: column; align-items: flex-start; padding: 0; overflow: hidden; background: var(--bg-card); border: 1px solid rgba(212,175,55,0.2); border-radius: 8px;">
-            <div style="position: relative; width: 100%;">
-                <img src="${srv.img}" alt="${srv.title}" style="width: 100%; height: 160px; object-fit: cover;">
-                <span style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.75); color: var(--primary-gold); padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; border: 1px solid var(--primary-gold);">
-                    <i class="fa-solid ${srv.icon}"></i> ${srv.category}
-                </span>
-            </div>
-            <div style="padding: 16px; width: 100%;">
-                <h4 style="color: #fff; font-size: 1rem; margin-bottom: 6px;">${srv.title}</h4>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4;">${srv.desc}</p>
-                <strong style="color: #10B981; font-size: 0.95rem;">+৳${srv.price.toLocaleString()} / day</strong>
-            </div>
-        </div>
-    `).join('');
-}
-
-function quickBookRoom(title, price) {
-    switchTab("booking");
-    const select = document.getElementById("roomTypeSelect");
-    if (select) {
-        select.value = `${title}|${price}`;
-        calculateBilling();
-    }
-}
-
-/* ==================================================================
-   8. MODAL POPUP HELPERS
-   ================================================================== */
-function viewBookingDetails(bookingId) {
-    const b = bookingsList.find(item => item.id === bookingId);
-    if (!b) return;
-
-    const modalContent = document.getElementById("modalContent");
-    if (!modalContent) return;
-
-    modalContent.innerHTML = `
-        <div style="padding: 24px;">
-            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
-                <img src="${b.photo}" alt="${b.fName}" style="width: 70px; height: 70px; border-radius: 50%; border: 3px solid #d4af37; object-fit: cover;">
-                <div>
-                    <h2 style="color: #fff; font-family: var(--font-serif);">${b.fName} ${b.lName}</h2>
-                    <p style="color: var(--primary-gold); font-size: 0.85rem;">Booking ID: ${b.id}</p>
-                </div>
-            </div>
-            <div style="font-size: 0.88rem; color: #cbd5e1; display: flex; flex-direction: column; gap: 8px;">
-                <p><strong>Email:</strong> ${b.email}</p>
-                <p><strong>Phone:</strong> ${b.phone}</p>
-                <p><strong>Room Category:</strong> ${b.roomType}</p>
-                <p><strong>Check-In / Out:</strong> ${b.checkIn} to ${b.checkOut} (${b.nights} Nights)</p>
-                <p><strong>Meals Included:</strong> ${b.food && b.food.length > 0 ? b.food.join(', ') : 'None'}</p>
-                <p><strong>Amenities:</strong> ${b.amenities && b.amenities.length > 0 ? b.amenities.join(', ') : 'None'}</p>
-                <hr style="border-color: var(--border-color); margin: 10px 0;">
-                <p style="font-size: 1.1rem; color: #10B981;"><strong>Total Bill Paid:</strong> ৳${b.totalBill.toLocaleString()}</p>
-            </div>
-        </div>
-    `;
-
-    document.getElementById("detailsModal").classList.add("active");
+    const url = document.getElementById('imgUrlInput').value;
+    if (url) document.getElementById('previewImg').src = url;
 }
 
 function closeModal() {
-    const modal = document.getElementById("detailsModal");
-    if (modal) modal.classList.remove("active");
+    document.getElementById('detailsModal').classList.remove('active');
 }
 
-function closeModalOnOutsideClick(event) {
-    if (event.target.id === "detailsModal") {
-        closeModal();
-    }
+function closeModalOnOutsideClick(e) {
+    if (e.target.id === 'detailsModal') closeModal();
 }
