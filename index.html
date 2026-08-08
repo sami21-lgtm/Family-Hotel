@@ -17,14 +17,24 @@
 </head>
 <body class="logged-out">
 
-    <!-- MANDATORY AUTHENTICATION & LOGIN MODAL -->
+    <!-- DUAL AUTHENTICATION & LOGIN MODAL -->
     <div id="loginModal" class="modal active" role="dialog" aria-labelledby="authTitle">
         <div class="modal-content auth-card">
-            <h3 id="authTitle" class="modal-title" style="color: var(--gold); text-align: center; font-family: var(--font-head); font-size: 1.5rem;">System Authentication</h3>
+            <h3 id="authTitle" class="modal-title" style="color: var(--gold); text-align: center; font-family: var(--font-head); font-size: 1.5rem;">System Access Portal</h3>
             
+            <!-- Auth Portal Switcher Tabs -->
+            <div class="auth-tabs-toggle mt-15 mb-15" style="display: flex; gap: 10px; justify-content: center;">
+                <button type="button" id="btnStaffAuth" class="btn-secondary-sm active" onclick="switchAuthForm('staff')">
+                    <i class="fa-solid fa-user-shield"></i> Staff Admin
+                </button>
+                <button type="button" id="btnGuestAuth" class="btn-secondary-sm" onclick="switchAuthForm('guest')">
+                    <i class="fa-solid fa-user"></i> Guest Portal
+                </button>
+            </div>
+
             <!-- Staff Admin Login Form -->
-            <form onsubmit="handleLoginSubmit(event)" class="mt-15">
-                <h4 style="color: var(--text-main);">Staff Admin Login</h4>
+            <form id="staffLoginForm" onsubmit="handleLoginSubmit(event)" class="mt-10">
+                <h4 style="color: var(--text-main); text-align: center;">Staff Admin Login</h4>
                 <div class="form-group mt-10">
                     <label for="loginEmail" class="sr-only">Staff Email</label>
                     <input type="email" id="loginEmail" placeholder="Enter Staff Email" required autocomplete="username">
@@ -35,6 +45,26 @@
                 </div>
                 <button type="submit" class="btn-block-gold mt-15">
                     <i class="fa-solid fa-lock"></i> Login as Admin
+                </button>
+            </form>
+
+            <!-- Guest Portal Access Form -->
+            <form id="guestLoginForm" onsubmit="handleGuestLoginSubmit(event)" class="mt-10" style="display: none;">
+                <h4 style="color: var(--text-main); text-align: center;">Guest Portal Access</h4>
+                <div class="form-group mt-10">
+                    <label for="guestAuthName" class="sr-only">Full Name</label>
+                    <input type="text" id="guestAuthName" placeholder="Enter Your Full Name *" required autocomplete="name">
+                </div>
+                <div class="form-group mt-10">
+                    <label for="guestAuthEmail" class="sr-only">Email Address</label>
+                    <input type="email" id="guestAuthEmail" placeholder="Enter Your Email Address *" required autocomplete="email">
+                </div>
+                <div class="form-group mt-10">
+                    <label for="guestAuthPhone" class="sr-only">Phone Number</label>
+                    <input type="tel" id="guestAuthPhone" placeholder="Enter Your Phone Number *" required autocomplete="tel">
+                </div>
+                <button type="submit" class="btn-block-gold mt-15">
+                    <i class="fa-solid fa-right-to-bracket"></i> Continue as Guest
                 </button>
             </form>
         </div>
@@ -67,7 +97,7 @@
                 <li class="nav-item active role-admin role-frontdesk" data-tab="dashboard" onclick="switchTab('dashboard')">
                     <i class="fa-solid fa-chart-line"></i> <span data-i18n="navDashboard">Dashboard</span>
                 </li>
-                <li class="nav-item role-admin" data-tab="rooms" onclick="switchTab('rooms')">
+                <li class="nav-item role-admin role-guest" data-tab="rooms" onclick="switchTab('rooms')">
                     <i class="fa-solid fa-bed"></i> <span data-i18n="navRooms">Rooms & Inventory</span>
                 </li>
                 <li class="nav-item role-admin role-frontdesk role-guest" data-tab="booking" onclick="switchTab('booking')">
@@ -85,7 +115,7 @@
                 <li class="nav-item role-admin role-frontdesk" data-tab="guests" onclick="switchTab('guests')">
                     <i class="fa-solid fa-users"></i> <span data-i18n="navGuests">Guest Directory</span>
                 </li>
-                <li class="nav-item role-admin" data-tab="services" onclick="switchTab('services')">
+                <li class="nav-item role-admin role-guest" data-tab="services" onclick="switchTab('services')">
                     <i class="fa-solid fa-utensils"></i> <span data-i18n="navServices">Food & Facilities</span>
                 </li>
             </ul>
