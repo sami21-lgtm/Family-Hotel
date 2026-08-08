@@ -176,7 +176,7 @@ function renderAll() {
 }
 
 // ==========================================
-// 4. GUEST ROOMS RENDER (NO BUTTONS EXCEPT BOOK NOW)
+// 4. GUEST ROOMS RENDER
 // ==========================================
 function renderGuestRooms() {
     const container = document.getElementById('guestRoomsCardsGrid');
@@ -224,7 +224,7 @@ function renderGuestRooms() {
 }
 
 // ==========================================
-// 5. ADMIN ROOMS RENDER (MATCHING IMAGE EXACTLY)
+// 5. ADMIN ROOMS RENDER
 // ==========================================
 function renderAdminRooms() {
     const container = document.getElementById('adminRoomsCardsGrid');
@@ -270,7 +270,27 @@ function renderAdminRooms() {
 }
 
 // ==========================================
-// 6. ADMIN ACTIONS (ADD ROOM, EDIT PRICE, TOGGLE STATUS)
+// 6. ORDER ADDON FROM MENU
+// ==========================================
+function orderAddonService(serviceName) {
+    const checkbox = document.getElementById('addon-' + serviceName);
+    if (checkbox) {
+        checkbox.checked = true;
+    }
+    
+    if (currentUser.name && currentUser.name !== 'Valued Guest') {
+        if (document.getElementById('bookingGuestName')) document.getElementById('bookingGuestName').value = currentUser.name;
+        if (document.getElementById('bookingGuestEmail')) document.getElementById('bookingGuestEmail').value = currentUser.email || '';
+        if (document.getElementById('bookingGuestPhone')) document.getElementById('bookingGuestPhone').value = currentUser.phone || '';
+    }
+
+    switchTab('tabBooking');
+    calculateTotal();
+    alert('✅ ' + serviceName + ' has been added to your booking!');
+}
+
+// ==========================================
+// 7. ADMIN ACTIONS
 // ==========================================
 function promptAddNewRoom() {
     if (currentRole !== 'admin') return;
@@ -322,7 +342,7 @@ function toggleRoomStatus(roomId) {
 }
 
 // ==========================================
-// 7. AUTH & ROLE MANAGEMENT
+// 8. AUTH & ROLE MANAGEMENT
 // ==========================================
 function switchAuthForm(type) {
     const guestForm = document.getElementById('guestLoginForm');
@@ -418,7 +438,7 @@ function logoutUser() {
 }
 
 // ==========================================
-// 8. NAVIGATION & BOOKING CALCULATOR
+// 9. NAVIGATION & BOOKING CALCULATOR
 // ==========================================
 function switchTab(tabId) {
     document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
@@ -547,7 +567,7 @@ function resetForm() {
 }
 
 // ==========================================
-// 9. TABLES RENDER
+// 10. TABLES RENDER
 // ==========================================
 function renderDashboard() {
     const totalEl = document.getElementById('statTotalBookings');
