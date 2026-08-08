@@ -76,20 +76,27 @@
                 </button>
             </form>
 
-            <!-- STAFF ADMIN LOGIN FORM -->
+            <!-- STAFF ADMIN LOGIN FORM (UPDATED WITH DEFAULT CREDENTIALS) -->
             <form id="staffLoginForm" onsubmit="handleStaffLogin(event)" class="mt-10" style="display: none;">
                 <h4 style="color: var(--text-main); text-align: center;" data-i18n="staffLoginHead">Staff Admin Login</h4>
                 <p style="text-align: center; color: #4299e1; font-size: 0.8rem;" class="mb-10"><i class="fa-solid fa-lock"></i> Requires Password Login</p>
                 
                 <div class="form-group mt-10">
                     <label for="loginEmail" class="sr-only">Staff Email</label>
-                    <input type="email" id="loginEmail" placeholder="Enter Staff Email" autocomplete="username">
+                    <input type="email" id="loginEmail" placeholder="Enter Staff Email" value="admin@grandpalace.com" required autocomplete="username">
                 </div>
                 <div class="form-group mt-10">
                     <label for="loginPasswordInput" class="sr-only">Staff Password</label>
-                    <input type="password" id="loginPasswordInput" placeholder="Enter Admin Password" required autocomplete="current-password">
+                    <input type="password" id="loginPasswordInput" placeholder="Enter Admin Password" value="admin123" required autocomplete="current-password">
                 </div>
-                <button type="submit" class="btn-block-gold mt-15">Login to Dashboard</button>
+                
+                <div class="text-center mt-5">
+                    <small style="color: var(--text-muted); font-size: 0.75rem;">Default Admin: admin@grandpalace.com | admin123</small>
+                </div>
+
+                <button type="submit" class="btn-block-gold mt-15">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login to Dashboard
+                </button>
             </form>
 
         </div>
@@ -465,7 +472,7 @@
                     </div>
                 </section>
 
-                <!-- TAB 7: FINANCIALS -->
+                <!-- TAB 7: FINANCIALS (FIXED & COMPLETED) -->
                 <section id="tabFinance" class="tab-page">
                     <div class="page-header">
                         <h2 data-i18n="finTitle"><i class="fa-solid fa-chart-line"></i> Financial Revenue Reports</h2>
@@ -495,9 +502,9 @@
                                 <tr>
                                     <th data-i18n="tblInvId">Invoice ID</th>
                                     <th data-i18n="tblGuestName">Guest Name</th>
-                                    <th data-i18n="tblPaymentGateway">Gateway</th>
-                                    <th data-i18n="tblAmount">Amount Paid</th>
-                                    <th data-i18n="tblDate">Transaction Date</th>
+                                    <th data-i18n="tblAmount">Amount</th>
+                                    <th data-i18n="tblMethod">Payment Gateway</th>
+                                    <th data-i18n="tblDate">Date</th>
                                     <th data-i18n="tblAction">Action</th>
                                 </tr>
                             </thead>
@@ -506,33 +513,11 @@
                     </div>
                 </section>
 
-                <!-- TAB 8: GUEST DIRECTORY -->
-                <section id="tabGuests" class="tab-page">
-                    <div class="page-header">
-                        <h2 data-i18n="guestsTitle"><i class="fa-solid fa-users"></i> Guest Directory</h2>
-                        <p data-i18n="guestsSub">View and manage registered hotel guests and history.</p>
-                    </div>
-                    <div class="table-responsive mt-15">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th data-i18n="tblPhoto">Photo</th>
-                                    <th data-i18n="tblName">Guest Name</th>
-                                    <th data-i18n="tblEmail">Email</th>
-                                    <th data-i18n="tblPhone">Phone</th>
-                                    <th data-i18n="tblAction">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="guestsTableBody"></tbody>
-                        </table>
-                    </div>
-                </section>
-
             </main>
         </div>
     </div>
 
-    <!-- External JavaScript File -->
+    <!-- External JavaScript File Connection -->
     <script src="script.js"></script>
 </body>
 </html>
