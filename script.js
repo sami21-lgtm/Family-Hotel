@@ -195,6 +195,8 @@ const i18nData = {
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
     initLiveClock();
+    setInterval(initLiveClock, 1000); // Live clock interval update
+    
     populateRoomDropdown();
     renderRooms();
     renderServices();
@@ -205,20 +207,25 @@ document.addEventListener('DOMContentLoaded', () => {
     calculateBilling();
     
     // Attach Dynamic Billing Change Listeners
-    const formInputs = document.querySelectorAll('#reservationForm input, #reservationForm select');
-    formInputs.forEach(input => {
-        input.addEventListener('change', calculateBilling);
-    });
+    const reservationForm = document.getElementById('reservationForm');
+    if (reservationForm) {
+        reservationForm.addEventListener('change', calculateBilling);
+        reservationForm.addEventListener('submit', handleBookingSubmit);
+    }
 });
 
-// Populate Room Options Dynamically for Booking
+// Populate Room Options Dynamically for Booking with Status Indicators
 function populateRoomDropdown() {
     const select = document.getElementById('roomTypeSelect');
     if (!select) return;
 
-    select.innerHTML = roomList.map(r => 
-        `<option value="${r.id}|${r.title}|${r.price}">Room ${r.id} - ${r.title} (৳${r.price.toLocaleString()}/night)</option>`
-    ).join('');
+    select.innerHTML = roomList.map(r => {
+        const isAvailable = r.status === 'available';
+        const statusText = isAvailable ? '' : ` [${r.status.toUpperCase()}]`;
+        return `<option value="${r.id}|${r.title}|${r.price}" ${!isAvailable ? 'disabled' : ''}>
+            Room ${r.id} - ${r.title} (৳${r.price.toLocaleString()}/night)${statusText}
+        </option>`;
+    }).join('');
 }
 
 // --- BILINGUAL TOGGLE SYSTEM ---
@@ -274,7 +281,10 @@ function initLiveClock() {
     if (!dateEl) return;
 
     const now = new Date();
-    dateEl.textContent = now.toLocaleString(currentLang === 'bn' ? 'bn-BD' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' });
+    dateEl.textContent = now.toLocaleString(currentLang === 'bn' ? 'bn-BD' : 'en-US', { 
+        dateStyle: 'medium', 
+        timeStyle: 'medium' 
+    });
 }
 
 function toggleSidebar(forceState) {
@@ -360,10 +370,10 @@ function togglePaymentDetails() {
 
 // --- BOOKING SUBMISSION & ROOM STATUS UPDATES ---
 function handleBookingSubmit(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
 
     const roomSelect = document.getElementById('roomTypeSelect');
-    if (!roomSelect) return;
+    if (!roomSelect || !roomSelect.value) return;
 
     const roomVal = roomSelect.value.split('|');
     const roomNo = roomVal[0];
@@ -395,6 +405,8 @@ function handleBookingSubmit(event) {
 
     bookings.unshift(newBooking);
     
+    // Refresh Dynamic Views
+    populateRoomDropdown();
     refreshDashboard();
     renderFrontDesk();
     renderHousekeeping();
@@ -435,21 +447,18 @@ function renderTables() {
 
     if (!dashBody && !fullBody) return;
 
-    let rowsHTML = '';
-    bookings.forEach(b => {
-        rowsHTML += `
-            <tr>
-                <td><img src="${b.guestPhoto}" class="table-img" alt="Guest" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(b.guestName)}'"></td>
-                <td><strong>${b.id}</strong></td>
-                <td>${b.guestName}</td>
-                <td>Room ${b.roomNumber} - ${b.roomType}</td>
-                <td>${b.checkIn} to ${b.checkOut}</td>
-                <td>৳${b.totalBill.toLocaleString()}</td>
-                <td><span class="status-badge badge-occupied">${b.status}</span></td>
-                <td><button class="btn-secondary-sm" onclick="printInvoice('${b.id}')"><i class="fa-solid fa-print"></i></button></td>
-            </tr>
-        `;
-    });
+    let rowsHTML = bookings.map(b => `
+        <tr>
+            <td><img src="${b.guestPhoto}" class="table-img" alt="Guest" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(b.guestName)}'"></td>
+            <td><strong>${b.id}</strong></td>
+            <td>${b.guestName}</td>
+            <td>Room ${b.roomNumber} - ${b.roomType}</td>
+            <td>${b.checkIn} to ${b.checkOut}</td>
+            <td>৳${b.totalBill.toLocaleString()}</td>
+            <td><span class="status-badge badge-occupied">${b.status}</span></td>
+            <td><button class="btn-secondary-sm" onclick="printInvoice('${b.id}')"><i class="fa-solid fa-print"></i></button></td>
+        </tr>
+    `).join('');
 
     if (dashBody) dashBody.innerHTML = rowsHTML;
     if (fullBody) fullBody.innerHTML = rowsHTML;
@@ -483,6 +492,7 @@ function updateRoomStatus(roomId, newStatus) {
     const room = roomList.find(r => r.id === roomId);
     if (room) {
         room.status = newStatus;
+        populateRoomDropdown();
         renderFrontDesk();
         renderHousekeeping();
     }
@@ -617,7 +627,7 @@ function renderServices() {
 
 // --- AUTHENTICATION MODALS ---
 function handleLoginSubmit(e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
     const emailElem = document.getElementById('loginEmail');
     
     currentUser = {
@@ -669,6 +679,7 @@ function handleAuthButtonClick() {
 }
 
 function previewUploadImage(e) {
+    if (!e || !e.target || !e.target.files) return;
     const file = e.target.files[0];
     if (file) {
         const reader = new FileReader();
@@ -694,5 +705,5 @@ function closeModal() {
 }
 
 function closeModalOnOutsideClick(e) {
-    if (e.target.id === 'detailsModal') closeModal();
+    if (e && e.target && e.target.id === 'detailsModal') closeModal();
 }
