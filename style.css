@@ -3,6 +3,7 @@
    ========================================================================== */
 
 :root {
+    color-scheme: dark; /* Native HTML inputs & scrollbars Dark Mode Fix */
     --bg-main: #0b0f19;
     --bg-card: rgba(21, 28, 44, 0.92);
     --bg-sidebar: rgba(13, 19, 34, 0.95);
@@ -19,7 +20,8 @@
     --font-head: 'Playfair Display', serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;
     --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6);
-    --trans: all 0.25s ease;
+    --shadow-hover: 0 15px 30px -5px rgba(212, 175, 55, 0.2);
+    --trans: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Base Reset & Typography */
@@ -33,6 +35,7 @@ body {
     font-family: var(--font-body); 
     background: url('premium_photo-1661964071015-d97428970584.jpg') no-repeat center center fixed;
     background-size: cover;
+    background-color: var(--bg-main);
     color: var(--text-main); 
     line-height: 1.5; 
     overflow-x: hidden; 
@@ -81,8 +84,8 @@ body.logged-out .app-container {
 #loginModal {
     position: fixed; 
     inset: 0;
-    background: rgba(11, 15, 25, 0.85);
-    backdrop-filter: blur(10px);
+    background: rgba(11, 15, 25, 0.88);
+    backdrop-filter: blur(12px);
     display: flex; 
     align-items: center; 
     justify-content: center;
@@ -102,6 +105,18 @@ body.logged-out #loginModal,
     background: rgba(21, 28, 44, 0.96);
     border: 1px solid var(--gold);
     box-shadow: 0 0 35px rgba(212, 175, 55, 0.3);
+    border-radius: 14px;
+    padding: 30px;
+    width: 100%;
+    max-width: 440px;
+}
+
+.auth-tabs-toggle .btn-secondary-sm.active {
+    background: var(--gold);
+    color: #000;
+    font-weight: 700;
+    border-color: var(--gold);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
 }
 
 /* ==========================================================================
@@ -131,7 +146,7 @@ body.logged-out #loginModal,
 #sidebarOverlay { 
     position: fixed; 
     inset: 0; 
-    background: rgba(0, 0, 0, 0.7); 
+    background: rgba(0, 0, 0, 0.75); 
     backdrop-filter: blur(4px); 
     z-index: 90; 
     opacity: 0; 
@@ -246,6 +261,7 @@ body.logged-out #loginModal,
 
 .avatar-img.clickable:hover { 
     transform: scale(1.08); 
+    box-shadow: 0 0 10px var(--gold);
 }
 
 .user-info h4 { 
@@ -294,6 +310,7 @@ body.logged-out #loginModal,
 .nav-item.active { 
     background: rgba(212, 175, 55, 0.15); 
     color: var(--gold); 
+    transform: translateX(4px);
 }
 
 .role-switch-box { 
@@ -317,11 +334,11 @@ body.logged-out #loginModal,
 
 .tab-page.active { 
     display: block; 
-    animation: fadeIn 0.3s ease-in-out; 
+    animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
 @keyframes fadeIn { 
-    from { opacity: 0; transform: translateY(8px); } 
+    from { opacity: 0; transform: translateY(10px); } 
     to { opacity: 1; transform: translateY(0); } 
 }
 
@@ -366,6 +383,14 @@ body.logged-out #loginModal,
     box-shadow: var(--shadow); 
     transition: var(--trans); 
     backdrop-filter: blur(10px); 
+}
+
+.stat-card:hover, 
+.room-status-card:hover, 
+.custom-card:hover { 
+    transform: translateY(-3px); 
+    box-shadow: var(--shadow-hover); 
+    border-color: var(--gold); 
 }
 
 .stat-card { 
@@ -415,6 +440,11 @@ body.logged-out #loginModal,
     width: 100%; 
     height: 180px; 
     object-fit: cover; 
+    transition: var(--trans);
+}
+
+.custom-card:hover img {
+    transform: scale(1.04);
 }
 
 .custom-card .card-body { 
@@ -476,6 +506,10 @@ th {
     font-size: 0.75rem; 
 }
 
+tr:last-child td {
+    border-bottom: none;
+}
+
 .table-img { 
     width: 38px; 
     height: 38px; 
@@ -509,13 +543,15 @@ th {
     border: 1px solid var(--status-occ); 
 }
 
-.badge-dirty { 
+.badge-dirty,
+.badge-pending { 
     background: rgba(245, 158, 11, 0.15); 
     color: var(--status-dirty); 
     border: 1px solid var(--status-dirty); 
 }
 
-.badge-maintenance { 
+.badge-maintenance,
+.badge-cancelled { 
     background: rgba(107, 114, 128, 0.15); 
     color: var(--status-maint); 
     border: 1px solid var(--status-maint); 
@@ -559,6 +595,7 @@ th {
     font-size: 0.85rem; 
     margin-top: 4px; 
     cursor: pointer; 
+    user-select: none;
 }
 
 input[type="text"], 
@@ -566,6 +603,7 @@ input[type="email"],
 input[type="password"], 
 input[type="date"], 
 input[type="tel"],
+input[type="url"],
 select, 
 .custom-select {
     width: 100%; 
@@ -579,11 +617,22 @@ select,
     transition: var(--trans);
 }
 
+/* Custom Select Arrow Styling */
+select, .custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23d4af37' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: calc(100% - 12px) center;
+    padding-right: 35px;
+    cursor: pointer;
+}
+
 input:focus, 
 select:focus, 
 .custom-select:focus { 
     border-color: var(--gold); 
-    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2); 
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.25); 
 }
 
 /* Custom File Upload Input Style */
@@ -616,9 +665,13 @@ input[type="file"]::file-selector-button:hover {
     color: #000;
 }
 
+select option {
+    background-color: #0f172a;
+    color: var(--text-main);
+}
+
 select option:disabled { 
     color: #64748b; 
-    background-color: #0f172a; 
     font-style: italic; 
 }
 
@@ -677,6 +730,7 @@ select option:disabled {
 .btn-block-gold:hover { 
     background: #b8962e; 
     color: #fff; 
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
 }
 
 .btn-block-gold { 
@@ -697,6 +751,7 @@ select option:disabled {
 .btn-secondary-sm:hover {
     background: rgba(212, 175, 55, 0.2);
     color: var(--gold);
+    border-color: var(--gold);
 }
 
 .form-actions { 
@@ -711,8 +766,8 @@ select option:disabled {
 .modal { 
     position: fixed; 
     inset: 0; 
-    background: rgba(0, 0, 0, 0.8); 
-    backdrop-filter: blur(6px); 
+    background: rgba(0, 0, 0, 0.82); 
+    backdrop-filter: blur(8px); 
     display: flex; 
     align-items: center; 
     justify-content: center; 
@@ -747,6 +802,7 @@ select option:disabled {
     font-size: 1.5rem; 
     color: var(--text-muted); 
     cursor: pointer; 
+    transition: var(--trans);
 }
 
 .close-modal-btn:hover { 
