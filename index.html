@@ -20,21 +20,21 @@
     <!-- DUAL AUTHENTICATION & LOGIN MODAL -->
     <div id="loginModal" class="modal active" role="dialog" aria-labelledby="authTitle">
         <div class="modal-content auth-card">
-            <h3 id="authTitle" class="modal-title" style="color: var(--gold); text-align: center; font-family: var(--font-head); font-size: 1.5rem;">System Access Portal</h3>
+            <h3 id="authTitle" class="modal-title" style="color: var(--gold); text-align: center; font-family: var(--font-head); font-size: 1.5rem;" data-i18n="authTitle">System Access Portal</h3>
             
             <!-- Auth Portal Switcher Tabs -->
             <div class="auth-tabs-toggle mt-15 mb-15" style="display: flex; gap: 10px; justify-content: center;">
                 <button type="button" id="btnStaffAuth" class="btn-secondary-sm active" onclick="switchAuthForm('staff')">
-                    <i class="fa-solid fa-user-shield"></i> Staff Admin
+                    <i class="fa-solid fa-user-shield"></i> <span data-i18n="btnStaffAdmin">Staff Admin</span>
                 </button>
                 <button type="button" id="btnGuestAuth" class="btn-secondary-sm" onclick="switchAuthForm('guest')">
-                    <i class="fa-solid fa-user"></i> Guest Portal
+                    <i class="fa-solid fa-user"></i> <span data-i18n="btnGuestPortal">Guest Portal</span>
                 </button>
             </div>
 
             <!-- Staff Admin Login Form -->
             <form id="staffLoginForm" onsubmit="handleLoginSubmit(event)" class="mt-10">
-                <h4 style="color: var(--text-main); text-align: center;">Staff Admin Login</h4>
+                <h4 style="color: var(--text-main); text-align: center;" data-i18n="staffLoginHead">Staff Admin Login</h4>
                 <div class="form-group mt-10">
                     <label for="loginEmail" class="sr-only">Staff Email</label>
                     <input type="email" id="loginEmail" placeholder="Enter Staff Email" required autocomplete="username">
@@ -44,13 +44,13 @@
                     <input type="password" id="loginPassword" placeholder="Enter Staff Password" required autocomplete="current-password">
                 </div>
                 <button type="submit" class="btn-block-gold mt-15">
-                    <i class="fa-solid fa-lock"></i> Login as Admin
+                    <i class="fa-solid fa-lock"></i> <span data-i18n="btnLoginAdmin">Login as Admin</span>
                 </button>
             </form>
 
-            <!-- Guest Portal Access Form (Updated with Picture Option) -->
+            <!-- Guest Portal Access Form -->
             <form id="guestLoginForm" onsubmit="handleGuestLoginSubmit(event)" class="mt-10" style="display: none;">
-                <h4 style="color: var(--text-main); text-align: center;">Guest Portal Access</h4>
+                <h4 style="color: var(--text-main); text-align: center;" data-i18n="guestLoginHead">Guest Portal Access</h4>
                 
                 <div class="form-group mt-10">
                     <label for="guestAuthName" class="sr-only">Full Name</label>
@@ -75,15 +75,15 @@
 
                 <!-- Guest Photo File Upload & Preview -->
                 <div class="form-group mt-10">
-                    <label style="color: var(--text-muted); font-size: 0.82rem; display: block; margin-bottom: 5px;">Or Upload Profile Picture:</label>
+                    <label style="color: var(--text-muted); font-size: 0.82rem; display: block; margin-bottom: 5px;" data-i18n="lblUploadPhoto">Or Upload Profile Picture:</label>
                     <div class="avatar-preview-box" style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; border: 1px dashed var(--gold);">
-                        <img id="guestAuthPreviewImg" src="https://ui-avatars.com/api/?name=Guest" class="table-img" alt="Guest Avatar Preview" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover;">
+                        <img id="guestAuthPreviewImg" src="https://ui-avatars.com/api/?name=Guest" class="table-img" alt="Guest Avatar Preview" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=Guest'">
                         <input type="file" id="guestAuthPhotoUpload" accept="image/*" onchange="previewGuestAuthImage(event)" style="font-size: 0.8rem; color: var(--text-main); width: 100%;">
                     </div>
                 </div>
 
                 <button type="submit" class="btn-block-gold mt-15">
-                    <i class="fa-solid fa-right-to-bracket"></i> Continue as Guest
+                    <i class="fa-solid fa-right-to-bracket"></i> <span data-i18n="btnContinueGuest">Continue as Guest</span>
                 </button>
             </form>
         </div>
@@ -150,7 +150,7 @@
                     <option value="guest">Guest View</option>
                 </select>
                 <button type="button" class="btn-secondary-sm mt-10" style="width:100%" onclick="logoutUser()">
-                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    <i class="fa-solid fa-right-from-bracket"></i> <span data-i18n="btnLogout">Logout</span>
                 </button>
             </div>
         </aside>
@@ -253,31 +253,31 @@
                         <form id="reservationForm" onsubmit="handleBookingSubmit(event)">
                             
                             <!-- Guest Details -->
-                            <h4 style="color: var(--gold);" class="mb-10">Guest Information</h4>
+                            <h4 style="color: var(--gold);" class="mb-10" data-i18n="guestInfoHead">Guest Information</h4>
                             <div class="form-grid mb-15">
                                 <div class="form-group">
-                                    <label for="bookingGuestName">Guest Full Name *</label>
+                                    <label for="bookingGuestName" data-i18n="lblGuestName">Guest Full Name *</label>
                                     <input type="text" id="bookingGuestName" placeholder="e.g. Tanvir Ahmed" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="bookingGuestEmail">Guest Email *</label>
+                                    <label for="bookingGuestEmail" data-i18n="lblGuestEmail">Guest Email *</label>
                                     <input type="email" id="bookingGuestEmail" placeholder="tanvir@example.com" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="bookingGuestPhone">Phone Number *</label>
+                                    <label for="bookingGuestPhone" data-i18n="lblGuestPhone">Phone Number *</label>
                                     <input type="tel" id="bookingGuestPhone" placeholder="+8801700000000" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="imgUrlInput">Avatar / Photo URL</label>
-                                    <input type="text" id="imgUrlInput" placeholder="Avatar Photo URL" onchange="updateGuestImageFromUrl()">
+                                    <label for="imgUrlInput" data-i18n="lblAvatarUrl">Avatar / Photo URL</label>
+                                    <input type="url" id="imgUrlInput" placeholder="https://example.com/photo.jpg" onchange="updateGuestImageFromUrl()">
                                 </div>
                             </div>
 
                             <!-- Guest Photo Upload & Preview Box -->
                             <div class="form-group mb-15">
-                                <label for="guestPhotoUpload">Guest Photo Attachment</label>
-                                <div class="avatar-preview-box mt-5">
-                                    <img id="previewImg" src="https://ui-avatars.com/api/?name=Guest" class="table-img" alt="Guest Preview">
+                                <label for="guestPhotoUpload" data-i18n="lblPhotoAttach">Guest Photo Attachment</label>
+                                <div class="avatar-preview-box mt-5" style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; border: 1px dashed var(--gold);">
+                                    <img id="previewImg" src="https://ui-avatars.com/api/?name=Guest" class="table-img" alt="Guest Preview" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=Guest'">
                                     <input type="file" id="guestPhotoUpload" accept="image/*" onchange="previewUploadImage(event)">
                                 </div>
                             </div>
@@ -285,7 +285,7 @@
                             <div class="divider"></div>
 
                             <!-- Room & Stay Details -->
-                            <h4 style="color: var(--gold);" class="mb-10">Stay & Room Details</h4>
+                            <h4 style="color: var(--gold);" class="mb-10" data-i18n="stayDetailsHead">Stay & Room Details</h4>
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label for="checkIn" data-i18n="lblCheckIn">Check-In *</label>
@@ -307,14 +307,14 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label data-i18n="cuisineOpt">Cuisine & Services</label>
-                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" data-price="500" onchange="calculateTotal()"> Bengali Traditional Feast (+৳500)</label>
-                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" data-price="750" onchange="calculateTotal()"> Authentic Thai Gourmet (+৳750)</label>
-                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" data-price="1200" onchange="calculateTotal()"> Continental Buffet (+৳1200)</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" value="Bengali Traditional Feast" data-price="500" onchange="calculateTotal()"> Bengali Traditional Feast (+৳500)</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" value="Authentic Thai Gourmet" data-price="750" onchange="calculateTotal()"> Authentic Thai Gourmet (+৳750)</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" value="Continental Buffet" data-price="1200" onchange="calculateTotal()"> Continental Buffet (+৳1200)</label>
                                 </div>
                                 <div class="form-group">
                                     <label data-i18n="amenitiesOpt">Pool & Gym Access</label>
-                                    <label class="checkbox-label"><input type="checkbox" name="amenities" data-price="500" onchange="calculateTotal()"> Swimming Pool Pass (+৳500)</label>
-                                    <label class="checkbox-label"><input type="checkbox" name="amenities" data-price="400" onchange="calculateTotal()"> VIP Gym Pass (+৳400)</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="amenities" value="Swimming Pool Pass" data-price="500" onchange="calculateTotal()"> Swimming Pool Pass (+৳500)</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="amenities" value="VIP Gym Pass" data-price="400" onchange="calculateTotal()"> VIP Gym Pass (+৳400)</label>
                                 </div>
                                 <div class="form-group">
                                     <label for="paymentMethodSelect" data-i18n="lblGateway">Select Gateway *</label>
@@ -371,7 +371,7 @@
                                 <h3 data-i18n="hkClean">Available & Clean</h3>
                                 <div id="statCleanRooms" class="stat-value">0</div>
                             </div>
-                            <div class="stat-icon"><i class="fa-solid fa-sparkles"></i></div>
+                            <div class="stat-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-info">
@@ -393,10 +393,10 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Room</th>
-                                    <th>Category</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th data-i18n="tblRoom">Room</th>
+                                    <th data-i18n="tblCategory">Category</th>
+                                    <th data-i18n="tblStatus">Status</th>
+                                    <th data-i18n="tblAction">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="housekeepingTableBody"></tbody>
@@ -414,14 +414,14 @@
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-info">
-                                <h3>Grand Revenue</h3>
+                                <h3 data-i18n="finGrandRev">Grand Revenue</h3>
                                 <div id="finTotalRev" class="stat-value">৳0</div>
                             </div>
                             <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-info">
-                                <h3>Total Invoices Issued</h3>
+                                <h3 data-i18n="finTotalInvoices">Total Invoices Issued</h3>
                                 <div id="finTotalInvoices" class="stat-value">0</div>
                             </div>
                             <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
@@ -432,12 +432,12 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Invoice No</th>
-                                    <th>Guest Name</th>
-                                    <th>Room</th>
-                                    <th>Gateway</th>
-                                    <th>Amount</th>
-                                    <th>Action</th>
+                                    <th data-i18n="tblInvoiceNo">Invoice No</th>
+                                    <th data-i18n="tblGuestName">Guest Name</th>
+                                    <th data-i18n="tblRoom">Room</th>
+                                    <th data-i18n="tblGateway">Gateway</th>
+                                    <th data-i18n="tblAmount">Amount</th>
+                                    <th data-i18n="tblAction">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="financeTableBody"></tbody>
