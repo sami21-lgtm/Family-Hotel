@@ -1,6 +1,4 @@
 // ==========================================
-
-// ==========================================
 // 1. GLOBAL STATE
 // ==========================================
 
@@ -324,13 +322,8 @@ function handleStaffLogin(event) {
     const emailField = document.getElementById('loginEmail');
     const passField = document.getElementById('loginPasswordInput');
 
-    const email = emailField
-        ? emailField.value.trim()
-        : '';
-
-    const password = passField
-        ? passField.value
-        : '';
+    const email = emailField ? emailField.value.trim() : '';
+    const password = passField ? passField.value : '';
 
     const ADMIN_EMAIL = 'admin@grandpalace.com';
     const ADMIN_PASS = 'admin123';
@@ -340,11 +333,8 @@ function handleStaffLogin(event) {
         return false;
     }
 
-    const validEmail =
-        email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
-
-    const validPassword =
-        password === ADMIN_PASS;
+    const validEmail = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+    const validPassword = password === ADMIN_PASS;
 
     if (!validEmail || !validPassword) {
         alert(
@@ -410,31 +400,17 @@ function handleStaffLogin(event) {
 function handleGuestLoginSubmit(event) {
     if (event) event.preventDefault();
 
-    const name =
-        document.getElementById('guestAuthName')?.value.trim() ||
-        'Valued Guest';
-
-    const email =
-        document.getElementById('guestAuthEmail')?.value.trim() ||
-        '';
-
-    const phone =
-        document.getElementById('guestAuthPhone')?.value.trim() ||
-        '';
-
-    const previewImg =
-        document.getElementById('guestAuthPreviewImg')?.src || '';
+    const name = document.getElementById('guestAuthName')?.value.trim() || 'Valued Guest';
+    const email = document.getElementById('guestAuthEmail')?.value.trim() || '';
+    const phone = document.getElementById('guestAuthPhone')?.value.trim() || '';
+    const previewImg = document.getElementById('guestAuthPreviewImg')?.src || '';
 
     currentUser = {
         role: 'GUEST',
         name: name,
         email: email,
         phone: phone,
-        avatar:
-            previewImg ||
-            'https://ui-avatars.com/api/?name=' +
-            encodeURIComponent(name) +
-            '&background=c5a880&color=fff'
+        avatar: previewImg || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=c5a880&color=fff'
     };
 
     currentRole = 'guest';
@@ -458,11 +434,7 @@ function handleGuestLoginSubmit(event) {
     if (roleEl) roleEl.textContent = 'Role: GUEST';
     if (avatarEl) avatarEl.src = currentUser.avatar;
 
-    alert(
-        '🎉 Welcome ' +
-        name +
-        ' to Grand Palace Resort & Spa!'
-    );
+    alert('🎉 Welcome ' + name + ' to Grand Palace Resort & Spa!');
 
     return true;
 }
@@ -480,18 +452,13 @@ function switchUserRole(role) {
         selector.value = role;
     }
 
-    document.body.classList.toggle(
-        'role-guest',
-        role === 'guest'
-    );
+    document.body.classList.toggle('role-guest', role === 'guest');
 
     // Navigation permissions
     document.querySelectorAll('.nav-item').forEach(function (item) {
         if (role === 'admin') {
             item.style.display = 'flex';
-        } else if (
-            item.classList.contains('role-' + role)
-        ) {
+        } else if (item.classList.contains('role-' + role)) {
             item.style.display = 'flex';
         } else {
             item.style.display = 'none';
@@ -499,18 +466,13 @@ function switchUserRole(role) {
     });
 
     // Admin-only elements
-    document.querySelectorAll('.role-admin-only')
-        .forEach(function (element) {
-            element.style.display =
-                role === 'admin' ? '' : 'none';
-        });
+    document.querySelectorAll('.role-admin-only').forEach(function (element) {
+        element.style.display = role === 'admin' ? '' : 'none';
+    });
 
     // Add New Room = ADMIN ONLY
-    document.querySelectorAll(
-        '#addNewRoomBtn, .add-new-room-btn'
-    ).forEach(function (button) {
-        button.style.display =
-            role === 'admin' ? '' : 'none';
+    document.querySelectorAll('#addNewRoomBtn, .add-new-room-btn').forEach(function (button) {
+        button.style.display = role === 'admin' ? '' : 'none';
     });
 
     renderRooms();
@@ -569,9 +531,7 @@ function switchTab(tabId) {
         targetPage.classList.add('active');
     }
 
-    const activeNav = document.querySelector(
-        '.nav-item[onclick*="' + tabId + '"]'
-    );
+    const activeNav = document.querySelector('.nav-item[onclick*="' + tabId + '"]');
 
     if (activeNav) {
         activeNav.classList.add('active');
@@ -586,10 +546,7 @@ function toggleSidebar(forceState) {
 
     if (!sidebar) return;
 
-    const isOpen =
-        forceState !== undefined
-            ? forceState
-            : !sidebar.classList.contains('open');
+    const isOpen = forceState !== undefined ? forceState : !sidebar.classList.contains('open');
 
     if (isOpen) {
         sidebar.classList.add('open');
@@ -621,88 +578,43 @@ function populateRoomDropdown() {
         .map(function (room) {
             return `
                 <option value="${escapeHTML(room.id)}|${escapeHTML(room.title)}|${room.price}">
-                    Room ${escapeHTML(room.id)} -
-                    ${escapeHTML(room.title)}
-                    (৳${room.price.toLocaleString()}/night)
+                    Room ${escapeHTML(room.id)} - ${escapeHTML(room.title)} (৳${room.price.toLocaleString()}/night)
                 </option>
             `;
         })
         .join('');
 
-    if (
-        currentValue &&
-        Array.from(select.options).some(
-            function (option) {
-                return option.value === currentValue;
-            }
-        )
-    ) {
+    if (currentValue && Array.from(select.options).some(function (option) { return option.value === currentValue; })) {
         select.value = currentValue;
     }
 }
 
 function calculateTotal() {
-    const checkIn =
-        document.getElementById('checkIn')?.value;
+    const checkIn = document.getElementById('checkIn')?.value;
+    const checkOut = document.getElementById('checkOut')?.value;
+    const roomSelect = document.getElementById('roomTypeSelect')?.value;
 
-    const checkOut =
-        document.getElementById('checkOut')?.value;
-
-    const roomSelect =
-        document.getElementById('roomTypeSelect')?.value;
-
-    const nights =
-        getNightsBetween(checkIn, checkOut);
-
-    const roomPrice = roomSelect
-        ? parseFloat(roomSelect.split('|')[2]) || 0
-        : 0;
-
+    const nights = getNightsBetween(checkIn, checkOut);
+    const roomPrice = roomSelect ? parseFloat(roomSelect.split('|')[2]) || 0 : 0;
     const roomTotal = roomPrice * nights;
 
     let addonsTotal = 0;
 
-    document.querySelectorAll(
-        'input[name="foodMenu"]:checked, input[name="amenities"]:checked'
-    ).forEach(function (cb) {
-        addonsTotal +=
-            parseFloat(cb.getAttribute('data-price')) || 0;
+    document.querySelectorAll('input[name="foodMenu"]:checked, input[name="amenities"]:checked').forEach(function (cb) {
+        addonsTotal += parseFloat(cb.getAttribute('data-price')) || 0;
     });
 
-    const grandTotal =
-        roomTotal + addonsTotal;
+    const grandTotal = roomTotal + addonsTotal;
 
-    const billNights =
-        document.getElementById('billNights');
+    const billNights = document.getElementById('billNights');
+    const billRoom = document.getElementById('billRoom');
+    const billAddons = document.getElementById('billAddons');
+    const billTotal = document.getElementById('billTotal');
 
-    const billRoom =
-        document.getElementById('billRoom');
-
-    const billAddons =
-        document.getElementById('billAddons');
-
-    const billTotal =
-        document.getElementById('billTotal');
-
-    if (billNights) {
-        billNights.textContent =
-            nights + ' Night(s)';
-    }
-
-    if (billRoom) {
-        billRoom.textContent =
-            '৳' + roomTotal.toLocaleString();
-    }
-
-    if (billAddons) {
-        billAddons.textContent =
-            '৳' + addonsTotal.toLocaleString();
-    }
-
-    if (billTotal) {
-        billTotal.textContent =
-            '৳' + grandTotal.toLocaleString();
-    }
+    if (billNights) billNights.textContent = nights + ' Night(s)';
+    if (billRoom) billRoom.textContent = '৳' + roomTotal.toLocaleString();
+    if (billAddons) billAddons.textContent = '৳' + addonsTotal.toLocaleString();
+    if (billTotal) billTotal.textContent = '৳' + grandTotal.toLocaleString();
 
     return grandTotal;
 }
@@ -712,14 +624,9 @@ function calculateTotal() {
 // ==========================================
 
 function togglePaymentDetails() {
-    const method =
-        document.getElementById('paymentMethodSelect')?.value;
-
-    const detailsDiv =
-        document.getElementById('onlinePaymentDetails');
-
-    const instructions =
-        document.getElementById('paymentInstructions');
+    const method = document.getElementById('paymentMethodSelect')?.value;
+    const detailsDiv = document.getElementById('onlinePaymentDetails');
+    const instructions = document.getElementById('paymentInstructions');
 
     if (!detailsDiv || !instructions) return;
 
@@ -731,18 +638,11 @@ function togglePaymentDetails() {
     detailsDiv.style.display = 'block';
 
     if (method === 'bkash') {
-        instructions.innerHTML =
-            '<b>bKash Merchant Payment:</b> ' +
-            'Send money to <code>01700000000</code> ' +
-            'with your booking ID.';
+        instructions.innerHTML = '<b>bKash Merchant Payment:</b> Send money to <code>01700000000</code> with your booking ID.';
     } else if (method === 'nagad') {
-        instructions.innerHTML =
-            '<b>Nagad Merchant Payment:</b> ' +
-            'Send money to <code>01800000000</code>.';
+        instructions.innerHTML = '<b>Nagad Merchant Payment:</b> Send money to <code>01800000000</code>.';
     } else {
-        instructions.innerHTML =
-            '<b>Online Gateway:</b> ' +
-            'You will be redirected to complete secure card payment.';
+        instructions.innerHTML = '<b>Online Gateway:</b> You will be redirected to complete secure card payment.';
     }
 }
 
@@ -753,30 +653,14 @@ function togglePaymentDetails() {
 function handleBookingSubmit(event) {
     if (event) event.preventDefault();
 
-    const name =
-        document.getElementById('bookingGuestName')?.value.trim();
-
-    const email =
-        document.getElementById('bookingGuestEmail')?.value.trim() || '';
-
-    const phone =
-        document.getElementById('bookingGuestPhone')?.value.trim() || '';
-
-    const checkIn =
-        document.getElementById('checkIn')?.value;
-
-    const checkOut =
-        document.getElementById('checkOut')?.value;
-
-    const roomSelect =
-        document.getElementById('roomTypeSelect')?.value;
-
-    const method =
-        document.getElementById('paymentMethodSelect')?.value ||
-        'CASH';
-
-    const previewImg =
-        document.getElementById('previewImg')?.src || '';
+    const name = document.getElementById('bookingGuestName')?.value.trim();
+    const email = document.getElementById('bookingGuestEmail')?.value.trim() || '';
+    const phone = document.getElementById('bookingGuestPhone')?.value.trim() || '';
+    const checkIn = document.getElementById('checkIn')?.value;
+    const checkOut = document.getElementById('checkOut')?.value;
+    const roomSelect = document.getElementById('roomTypeSelect')?.value;
+    const method = document.getElementById('paymentMethodSelect')?.value || 'CASH';
+    const previewImg = document.getElementById('previewImg')?.src || '';
 
     if (!name) {
         alert('⚠️ Please enter guest name!');
@@ -792,10 +676,7 @@ function handleBookingSubmit(event) {
     const roomId = parts[0];
     const roomTitle = parts[1];
 
-    const room =
-        roomList.find(function (r) {
-            return r.id === roomId;
-        });
+    const room = roomList.find(function (r) { return r.id === roomId; });
 
     if (!room) {
         alert('❌ Selected room not found!');
@@ -803,25 +684,15 @@ function handleBookingSubmit(event) {
     }
 
     // Guests can book available rooms only.
-    if (
-        currentRole === 'guest' &&
-        room.status !== 'available'
-    ) {
-        alert(
-            '⚠️ Sorry! This room is currently not available.'
-        );
+    if (currentRole === 'guest' && room.status !== 'available') {
+        alert('⚠️ Sorry! This room is currently not available.');
         return false;
     }
 
     const grandTotal = calculateTotal();
 
     const newBooking = {
-        id:
-            'GP-' +
-            Math.floor(
-                1000 + Math.random() * 9000
-            ),
-
+        id: 'GP-' + Math.floor(1000 + Math.random() * 9000),
         guestName: name,
         guestEmail: email,
         guestPhone: phone,
@@ -832,31 +703,14 @@ function handleBookingSubmit(event) {
         totalBill: grandTotal,
         paymentMethod: method.toUpperCase(),
         status: 'Confirmed',
-
-        avatar:
-            previewImg ||
-            'https://ui-avatars.com/api/?name=' +
-            encodeURIComponent(name) +
-            '&background=c5a880&color=fff'
+        avatar: previewImg || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=c5a880&color=fff'
     };
 
     bookings.unshift(newBooking);
 
-    if (
-        email &&
-        !guests.some(function (g) {
-            return (
-                g.email.toLowerCase() ===
-                email.toLowerCase()
-            );
-        })
-    ) {
+    if (email && !guests.some(function (g) { return g.email.toLowerCase() === email.toLowerCase(); })) {
         guests.push({
-            id:
-                'G-' +
-                Math.floor(
-                    100 + Math.random() * 900
-                ),
+            id: 'G-' + Math.floor(100 + Math.random() * 900),
             name: name,
             email: email,
             phone: phone,
@@ -894,10 +748,7 @@ function handleBookingSubmit(event) {
 // ==========================================
 
 function bookRoomFromBrowse(roomId) {
-    const room =
-        roomList.find(function (r) {
-            return r.id === roomId;
-        });
+    const room = roomList.find(function (r) { return r.id === roomId; });
 
     if (!room) {
         alert('❌ Room not found!');
@@ -905,27 +756,17 @@ function bookRoomFromBrowse(roomId) {
     }
 
     if (room.status !== 'available') {
-        alert(
-            '⚠️ This room is currently not available.'
-        );
+        alert('⚠️ This room is currently not available.');
         return;
     }
 
-    const roomSelect =
-        document.getElementById('roomTypeSelect');
+    const roomSelect = document.getElementById('roomTypeSelect');
 
     if (roomSelect) {
-        const targetValue =
-            room.id + '|' +
-            room.title + '|' +
-            room.price;
-
-        const optionExists =
-            Array.from(roomSelect.options).some(
-                function (option) {
-                    return option.value === targetValue;
-                }
-            );
+        const targetValue = room.id + '|' + room.title + '|' + room.price;
+        const optionExists = Array.from(roomSelect.options).some(function (option) {
+            return option.value === targetValue;
+        });
 
         if (optionExists) {
             roomSelect.value = targetValue;
@@ -933,39 +774,20 @@ function bookRoomFromBrowse(roomId) {
     }
 
     if (currentRole === 'guest') {
-        const guestNameField =
-            document.getElementById('bookingGuestName');
+        const guestNameField = document.getElementById('bookingGuestName');
+        const guestEmailField = document.getElementById('bookingGuestEmail');
+        const guestPhoneField = document.getElementById('bookingGuestPhone');
 
-        const guestEmailField =
-            document.getElementById('bookingGuestEmail');
-
-        const guestPhoneField =
-            document.getElementById('bookingGuestPhone');
-
-        if (guestNameField && currentUser.name) {
-            guestNameField.value =
-                currentUser.name;
-        }
-
-        if (guestEmailField && currentUser.email) {
-            guestEmailField.value =
-                currentUser.email;
-        }
-
-        if (guestPhoneField && currentUser.phone) {
-            guestPhoneField.value =
-                currentUser.phone;
-        }
+        if (guestNameField && currentUser.name) guestNameField.value = currentUser.name;
+        if (guestEmailField && currentUser.email) guestEmailField.value = currentUser.email;
+        if (guestPhoneField && currentUser.phone) guestPhoneField.value = currentUser.phone;
     }
 
-    const reservationForm =
-        document.getElementById('reservationForm');
-
+    const reservationForm = document.getElementById('reservationForm');
     let bookingTabFound = false;
 
     if (reservationForm) {
-        const parentTab =
-            reservationForm.closest('.tab-page');
+        const parentTab = reservationForm.closest('.tab-page');
 
         if (parentTab && parentTab.id) {
             switchTab(parentTab.id);
@@ -982,10 +804,9 @@ function bookRoomFromBrowse(roomId) {
             'tabFrontDesk'
         ];
 
-        const availableTab =
-            possibleTabs.find(function (id) {
-                return document.getElementById(id);
-            });
+        const availableTab = possibleTabs.find(function (id) {
+            return document.getElementById(id);
+        });
 
         if (availableTab) {
             switchTab(availableTab);
@@ -1009,8 +830,7 @@ function bookRoomFromBrowse(roomId) {
 // ==========================================
 
 function resetForm() {
-    const form =
-        document.getElementById('reservationForm');
+    const form = document.getElementById('reservationForm');
 
     if (form) {
         form.reset();
@@ -1027,89 +847,36 @@ function resetForm() {
 // ==========================================
 
 function renderDashboard() {
-    const totalBookingsEl =
-        document.getElementById('statTotalBookings');
+    const totalBookingsEl = document.getElementById('statTotalBookings');
+    const totalRevEl = document.getElementById('statRevenue');
+    const tbody = document.getElementById('dashboardTableBody');
 
-    const totalRevEl =
-        document.getElementById('statRevenue');
+    const totalRev = bookings.reduce(function (sum, booking) {
+        return sum + booking.totalBill;
+    }, 0);
 
-    const tbody =
-        document.getElementById('dashboardTableBody');
-
-    const totalRev =
-        bookings.reduce(
-            function (sum, booking) {
-                return sum + booking.totalBill;
-            },
-            0
-        );
-
-    if (totalBookingsEl) {
-        totalBookingsEl.textContent =
-            bookings.length;
-    }
-
-    if (totalRevEl) {
-        totalRevEl.textContent =
-            '৳' + totalRev.toLocaleString();
-    }
+    if (totalBookingsEl) totalBookingsEl.textContent = bookings.length;
+    if (totalRevEl) totalRevEl.textContent = '৳' + totalRev.toLocaleString();
 
     if (tbody) {
         tbody.innerHTML = bookings.map(function (b) {
             return `
                 <tr>
                     <td>
-                        <img
-                            src="${escapeHTML(b.avatar)}"
-                            class="table-img vibrant-img"
-                            style="width:36px;height:36px;border-radius:50%;object-fit:cover;"
-                            alt="${escapeHTML(b.guestName)}"
-                        >
+                        <img src="${escapeHTML(b.avatar)}" class="table-img vibrant-img" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" alt="${escapeHTML(b.guestName)}">
                     </td>
-
+                    <td><strong>${escapeHTML(b.id)}</strong></td>
+                    <td>${escapeHTML(b.guestName)}</td>
+                    <td>Room ${escapeHTML(b.roomNumber)} - ${escapeHTML(b.roomType)}</td>
+                    <td><small>${escapeHTML(b.checkIn)} to ${escapeHTML(b.checkOut)}</small></td>
+                    <td><strong>৳${b.totalBill.toLocaleString()}</strong></td>
                     <td>
-                        <strong>${escapeHTML(b.id)}</strong>
-                    </td>
-
-                    <td>
-                        ${escapeHTML(b.guestName)}
-                    </td>
-
-                    <td>
-                        Room ${escapeHTML(b.roomNumber)} -
-                        ${escapeHTML(b.roomType)}
-                    </td>
-
-                    <td>
-                        <small>
-                            ${escapeHTML(b.checkIn)}
-                            to
-                            ${escapeHTML(b.checkOut)}
-                        </small>
-                    </td>
-
-                    <td>
-                        <strong>
-                            ৳${b.totalBill.toLocaleString()}
-                        </strong>
-                    </td>
-
-                    <td>
-                        <span class="badge ${
-                            b.status === 'Checked-In'
-                                ? 'badge-success'
-                                : 'badge-gold'
-                        }">
+                        <span class="badge ${b.status === 'Checked-In' ? 'badge-success' : 'badge-gold'}">
                             ${escapeHTML(b.status)}
                         </span>
                     </td>
-
                     <td>
-                        <button
-                            type="button"
-                            class="btn-secondary-sm"
-                            onclick="alert('Printing Receipt for ${escapeHTML(b.id)}')"
-                        >
+                        <button type="button" class="btn-secondary-sm" onclick="alert('Printing Receipt for ${escapeHTML(b.id)}')">
                             <i class="fa-solid fa-print"></i>
                         </button>
                     </td>
@@ -1124,171 +891,62 @@ function renderDashboard() {
 // ==========================================
 
 function renderRooms() {
-    const container =
-        document.getElementById('roomsCardsGrid');
+    const container = document.getElementById('roomsCardsGrid');
 
     if (!container) return;
 
-    const isAdmin =
-        currentRole === 'admin';
-
-    const isGuest =
-        currentRole === 'guest';
+    const isAdmin = currentRole === 'admin';
+    const isGuest = currentRole === 'guest';
 
     container.innerHTML = `
-        <div
-            style="
-                display:grid;
-                grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-                gap:20px;
-                width:100%;
-            "
-            class="mt-15"
-        >
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; width:100%;" class="mt-15">
             ${roomList.map(function (room) {
                 let statusClass = 'badge-danger';
 
                 if (room.status === 'available') {
                     statusClass = 'badge-success';
-                } else if (
-                    room.status === 'dirty' ||
-                    room.status === 'maintenance'
-                ) {
+                } else if (room.status === 'dirty' || room.status === 'maintenance') {
                     statusClass = 'badge-gold';
                 }
 
                 const adminControls = isAdmin ? `
-                    <div
-                        class="admin-room-controls"
-                        style="
-                            display:flex;
-                            gap:5px;
-                            align-items:center;
-                            flex-wrap:wrap;
-                        "
-                    >
-                        <button
-                            type="button"
-                            class="btn-secondary-sm"
-                            onclick="editRoomPrice('${escapeHTML(room.id)}')"
-                        >
-                            <i class="fa-solid fa-pen"></i>
-                            Price
+                    <div class="admin-room-controls" style="display:flex; gap:5px; align-items:center; flex-wrap:wrap;">
+                        <button type="button" class="btn-secondary-sm" onclick="editRoomPrice('${escapeHTML(room.id)}')">
+                            <i class="fa-solid fa-pen"></i> Price
                         </button>
-
-                        <button
-                            type="button"
-                            class="btn-secondary-sm"
-                            onclick="toggleRoomStatus('${escapeHTML(room.id)}')"
-                        >
-                            <i class="fa-solid fa-rotate"></i>
-                            Status
+                        <button type="button" class="btn-secondary-sm" onclick="toggleRoomStatus('${escapeHTML(room.id)}')">
+                            <i class="fa-solid fa-rotate"></i> Status
                         </button>
                     </div>
                 ` : '';
 
                 const guestBookingButton = isGuest ? `
-                    <button
-                        type="button"
-                        class="btn-primary"
-                        style="
-                            width:100%;
-                            margin-top:10px;
-                            padding:10px 14px;
-                            border-radius:8px;
-                            border:none;
-                            cursor:pointer;
-                            font-weight:600;
-                            opacity:${room.status === 'available' ? '1' : '0.6'};
-                        "
-                        onclick="bookRoomFromBrowse('${escapeHTML(room.id)}')"
-                        ${room.status !== 'available' ? 'disabled' : ''}
-                    >
+                    <button type="button" class="btn-primary" style="width:100%; margin-top:10px; padding:10px 14px; border-radius:8px; border:none; cursor:pointer; font-weight:600; opacity:${room.status === 'available' ? '1' : '0.6'};" onclick="bookRoomFromBrowse('${escapeHTML(room.id)}')" ${room.status !== 'available' ? 'disabled' : ''}>
                         <i class="fa-solid fa-calendar-check"></i>
-                        ${
-                            room.status === 'available'
-                                ? 'Book This Room'
-                                : 'Not Available'
-                        }
+                        ${room.status === 'available' ? 'Book This Room' : 'Not Available'}
                     </button>
                 ` : '';
 
                 return `
-                    <div
-                        class="room-card"
-                        style="
-                            background:var(--bg-card);
-                            border:1px solid var(--border-color);
-                            border-radius:12px;
-                            overflow:hidden;
-                        "
-                    >
+                    <div class="room-card" style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; overflow:hidden;">
                         <div class="room-card-img-wrapper">
-                            <img
-                                src="${escapeHTML(room.img)}"
-                                class="vibrant-img"
-                                style="width:100%;height:180px;object-fit:cover;"
-                                alt="Room ${escapeHTML(room.id)}"
-                            >
+                            <img src="${escapeHTML(room.img)}" class="vibrant-img" style="width:100%;height:180px;object-fit:cover;" alt="Room ${escapeHTML(room.id)}">
                         </div>
 
                         <div style="padding:15px;">
-                            <div
-                                style="
-                                    display:flex;
-                                    justify-content:space-between;
-                                    align-items:center;
-                                    margin-bottom:8px;
-                                    gap:8px;
-                                "
-                            >
-                                <h4 style="color:var(--gold);margin:0;">
-                                    Room ${escapeHTML(room.id)}
-                                </h4>
-
-                                <span class="badge ${statusClass}">
-                                    ${escapeHTML(room.status.toUpperCase())}
-                                </span>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; gap:8px;">
+                                <h4 style="color:var(--gold);margin:0;">Room ${escapeHTML(room.id)}</h4>
+                                <span class="badge ${statusClass}">${escapeHTML(room.status.toUpperCase())}</span>
                             </div>
 
-                            <h5 style="margin:0 0 8px 0;">
-                                ${escapeHTML(room.title)}
-                            </h5>
+                            <h5 style="margin:0 0 8px 0;">${escapeHTML(room.title)}</h5>
+                            <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:12px; min-height:38px;">${escapeHTML(room.desc)}</p>
 
-                            <p
-                                style="
-                                    color:var(--text-muted);
-                                    font-size:0.85rem;
-                                    margin-bottom:12px;
-                                    min-height:38px;
-                                "
-                            >
-                                ${escapeHTML(room.desc)}
-                            </p>
-
-                            <div
-                                style="
-                                    display:flex;
-                                    justify-content:space-between;
-                                    align-items:center;
-                                    border-top:1px solid var(--border-color);
-                                    padding-top:10px;
-                                    gap:10px;
-                                    flex-wrap:wrap;
-                                "
-                            >
-                                <strong
-                                    style="
-                                        font-size:1.1rem;
-                                        color:var(--gold);
-                                    "
-                                >
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:10px; gap:10px; flex-wrap:wrap;">
+                                <strong style="font-size:1.1rem; color:var(--gold);">
                                     ৳${room.price.toLocaleString()}
-                                    <small style="font-size:0.75rem;">
-                                        /night
-                                    </small>
+                                    <small style="font-size:0.75rem;">/night</small>
                                 </strong>
-
                                 ${adminControls}
                             </div>
 
@@ -1306,20 +964,12 @@ function renderRooms() {
 // ==========================================
 
 function renderFrontDesk() {
-    const container =
-        document.getElementById('frontDeskRoomGrid');
+    const container = document.getElementById('frontDeskRoomGrid');
 
     if (!container) return;
 
     container.innerHTML = `
-        <div
-            style="
-                display:grid;
-                grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-                gap:15px;
-            "
-            class="mt-15"
-        >
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:15px;" class="mt-15">
             ${roomList.map(function (room) {
                 let borderColor = '#ed8936';
 
@@ -1330,36 +980,10 @@ function renderFrontDesk() {
                 }
 
                 return `
-                    <div
-                        style="
-                            padding:15px;
-                            border-radius:10px;
-                            background:var(--bg-card);
-                            border-left:5px solid ${borderColor};
-                            border-top:1px solid var(--border-color);
-                            border-right:1px solid var(--border-color);
-                            border-bottom:1px solid var(--border-color);
-                        "
-                    >
-                        <h3 style="margin:0;color:var(--gold);">
-                            Room ${escapeHTML(room.id)}
-                        </h3>
-
-                        <p
-                            style="
-                                font-size:0.8rem;
-                                color:var(--text-muted);
-                                margin:4px 0;
-                            "
-                        >
-                            ${escapeHTML(room.title)}
-                        </p>
-
-                        <span class="badge ${
-                            room.status === 'available'
-                                ? 'badge-success'
-                                : 'badge-danger'
-                        }">
+                    <div style="padding:15px; border-radius:10px; background:var(--bg-card); border-left:5px solid ${borderColor}; border-top:1px solid var(--border-color); border-right:1px solid var(--border-color); border-bottom:1px solid var(--border-color);">
+                        <h3 style="margin:0;color:var(--gold);">Room ${escapeHTML(room.id)}</h3>
+                        <p style="font-size:0.8rem; color:var(--text-muted); margin:4px 0;">${escapeHTML(room.title)}</p>
+                        <span class="badge ${room.status === 'available' ? 'badge-success' : 'badge-danger'}">
                             ${escapeHTML(room.status.toUpperCase())}
                         </span>
                     </div>
@@ -1374,32 +998,14 @@ function renderFrontDesk() {
 // ==========================================
 
 function renderHousekeeping() {
-    const cleanEl =
-        document.getElementById('statCleanRooms');
+    const cleanEl = document.getElementById('statCleanRooms');
+    const dirtyEl = document.getElementById('statDirtyRooms');
+    const maintEl = document.getElementById('statMaintRooms');
+    const tbody = document.getElementById('housekeepingTableBody');
 
-    const dirtyEl =
-        document.getElementById('statDirtyRooms');
-
-    const maintEl =
-        document.getElementById('statMaintRooms');
-
-    const tbody =
-        document.getElementById('housekeepingTableBody');
-
-    const cleanCount =
-        roomList.filter(function (r) {
-            return r.status === 'available';
-        }).length;
-
-    const dirtyCount =
-        roomList.filter(function (r) {
-            return r.status === 'dirty';
-        }).length;
-
-    const maintCount =
-        roomList.filter(function (r) {
-            return r.status === 'maintenance';
-        }).length;
+    const cleanCount = roomList.filter(function (r) { return r.status === 'available'; }).length;
+    const dirtyCount = roomList.filter(function (r) { return r.status === 'dirty'; }).length;
+    const maintCount = roomList.filter(function (r) { return r.status === 'maintenance'; }).length;
 
     if (cleanEl) cleanEl.textContent = cleanCount;
     if (dirtyEl) dirtyEl.textContent = dirtyCount;
@@ -1409,34 +1015,16 @@ function renderHousekeeping() {
         tbody.innerHTML = roomList.map(function (room) {
             return `
                 <tr>
+                    <td><strong>Room ${escapeHTML(room.id)}</strong></td>
+                    <td>${escapeHTML(room.title)}</td>
                     <td>
-                        <strong>
-                            Room ${escapeHTML(room.id)}
-                        </strong>
-                    </td>
-
-                    <td>
-                        ${escapeHTML(room.title)}
-                    </td>
-
-                    <td>
-                        <span class="badge ${
-                            room.status === 'available'
-                                ? 'badge-success'
-                                : 'badge-gold'
-                        }">
+                        <span class="badge ${room.status === 'available' ? 'badge-success' : 'badge-gold'}">
                             ${escapeHTML(room.status.toUpperCase())}
                         </span>
                     </td>
-
                     <td>
-                        <button
-                            type="button"
-                            class="btn-secondary-sm"
-                            onclick="toggleRoomStatus('${escapeHTML(room.id)}')"
-                        >
-                            <i class="fa-solid fa-broom"></i>
-                            Change Status
+                        <button type="button" class="btn-secondary-sm" onclick="toggleRoomStatus('${escapeHTML(room.id)}')">
+                            <i class="fa-solid fa-broom"></i> Change Status
                         </button>
                     </td>
                 </tr>
@@ -1450,70 +1038,29 @@ function renderHousekeeping() {
 // ==========================================
 
 function renderFinance() {
-    const totalRevEl =
-        document.getElementById('finTotalEarnings');
+    const totalRevEl = document.getElementById('finTotalEarnings');
+    const pendingEl = document.getElementById('finPending');
+    const tbody = document.getElementById('financeTableBody');
 
-    const pendingEl =
-        document.getElementById('finPending');
+    const totalRev = bookings.reduce(function (sum, booking) {
+        return sum + booking.totalBill;
+    }, 0);
 
-    const tbody =
-        document.getElementById('financeTableBody');
-
-    const totalRev =
-        bookings.reduce(
-            function (sum, booking) {
-                return sum + booking.totalBill;
-            },
-            0
-        );
-
-    if (totalRevEl) {
-        totalRevEl.textContent =
-            '৳' + totalRev.toLocaleString();
-    }
-
-    if (pendingEl) {
-        pendingEl.textContent = '৳0';
-    }
+    if (totalRevEl) totalRevEl.textContent = '৳' + totalRev.toLocaleString();
+    if (pendingEl) pendingEl.textContent = '৳0';
 
     if (tbody) {
         tbody.innerHTML = bookings.map(function (booking) {
             return `
                 <tr>
+                    <td><strong>${escapeHTML(booking.id)}</strong></td>
+                    <td>${escapeHTML(booking.guestName)}</td>
+                    <td><span class="badge badge-gold">${escapeHTML(booking.paymentMethod)}</span></td>
+                    <td><strong style="color:#48bb78;">৳${booking.totalBill.toLocaleString()}</strong></td>
+                    <td>${escapeHTML(booking.checkIn)}</td>
                     <td>
-                        <strong>
-                            ${escapeHTML(booking.id)}
-                        </strong>
-                    </td>
-
-                    <td>
-                        ${escapeHTML(booking.guestName)}
-                    </td>
-
-                    <td>
-                        <span class="badge badge-gold">
-                            ${escapeHTML(booking.paymentMethod)}
-                        </span>
-                    </td>
-
-                    <td>
-                        <strong style="color:#48bb78;">
-                            ৳${booking.totalBill.toLocaleString()}
-                        </strong>
-                    </td>
-
-                    <td>
-                        ${escapeHTML(booking.checkIn)}
-                    </td>
-
-                    <td>
-                        <button
-                            type="button"
-                            class="btn-secondary-sm"
-                            onclick="alert('Downloading Receipt PDF...')"
-                        >
-                            <i class="fa-solid fa-download"></i>
-                            Receipt
+                        <button type="button" class="btn-secondary-sm" onclick="alert('Downloading Receipt PDF...')">
+                            <i class="fa-solid fa-download"></i> Receipt
                         </button>
                     </td>
                 </tr>
@@ -1527,8 +1074,7 @@ function renderFinance() {
 // ==========================================
 
 function renderGuests() {
-    const tbody =
-        document.getElementById('guestsTableBody');
+    const tbody = document.getElementById('guestsTableBody');
 
     if (!tbody) return;
 
@@ -1536,36 +1082,14 @@ function renderGuests() {
         return `
             <tr>
                 <td>
-                    <img
-                        src="${escapeHTML(guest.avatar)}"
-                        class="table-img vibrant-img"
-                        style="width:36px;height:36px;border-radius:50%;object-fit:cover;"
-                        alt="${escapeHTML(guest.name)}"
-                    >
+                    <img src="${escapeHTML(guest.avatar)}" class="table-img vibrant-img" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" alt="${escapeHTML(guest.name)}">
                 </td>
-
+                <td><strong>${escapeHTML(guest.name)}</strong></td>
+                <td>${escapeHTML(guest.email)}</td>
+                <td>${escapeHTML(guest.phone)}</td>
                 <td>
-                    <strong>
-                        ${escapeHTML(guest.name)}
-                    </strong>
-                </td>
-
-                <td>
-                    ${escapeHTML(guest.email)}
-                </td>
-
-                <td>
-                    ${escapeHTML(guest.phone)}
-                </td>
-
-                <td>
-                    <button
-                        type="button"
-                        class="btn-secondary-sm"
-                        onclick="alert('Viewing guest history for ${escapeHTML(guest.name)}')"
-                    >
-                        <i class="fa-solid fa-eye"></i>
-                        View
+                    <button type="button" class="btn-secondary-sm" onclick="alert('Viewing guest history for ${escapeHTML(guest.name)}')">
+                        <i class="fa-solid fa-eye"></i> View
                     </button>
                 </td>
             </tr>
@@ -1583,55 +1107,32 @@ function promptAddNewRoom() {
         return;
     }
 
-    const id = prompt(
-        'Enter New Room ID (e.g. 701):'
-    );
-
+    const id = prompt('Enter New Room ID (e.g. 701):');
     if (!id) return;
 
     const cleanId = id.trim();
-
     if (!cleanId) {
         alert('❌ Room ID cannot be empty.');
         return;
     }
 
-    if (
-        roomList.some(function (room) {
-            return room.id === cleanId;
-        })
-    ) {
-        alert(
-            '❌ Room ' +
-            cleanId +
-            ' already exists!'
-        );
+    if (roomList.some(function (room) { return room.id === cleanId; })) {
+        alert('❌ Room ' + cleanId + ' already exists!');
         return;
     }
 
-    const title = prompt(
-        'Enter Room Category Title:'
-    );
-
+    const title = prompt('Enter Room Category Title:');
     if (!title) return;
 
     const cleanTitle = title.trim();
-
     if (!cleanTitle) {
         alert('❌ Room title cannot be empty.');
         return;
     }
 
-    const price = parseFloat(
-        prompt(
-            'Enter Room Price per night (BDT):'
-        )
-    );
-
+    const price = parseFloat(prompt('Enter Room Price per night (BDT):'));
     if (isNaN(price) || price < 0) {
-        alert(
-            '❌ Please enter a valid room price.'
-        );
+        alert('❌ Please enter a valid room price.');
         return;
     }
 
@@ -1647,11 +1148,7 @@ function promptAddNewRoom() {
     populateRoomDropdown();
     renderAll();
 
-    alert(
-        '✅ Room ' +
-        cleanId +
-        ' added to resort inventory!'
-    );
+    alert('✅ Room ' + cleanId + ' added to resort inventory!');
 }
 
 // ==========================================
@@ -1660,27 +1157,14 @@ function promptAddNewRoom() {
 
 function editRoomPrice(roomId) {
     if (currentRole !== 'admin') {
-        alert(
-            '❌ Only Admin can edit room price.'
-        );
+        alert('❌ Only Admin can edit room price.');
         return;
     }
 
-    const room =
-        roomList.find(function (r) {
-            return r.id === roomId;
-        });
-
+    const room = roomList.find(function (r) { return r.id === roomId; });
     if (!room) return;
 
-    const newPrice = parseFloat(
-        prompt(
-            'Enter new price for Room ' +
-            room.id +
-            ':',
-            room.price
-        )
-    );
+    const newPrice = parseFloat(prompt('Enter new price for Room ' + room.id + ':', room.price));
 
     if (!isNaN(newPrice) && newPrice >= 0) {
         room.price = newPrice;
@@ -1688,12 +1172,7 @@ function editRoomPrice(roomId) {
         populateRoomDropdown();
         renderAll();
 
-        alert(
-            '✅ Room ' +
-            room.id +
-            ' price updated to ৳' +
-            newPrice.toLocaleString()
-        );
+        alert('✅ Room ' + room.id + ' price updated to ৳' + newPrice.toLocaleString());
     }
 }
 
@@ -1702,28 +1181,13 @@ function editRoomPrice(roomId) {
 // ==========================================
 
 function toggleRoomStatus(roomId) {
-    const room =
-        roomList.find(function (r) {
-            return r.id === roomId;
-        });
-
+    const room = roomList.find(function (r) { return r.id === roomId; });
     if (!room) return;
 
-    const statuses = [
-        'available',
-        'occupied',
-        'dirty',
-        'maintenance'
-    ];
+    const statuses = ['available', 'occupied', 'dirty', 'maintenance'];
+    const currentIndex = statuses.indexOf(room.status);
 
-    const currentIndex =
-        statuses.indexOf(room.status);
-
-    room.status =
-        statuses[
-            (currentIndex + 1) %
-            statuses.length
-        ];
+    room.status = statuses[(currentIndex + 1) % statuses.length];
 
     renderAll();
 }
@@ -1733,11 +1197,8 @@ function toggleRoomStatus(roomId) {
 // ==========================================
 
 function updateGuestImageFromUrl() {
-    const url =
-        document.getElementById('imgUrlInput')?.value;
-
-    const img =
-        document.getElementById('previewImg');
+    const url = document.getElementById('imgUrlInput')?.value;
+    const img = document.getElementById('previewImg');
 
     if (url && img) {
         img.src = url;
@@ -1745,11 +1206,8 @@ function updateGuestImageFromUrl() {
 }
 
 function previewUploadImage(event) {
-    const file =
-        event?.target?.files?.[0];
-
-    const img =
-        document.getElementById('previewImg');
+    const file = event?.target?.files?.[0];
+    const img = document.getElementById('previewImg');
 
     if (!file || !img) return;
 
@@ -1763,11 +1221,8 @@ function previewUploadImage(event) {
 }
 
 function updateGuestAuthImageFromUrl() {
-    const url =
-        document.getElementById('guestAuthPhotoUrl')?.value;
-
-    const img =
-        document.getElementById('guestAuthPreviewImg');
+    const url = document.getElementById('guestAuthPhotoUrl')?.value;
+    const img = document.getElementById('guestAuthPreviewImg');
 
     if (url && img) {
         img.src = url;
@@ -1775,11 +1230,8 @@ function updateGuestAuthImageFromUrl() {
 }
 
 function previewGuestAuthImage(event) {
-    const file =
-        event?.target?.files?.[0];
-
-    const img =
-        document.getElementById('guestAuthPreviewImg');
+    const file = event?.target?.files?.[0];
+    const img = document.getElementById('guestAuthPreviewImg');
 
     if (!file || !img) return;
 
@@ -1791,4 +1243,3 @@ function previewGuestAuthImage(event) {
 
     reader.readAsDataURL(file);
 }
-
