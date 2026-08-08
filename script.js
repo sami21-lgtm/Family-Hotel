@@ -10,6 +10,7 @@ let currentUser = {
     role: 'ADMINISTRATOR',
     name: 'MD. EMTIAZ HOSSAIN SAMI',
     email: 'admin@grandpalace.com'
+    pic: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png',
 };
 
 // Rooms Inventory Database
