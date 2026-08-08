@@ -9,7 +9,7 @@ let currentUser = {
     role: 'ADMINISTRATOR',
     name: 'MD. EMTIAZ HOSSAIN SAMI',
     email: 'admin@grandpalace.com',
-    avatar: 'https://ui-avatars.com/api/?name=Admin&background=c5a880&color=fff'
+    avatar: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
 };
 
 
