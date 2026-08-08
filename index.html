@@ -12,12 +12,12 @@
 </head>
 <body class="logged-out">
 
-    <!-- MANDATORY AUTHENTICATION & LOGIN MODAL (No Close Button) -->
+    <!-- MANDATORY AUTHENTICATION & LOGIN MODAL -->
     <div id="loginModal" class="modal active">
         <div class="modal-content auth-card">
             <h3 class="modal-title" style="color: var(--gold); text-align: center; font-family: var(--font-head); font-size: 1.5rem;">System Authentication</h3>
             
-            <!-- Staff Admin Login Form -->
+            <!-- Staff Admin Login Form Only -->
             <form onsubmit="handleLoginSubmit(event)" class="mt-15">
                 <h4 style="color: var(--text-main);">Staff Admin Login</h4>
                 <div class="form-group mt-10">
@@ -30,28 +30,6 @@
                     <i class="fa-solid fa-lock"></i> Login as Admin
                 </button>
             </form>
-
-            <div class="divider"></div>
-
-            <!-- Guest Quick Access Form -->
-            <div class="guest-register-box">
-                <h4 style="color: var(--text-main);">Guest Quick Access</h4>
-                <div class="form-grid mt-10">
-                    <input type="text" id="fName" placeholder="First Name">
-                    <input type="text" id="lName" placeholder="Last Name">
-                </div>
-                <input type="email" id="email" placeholder="Email Address" class="mt-10">
-                <input type="text" id="imgUrlInput" placeholder="Avatar Photo URL" onchange="updateGuestImageFromUrl()" class="mt-10">
-                
-                <div class="avatar-preview-box mt-10">
-                    <img id="previewImg" src="https://ui-avatars.com/api/?name=Guest" class="table-img" alt="Preview">
-                    <input type="file" accept="image/*" onchange="previewUploadImage(event)">
-                </div>
-
-                <button type="button" onclick="handleGuestLogin()" class="btn-secondary-sm btn-block-gold mt-15">
-                    <i class="fa-solid fa-user-check"></i> Continue as Guest
-                </button>
-            </div>
         </div>
     </div>
 
@@ -216,7 +194,7 @@
                     <div class="form-container">
                         <form id="reservationForm" onsubmit="handleBookingSubmit(event)">
                             
-                            <!-- Guest Details (Added for Staff/Guest Dynamic Input) -->
+                            <!-- Guest Details with Photo Settings -->
                             <h4 style="color: var(--gold);" class="mb-10">Guest Information</h4>
                             <div class="form-grid mb-15">
                                 <div class="form-group">
@@ -230,6 +208,19 @@
                                 <div class="form-group">
                                     <label>Phone Number *</label>
                                     <input type="text" id="bookingGuestPhone" placeholder="+8801700000000" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Avatar / Photo URL</label>
+                                    <input type="text" id="imgUrlInput" placeholder="Avatar Photo URL" onchange="updateGuestImageFromUrl()">
+                                </div>
+                            </div>
+
+                            <!-- Guest Photo Upload & Preview Box -->
+                            <div class="form-group mb-15">
+                                <label>Guest Photo Attachment</label>
+                                <div class="avatar-preview-box mt-5">
+                                    <img id="previewImg" src="https://ui-avatars.com/api/?name=Guest" class="table-img" alt="Preview">
+                                    <input type="file" accept="image/*" onchange="previewUploadImage(event)">
                                 </div>
                             </div>
 
