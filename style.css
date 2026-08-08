@@ -1,4 +1,6 @@
-
+/* ==========================================
+   GRAND PALACE RESORT & SPA - COMPACT & FIXED
+   ========================================== */
 
 :root {
     --gold: #c5a880;
@@ -7,7 +9,7 @@
     --bg-sidebar: #14171d;
     --bg-card: #1a1d24;
     --border-color: rgba(255, 255, 255, 0.08);
-    --border-gold: rgba(197, 168, 128, 0.3);
+    --border-gold: rgba(197, 168, 128, 0.25);
     --text-main: #f0ede6;
     --text-muted: #9aa0ac;
     --font-head: 'Playfair Display', serif;
@@ -21,21 +23,19 @@
 }
 
 /* ==========================================
-   1. GLOBAL BODY & CONTAINER
+   1. GLOBAL LAYOUT
    ========================================== */
 
 html {
     min-height: 100%;
+    font-size: 14px; /* Compact base size */
 }
 
 body {
     font-family: var(--font-body);
     background-color: var(--bg-dark);
     background-image:
-        linear-gradient(
-            rgba(15, 17, 21, 0.75),
-            rgba(15, 17, 21, 0.75)
-        ),
+        linear-gradient(rgba(15, 17, 21, 0.78), rgba(15, 17, 21, 0.78)),
         url("premium_photo-1661964071015-d97428970584.jpg");
     background-size: cover;
     background-position: center center;
@@ -54,7 +54,7 @@ body {
     min-height: 100vh;
 }
 
-/* Utilities */
+/* Helpers */
 .text-center { text-align: center; }
 .mt-5 { margin-top: 5px; }
 .mt-10 { margin-top: 10px; }
@@ -63,28 +63,15 @@ body {
 .mb-10 { margin-bottom: 10px; }
 .mb-15 { margin-bottom: 15px; }
 
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    white-space: nowrap;
-    border: 0;
-}
-
-/* Glassmorphism Reusable Card */
 .glass-card {
-    background: rgba(26, 29, 36, 0.88);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(26, 29, 36, 0.90);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid var(--border-color);
 }
 
 /* ==========================================
-   2. AUTHENTICATION & MODALS
+   2. LOGIN & MODAL (FIXED SPECIFICITY)
    ========================================== */
 
 .modal,
@@ -92,15 +79,16 @@ body {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    z-index: 9999;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 99999;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 15px;
 }
 
+/* Specificity override for login modal active state */
 .modal.active,
 #loginModal.active {
     display: flex !important;
@@ -109,57 +97,58 @@ body {
 .modal-content.auth-card {
     background: var(--bg-card);
     border: 1px solid var(--border-gold);
-    border-radius: 16px;
-    padding: 30px;
+    border-radius: 12px;
+    padding: 24px;
     width: 100%;
-    max-width: 420px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    max-width: 360px; /* Compact width */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
 }
 
 .brand-icon {
     display: block;
-    margin: 0 auto 8px;
+    margin: 0 auto 6px;
 }
 
 .modal-title {
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     font-family: var(--font-head);
     color: var(--gold);
+    font-size: 1.2rem;
 }
 
 /* Form Controls */
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
 }
 
 .form-group label {
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     color: var(--text-muted);
 }
 
 .form-group input,
 .form-group select {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 10px 12px;
+    border-radius: 6px;
+    padding: 8px 10px;
     color: var(--text-main);
     font-family: var(--font-body);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     outline: none;
-    transition: border-color 0.2s ease, background 0.2s ease;
+    transition: border-color 0.2s ease;
 }
 
 .form-group input:focus,
 .form-group select:focus {
     border-color: var(--gold);
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.07);
 }
 
 .form-group input::placeholder {
-    color: rgba(240, 237, 230, 0.4);
+    color: rgba(240, 237, 230, 0.35);
 }
 
 .form-group select option {
@@ -169,28 +158,28 @@ body {
 
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
 }
 
 .checkbox-label {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.85rem;
+    gap: 6px;
+    font-size: 0.8rem;
     color: var(--text-main);
-    margin-top: 8px;
+    margin-top: 6px;
     cursor: pointer;
 }
 
 .divider {
     height: 1px;
     background: var(--border-color);
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 /* ==========================================
-   3. BUTTONS & CONTROLS
+   3. BUTTONS
    ========================================== */
 
 .btn-block-gold,
@@ -199,48 +188,48 @@ body {
     background: linear-gradient(135deg, var(--gold), var(--gold-hover));
     color: #14171d;
     border: none;
-    border-radius: 8px;
-    padding: 12px 18px;
+    border-radius: 6px;
+    padding: 9px 14px;
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    gap: 6px;
+    font-size: 0.85rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .btn-block-gold { width: 100%; }
 
 .btn-primary-sm {
-    padding: 8px 14px;
-    font-size: 0.85rem;
+    padding: 6px 10px;
+    font-size: 0.78rem;
 }
 
 .btn-block-gold:hover,
 .btn-primary:hover,
 .btn-primary-sm:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(197, 168, 128, 0.35);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(197, 168, 128, 0.3);
 }
 
 .btn-secondary-sm {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.05);
     color: var(--text-main);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 8px 14px;
-    font-size: 0.82rem;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.78rem;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    gap: 5px;
+    transition: all 0.2s ease;
 }
 
 .btn-secondary-sm:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.1);
     border-color: var(--border-gold);
 }
 
@@ -253,19 +242,15 @@ body {
 
 .form-actions {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
 button:disabled {
-    opacity: 0.55;
+    opacity: 0.5;
     cursor: not-allowed;
     transform: none !important;
     box-shadow: none !important;
-}
-
-button, .nav-item, .room-card, input, select {
-    -webkit-tap-highlight-color: transparent;
 }
 
 /* ==========================================
@@ -276,7 +261,7 @@ button, .nav-item, .room-card, input, select {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.65);
     z-index: 998;
 }
 
@@ -285,15 +270,15 @@ button, .nav-item, .room-card, input, select {
 }
 
 #sidebar {
-    width: 270px;
+    width: 250px;
     flex-shrink: 0;
     background: rgba(20, 23, 29, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    padding: 20px 0;
+    padding: 15px 0;
     position: sticky;
     top: 0;
     height: 100vh;
@@ -303,49 +288,49 @@ button, .nav-item, .room-card, input, select {
 
 .brand-header {
     text-align: center;
-    padding: 0 15px 20px;
+    padding: 0 12px 15px;
 }
 
 .brand-header h1 {
     font-family: var(--font-head);
     color: var(--gold);
-    font-size: 1.3rem;
-    letter-spacing: 2px;
-    margin-top: 6px;
+    font-size: 1.15rem;
+    letter-spacing: 1.5px;
+    margin-top: 4px;
 }
 
 .brand-header p {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     color: var(--text-muted);
-    letter-spacing: 3px;
+    letter-spacing: 2px;
 }
 
 .user-profile-card {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 15px;
-    margin: 0 15px 15px;
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 10px;
+    gap: 10px;
+    padding: 10px 12px;
+    margin: 0 12px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
     border: 1px solid var(--border-color);
 }
 
 .avatar-img {
-    width: 44px;
-    height: 44px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--gold);
 }
 
 .user-info h4 {
-    font-size: 0.85rem;
-    margin-bottom: 2px;
+    font-size: 0.8rem;
+    margin-bottom: 1px;
 }
 
 .user-info span {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     color: var(--gold);
 }
 
@@ -357,39 +342,40 @@ button, .nav-item, .room-card, input, select {
 .nav-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 11px 20px;
+    gap: 10px;
+    padding: 9px 16px;
     color: var(--text-muted);
     cursor: pointer;
-    font-size: 0.88rem;
-    transition: background 0.2s ease, color 0.2s ease;
+    font-size: 0.82rem;
+    transition: background 0.15s ease, color 0.15s ease;
     border-left: 3px solid transparent;
 }
 
 .nav-item:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.04);
     color: var(--text-main);
 }
 
 .nav-item.active {
-    background: rgba(197, 168, 128, 0.15);
+    background: rgba(197, 168, 128, 0.12);
     color: var(--gold);
     border-left-color: var(--gold);
 }
 
 .role-switch-box {
-    padding: 15px;
+    padding: 12px;
     border-top: 1px solid var(--border-color);
 }
 
 .custom-select {
     width: 100%;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 8px 10px;
+    border-radius: 6px;
+    padding: 6px 8px;
     color: var(--text-main);
     font-family: var(--font-body);
+    font-size: 0.8rem;
     outline: none;
 }
 
@@ -402,15 +388,15 @@ button, .nav-item, .room-card, input, select {
     display: flex;
     flex-direction: column;
     min-width: 0;
-    width: calc(100% - 270px);
-    max-width: calc(100% - 270px);
+    width: calc(100% - 250px);
+    max-width: calc(100% - 250px);
 }
 
 .topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 25px;
+    padding: 10px 20px;
     background: rgba(20, 23, 29, 0.92);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -424,7 +410,7 @@ button, .nav-item, .room-card, input, select {
 .topbar-right {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
 }
 
 .mobile-nav-toggle {
@@ -432,52 +418,45 @@ button, .nav-item, .room-card, input, select {
     background: none;
     border: none;
     color: var(--text-main);
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     cursor: pointer;
 }
 
 .date-clock-badge {
-    background: rgba(197, 168, 128, 0.1);
+    background: rgba(197, 168, 128, 0.08);
     color: var(--gold);
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.82rem;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.78rem;
     border: 1px solid rgba(197, 168, 128, 0.2);
 }
 
-.clickable { cursor: pointer; }
-
 .main-content {
-    padding: 25px;
+    padding: 18px 20px;
     flex: 1;
 }
 
 .page-header {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .page-header h2 {
     font-family: var(--font-head);
     color: var(--gold);
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .page-header p {
     color: var(--text-muted);
-    font-size: 0.88rem;
-    margin-top: 4px;
-}
-
-.section-title {
-    font-size: 1.1rem;
-    color: var(--text-main);
+    font-size: 0.8rem;
+    margin-top: 2px;
 }
 
 /* ==========================================
-   6. TAB PAGES & VISIBILITY
+   6. TAB PAGES VISIBILITY
    ========================================== */
 
 .tab-page {
@@ -489,54 +468,53 @@ button, .nav-item, .room-card, input, select {
 }
 
 /* ==========================================
-   7. STATS CARDS
+   7. STATS GRID & CARDS
    ========================================== */
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 18px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 18px;
 }
 
 .stat-card {
-    background: rgba(26, 29, 36, 0.92);
+    background: rgba(26, 29, 36, 0.90);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 10px;
+    padding: 14px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: border-color 0.2s ease;
 }
 
 .stat-card:hover {
-    box-shadow: 0 8px 20px rgba(197, 168, 128, 0.15);
     border-color: var(--border-gold);
 }
 
 .stat-info h3 {
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .stat-value {
-    font-size: 1.6rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: var(--text-main);
 }
 
 .stat-icon {
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     color: var(--gold);
     background: rgba(197, 168, 128, 0.1);
-    width: 50px;
-    height: 50px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -549,10 +527,10 @@ button, .nav-item, .room-card, input, select {
 
 .table-responsive {
     overflow-x: auto;
-    background: rgba(26, 29, 36, 0.92);
+    background: rgba(26, 29, 36, 0.90);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    border-radius: 12px;
+    border-radius: 10px;
     border: 1px solid var(--border-color);
 }
 
@@ -563,8 +541,8 @@ table {
 
 thead th {
     text-align: left;
-    padding: 12px 15px;
-    font-size: 0.75rem;
+    padding: 10px 12px;
+    font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: var(--gold);
@@ -572,8 +550,8 @@ thead th {
 }
 
 tbody td {
-    padding: 12px 15px;
-    font-size: 0.85rem;
+    padding: 10px 12px;
+    font-size: 0.8rem;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -582,143 +560,39 @@ tbody tr:last-child td {
 }
 
 tbody tr:hover {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.02);
 }
 
-.table-img {
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-/* Badges */
 .badge {
     display: inline-block;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.72rem;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.68rem;
     font-weight: 600;
     white-space: nowrap;
     text-transform: uppercase;
 }
 
 .badge-success {
-    background: rgba(72, 187, 120, 0.15);
+    background: rgba(72, 187, 120, 0.12);
     color: #48bb78;
-    border: 1px solid rgba(72, 187, 120, 0.3);
+    border: 1px solid rgba(72, 187, 120, 0.25);
 }
 
 .badge-danger {
-    background: rgba(245, 101, 101, 0.15);
+    background: rgba(245, 101, 101, 0.12);
     color: #f56565;
-    border: 1px solid rgba(245, 101, 101, 0.3);
+    border: 1px solid rgba(245, 101, 101, 0.25);
 }
 
 .badge-gold {
-    background: rgba(197, 168, 128, 0.15);
+    background: rgba(197, 168, 128, 0.12);
     color: var(--gold);
     border: 1px solid var(--border-gold);
 }
 
 /* ==========================================
-   9. SERVICES & BOOKING FORM
-   ========================================== */
-
-.services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-.service-card {
-    background: rgba(26, 29, 36, 0.92);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 20px;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.service-icon {
-    font-size: 1.4rem;
-    color: var(--gold);
-    margin-bottom: 10px;
-}
-
-.service-card h3 {
-    font-size: 1.05rem;
-    margin-bottom: 8px;
-}
-
-.service-card p {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin-bottom: 12px;
-}
-
-.service-list { list-style: none; }
-
-.service-list li {
-    font-size: 0.85rem;
-    padding: 6px 0;
-    border-top: 1px dashed var(--border-color);
-}
-
-/* Form Container & Calculations */
-.form-container {
-    background: rgba(26, 29, 36, 0.92);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border: 1px solid var(--border-color);
-    border-radius: 14px;
-    padding: 25px;
-    max-width: 900px;
-}
-
-.alert-info {
-    background: rgba(66, 153, 225, 0.1);
-    border: 1px solid rgba(66, 153, 225, 0.3);
-    border-radius: 8px;
-    padding: 12px 15px;
-    font-size: 0.85rem;
-}
-
-.calc-summary-card {
-    background: rgba(197, 168, 128, 0.06);
-    border: 1px solid rgba(197, 168, 128, 0.25);
-    border-radius: 10px;
-    padding: 18px;
-}
-
-.calc-summary-card h4 {
-    color: var(--gold);
-    margin-bottom: 12px;
-    font-size: 0.95rem;
-}
-
-.summary-line {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-    font-size: 0.88rem;
-    color: var(--text-muted);
-}
-
-.summary-line.grand-total {
-    border-top: 1px solid rgba(197, 168, 128, 0.3);
-    margin-top: 8px;
-    padding-top: 10px;
-    color: var(--text-main);
-    font-size: 1.05rem;
-    font-weight: 700;
-}
-
-.summary-line.grand-total strong {
-    color: var(--gold);
-}
-
-/* ==========================================
-   10. BROWSE ROOM CARDS GRID
+   9. ROOM CARDS & BROWSE GRID
    ========================================== */
 
 #roomsCardsGrid {
@@ -727,73 +601,51 @@ tbody tr:hover {
 
 .room-card {
     position: relative;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(26, 29, 36, 0.90);
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .room-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
     border-color: var(--border-gold) !important;
 }
 
 .room-card-img-wrapper {
     width: 100%;
-    height: 180px;
+    height: 150px; /* Reduced compact image height */
     overflow: hidden;
     background: #111;
 }
 
 .vibrant-img {
     width: 100%;
-    height: 180px;
+    height: 150px;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s ease, filter 0.4s ease;
+    transition: transform 0.3s ease;
 }
 
 .room-card:hover .vibrant-img {
-    transform: scale(1.05);
-    filter: brightness(1.05);
-}
-
-.room-card h4,
-.room-card h5 {
-    font-family: var(--font-head);
+    transform: scale(1.03);
 }
 
 .room-card h5 {
     color: var(--text-main);
-    font-size: 1rem;
-}
-
-.room-card .btn-secondary-sm {
-    white-space: nowrap;
-}
-
-.room-card .btn-secondary-sm:hover {
-    border-color: var(--gold);
-    color: var(--gold);
+    font-size: 0.95rem;
+    font-family: var(--font-head);
 }
 
 .room-card .btn-primary {
     width: 100%;
-    margin-top: 10px;
-    min-height: 42px;
-}
-
-#addNewRoomBtn,
-.add-new-room-btn {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-#addNewRoomBtn:hover,
-.add-new-room-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(197, 168, 128, 0.3);
+    margin-top: 8px;
+    padding: 8px;
 }
 
 /* ==========================================
-   11. ROLE PERMISSIONS (CSS DISPLAY CONTROL)
+   10. ROLE PERMISSIONS
    ========================================== */
 
 body.role-guest .role-admin-only,
@@ -806,19 +658,9 @@ body.role-guest .add-new-room-btn {
     display: none !important;
 }
 
-body.role-guest #reservationForm {
-    max-width: 900px;
-}
-
 /* ==========================================
-   12. RESPONSIVE DESIGN (MEDIA QUERIES)
+   11. RESPONSIVE DESIGN
    ========================================== */
-
-@media (max-width: 1100px) {
-    #roomsCardsGrid > div {
-        grid-template-columns: repeat(2, minmax(250px, 1fr)) !important;
-    }
-}
 
 @media (max-width: 900px) {
     .main-wrapper {
@@ -828,9 +670,9 @@ body.role-guest #reservationForm {
 
     #sidebar {
         position: fixed;
-        left: -270px;
+        left: -250px;
         z-index: 1000;
-        transition: left 0.3s ease;
+        transition: left 0.25s ease;
     }
 
     #sidebar.open {
@@ -842,52 +684,17 @@ body.role-guest #reservationForm {
     }
 }
 
-@media (max-width: 700px) {
-    #roomsCardsGrid > div {
-        grid-template-columns: 1fr !important;
-    }
-
-    .room-card-img-wrapper,
-    .vibrant-img {
-        height: 200px;
-    }
-}
-
 @media (max-width: 600px) {
     .main-content {
-        padding: 15px;
+        padding: 12px;
     }
 
     .stats-grid {
         grid-template-columns: 1fr;
     }
 
-    .topbar {
-        padding: 12px 15px;
-    }
-
-    .date-clock-badge {
-        font-size: 0.75rem;
-        padding: 4px 10px;
-    }
-}
-
-@media (max-width: 480px) {
     .room-card-img-wrapper,
     .vibrant-img {
-        height: 180px;
-    }
-
-    .room-card > div:last-child {
-        padding: 12px !important;
-    }
-
-    .room-card .btn-secondary-sm {
-        padding: 7px 10px;
-        font-size: 0.75rem;
-    }
-
-    .modal-content.auth-card {
-        padding: 20px;
+        height: 160px;
     }
 }
