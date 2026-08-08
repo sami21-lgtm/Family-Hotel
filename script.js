@@ -1,64 +1,44 @@
-let currentRole = 'admin'; // Roles: admin, frontdesk, housekeeping, finance, guest
+// ==========================================
+// 1. GLOBAL STATE
+// ==========================================
+
+let currentRole = 'admin';
 let isStaffAuthenticated = false;
 
 let currentUser = {
     role: 'ADMINISTRATOR',
     name: 'MD. EMTIAZ HOSSAIN SAMI',
     email: 'admin@grandpalace.com',
-    avatar: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
+    avatar: 'https://ui-avatars.com/api/?name=Admin&background=c5a880&color=fff'
 };
 
 
-
-let roomList = [
+const initialRooms = [
     {
         id: "101",
-        title: "Single Standard Room",
-        price: 800,
+        title: "Deluxe Ocean View",
+        price: 12000,
         status: "available",
-        img: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=500",
-        desc: "Cozy room with free Wi-Fi and king bed."
+        img: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=500",
+        desc: "Spacious ocean view room with private balcony."
     },
     {
         id: "102",
-        title: "Single Executive Room",
-        price: 1000,
-        status: "occupied",
-        img: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=500",
-        desc: "Executive workspace & smart TV."
+        title: "Executive Luxury Suite",
+        price: 22000,
+        status: "booked",
+        img: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=500",
+        desc: "Luxury suite featuring king bed and city skyline view."
     },
     {
         id: "201",
-        title: "Deluxe Double Room",
-        price: 5000,
-        status: "dirty",
-        img: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=500",
-        desc: "Spacious luxury room designed for couples."
-    },
-    {
-        id: "202",
-        title: "Super Deluxe Double Room",
-        price: 7500,
+        title: "Garden Pool Villa",
+        price: 18000,
         status: "available",
-        img: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=500",
-        desc: "Balcony access and complimentary breakfast."
+        img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500",
+        desc: "Serene garden view villa with private pool access."
     },
-    {
-        id: "301",
-        title: "Executive Double Ocean View",
-        price: 10000,
-        status: "maintenance",
-        img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500",
-        desc: "Panoramic view with luxury ocean deck."
-    },
-    {
-        id: "401",
-        title: "Royal Family Suite",
-        price: 20000,
-        status: "occupied",
-        img: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=500",
-        desc: "Multi-bedroom suite for families."
-    },
+    /* ---- নতুন যুক্ত করা রুম ২টি নিচে ---- */
     {
         id: "501",
         title: "Presidential VIP Suite",
@@ -77,82 +57,35 @@ let roomList = [
     }
 ];
 
-
 let bookings = [
-    {
-        id: "GP-8801",
-        guestName: "Arif Chowdhury",
-        guestEmail: "arif@example.com",
-        guestPhone: "+8801711112233",
-        roomNumber: "401",
-        roomType: "Royal Family Suite",
-        checkIn: "2026-08-01",
-        checkOut: "2026-08-05",
-        totalBill: 80000,
-        paymentMethod: "BKASH",
-        status: "Checked-In",
-        avatar: "https://ui-avatars.com/api/?name=Arif+Chowdhury&background=c5a880&color=fff"
-    },
-    {
-        id: "GP-8802",
-        guestName: "Sultana Rahman",
-        guestEmail: "sultana@example.com",
-        guestPhone: "+8801822223344",
-        roomNumber: "102",
-        roomType: "Single Executive Room",
-        checkIn: "2026-08-06",
-        checkOut: "2026-08-08",
-        totalBill: 2000,
-        paymentMethod: "SSLCOMMERZ",
-        status: "Confirmed",
-        avatar: "https://ui-avatars.com/api/?name=Sultana+Rahman&background=c5a880&color=fff"
-    }
+    { id: "GP-8801", guestName: "Arif Chowdhury", guestEmail: "arif@example.com", guestPhone: "+8801711112233", roomNumber: "401", roomType: "Royal Family Suite", checkIn: "2026-08-01", checkOut: "2026-08-05", totalBill: 80000, paymentMethod: "BKASH", status: "Checked-In", avatar: "https://ui-avatars.com/api/?name=Arif+Chowdhury&background=c5a880&color=fff" }
 ];
-
-
 
 let guests = [
-    {
-        id: "G-101",
-        name: "Arif Chowdhury",
-        email: "arif@example.com",
-        phone: "+8801711112233",
-        avatar: "https://ui-avatars.com/api/?name=Arif+Chowdhury&background=c5a880&color=fff"
-    },
-    {
-        id: "G-102",
-        name: "Sultana Rahman",
-        email: "sultana@example.com",
-        phone: "+8801822223344",
-        avatar: "https://ui-avatars.com/api/?name=Sultana+Rahman&background=c5a880&color=fff"
-    }
+    { id: "G-101", name: "Arif Chowdhury", email: "arif@example.com", phone: "+8801711112233", avatar: "https://ui-avatars.com/api/?name=Arif+Chowdhury&background=c5a880&color=fff" }
 ];
 
-
+// ==========================================
+// 3. HELPERS
+// ==========================================
 
 function escapeHTML(str) {
     if (str === null || str === undefined) return '';
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 function getNightsBetween(checkInStr, checkOutStr) {
     if (!checkInStr || !checkOutStr) return 1;
     const start = new Date(checkInStr);
     const end = new Date(checkOutStr);
-
     if (isNaN(start.getTime()) || isNaN(end.getTime())) return 1;
-
-    const diffTime = end - start;
-    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+    const diffDays = Math.round((end - start) / (1000 * 60 * 60 * 24));
     return diffDays > 0 ? diffDays : 1;
 }
 
-
+// ==========================================
+// 4. INITIALIZATION
+// ==========================================
 
 document.addEventListener('DOMContentLoaded', function () {
     initClock();
@@ -161,75 +94,37 @@ document.addEventListener('DOMContentLoaded', function () {
     renderAll();
     calculateTotal();
 
-    // Booking Form Event Listeners
-    const resForm = document.getElementById('reservationForm');
-    if (resForm) {
-        resForm.addEventListener('change', calculateTotal);
-        resForm.addEventListener('input', calculateTotal);
-        resForm.addEventListener('submit', handleBookingSubmit);
-    }
-
-    // Staff Login Listeners
-    const staffForm = document.getElementById('staffLoginForm');
-    if (staffForm) {
-        staffForm.addEventListener('submit', handleStaffLogin);
-    }
-
-    // Guest Login Listeners
-    const guestForm = document.getElementById('guestLoginForm');
-    if (guestForm) {
-        guestForm.addEventListener('submit', handleGuestLoginSubmit);
-    }
-
-    // Set initial role state
     switchUserRole(currentRole);
 });
 
-
+// ==========================================
+// 5. CLOCK & DATES
+// ==========================================
 
 function initClock() {
     const clockEl = document.getElementById('currentDateDisplay');
-
     const update = function () {
         const now = new Date();
         if (clockEl) {
-            clockEl.innerHTML =
-                '<i class="fa-regular fa-clock"></i> ' +
-                now.toLocaleDateString('en-GB') +
-                ' | ' +
-                now.toLocaleTimeString();
+            clockEl.innerHTML = '<i class="fa-regular fa-clock"></i> ' + now.toLocaleDateString('en-GB') + ' | ' + now.toLocaleTimeString();
         }
     };
-
     update();
     setInterval(update, 1000);
 }
 
-
-
 function setupDefaultDates() {
     const today = new Date().toISOString().split('T')[0];
     const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
-
     const cIn = document.getElementById('checkIn');
     const cOut = document.getElementById('checkOut');
-
     if (cIn && !cIn.value) cIn.value = today;
     if (cOut && !cOut.value) cOut.value = tomorrow;
 }
 
-
-
-function renderAll() {
-    renderDashboard();
-    renderRooms();
-    renderFrontDesk();
-    renderHousekeeping();
-    renderFinance();
-    renderGuests();
-}
-
-
+// ==========================================
+// 6. AUTHENTICATION & ROLES
+// ==========================================
 
 function switchAuthForm(type) {
     const guestForm = document.getElementById('guestLoginForm');
@@ -240,79 +135,40 @@ function switchAuthForm(type) {
     if (type === 'staff') {
         if (guestForm) guestForm.style.display = 'none';
         if (staffForm) staffForm.style.display = 'block';
-
         if (btnGuest) btnGuest.classList.remove('active');
         if (btnStaff) btnStaff.classList.add('active');
     } else {
         if (guestForm) guestForm.style.display = 'block';
         if (staffForm) staffForm.style.display = 'none';
-
         if (btnGuest) btnGuest.classList.add('active');
         if (btnStaff) btnStaff.classList.remove('active');
     }
 }
 
-
-
 function handleStaffLogin(event) {
     if (event) event.preventDefault();
 
-    const emailField = document.getElementById('loginEmail');
-    const passField = document.getElementById('loginPasswordInput');
+    const email = document.getElementById('loginEmail')?.value.trim();
+    const password = document.getElementById('loginPasswordInput')?.value;
 
-    const email = emailField ? emailField.value.trim() : '';
-    const password = passField ? passField.value : '';
+    if (email === 'admin@grandpalace.com' && password === 'admin123') {
+        isStaffAuthenticated = true;
+        currentUser = {
+            role: 'ADMINISTRATOR',
+            name: 'MD. EMTIAZ HOSSAIN SAMI',
+            email: email,
+            avatar: 'https://ui-avatars.com/api/?name=Admin&background=c5a880&color=fff'
+        };
 
-    const ADMIN_EMAIL = 'admin@grandpalace.com';
-    const ADMIN_PASS = 'admin123';
-
-    if (!email || !password) {
-        alert('Please enter both Email and Password!');
-        return false;
+        document.getElementById('loginModal')?.classList.remove('active');
+        switchUserRole('admin');
+        updateUserProfileDisplay();
+        alert('Welcome Back, Admin!');
+    } else {
+        alert('❌ Invalid Credentials! (Use: admin@grandpalace.com / admin123)');
     }
-
-    const validEmail = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
-    const validPassword = password === ADMIN_PASS;
-
-    if (!validEmail || !validPassword) {
-        alert(
-            '❌ Invalid credentials!\n\n' +
-            'Email: admin@grandpalace.com\n' +
-            'Password: admin123'
-        );
-        return false;
-    }
-
-    // Authenticated
-    isStaffAuthenticated = true;
-    currentRole = 'admin';
-
-    document.body.classList.remove('logged-out');
-
-    // Hide Login Modal
-    const loginModal = document.getElementById('loginModal');
-    if (loginModal) {
-        loginModal.classList.remove('active');
-        loginModal.style.display = 'none';
-    }
-
-    currentUser = {
-        role: 'ADMINISTRATOR',
-        name: 'MD. EMTIAZ HOSSAIN SAMI',
-        email: ADMIN_EMAIL,
-        avatar: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
-    };
-
-    updateUserProfilesUI();
-    switchUserRole('admin');
-
-    if (passField) passField.value = '';
-    alert('Welcome Back, Admin!');
-
-    return true;
+    return false;
 }
-
-
 
 function handleGuestLoginSubmit(event) {
     if (event) event.preventDefault();
@@ -327,65 +183,38 @@ function handleGuestLoginSubmit(event) {
         name: name,
         email: email,
         phone: phone,
-        avatar: previewImg || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=c5a880&color=fff'
+        avatar: previewImg || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=c5a880&color=fff')
     };
 
-    currentRole = 'guest';
-
-    document.body.classList.remove('logged-out');
-
-    // Hide Login Modal
-    const loginModal = document.getElementById('loginModal');
-    if (loginModal) {
-        loginModal.classList.remove('active');
-        loginModal.style.display = 'none';
-    }
-
-    updateUserProfilesUI();
+    document.getElementById('loginModal')?.classList.remove('active');
     switchUserRole('guest');
-
+    updateUserProfileDisplay();
     alert('🎉 Welcome ' + name + ' to Grand Palace Resort & Spa!');
-
-    return true;
+    return false;
 }
 
-// Helper to keep User Info consistent across Header & Sidebar
-function updateUserProfilesUI() {
+function updateUserProfileDisplay() {
     const nameEl = document.getElementById('sidebarUserName');
     const roleEl = document.getElementById('sidebarUserRole');
-    const sidebarAvatarEl = document.getElementById('sidebarAvatar');
-    const topbarAvatarEl = document.getElementById('topbarAvatar');
+    const avatarEl = document.getElementById('sidebarAvatar');
+    const topAvatarEl = document.getElementById('topbarAvatar');
 
     if (nameEl) nameEl.textContent = currentUser.name;
     if (roleEl) roleEl.textContent = 'Role: ' + currentUser.role;
-    if (sidebarAvatarEl) sidebarAvatarEl.src = currentUser.avatar;
-    if (topbarAvatarEl) topbarAvatarEl.src = currentUser.avatar;
+    if (avatarEl) avatarEl.src = currentUser.avatar;
+    if (topAvatarEl) topAvatarEl.src = currentUser.avatar;
 }
-
-
 
 function switchUserRole(role) {
     currentRole = role;
-
     const selector = document.getElementById('roleSelector');
     if (selector) selector.value = role;
 
-    document.body.classList.toggle('role-guest', role === 'guest');
+    document.body.className = 'role-' + role;
 
-    // Navigation permissions
-    document.querySelectorAll('.nav-item').forEach(function (item) {
-        if (role === 'admin') {
-            item.style.display = 'flex';
-        } else if (item.classList.contains('role-' + role)) {
-            item.style.display = 'flex';
-        } else {
-            item.style.display = 'none';
-        }
-    });
-
-    // Admin-only elements
-    document.querySelectorAll('.role-admin-only').forEach(function (element) {
-        element.style.display = role === 'admin' ? '' : 'none';
+    // Show/Hide admin sections
+    document.querySelectorAll('.role-admin-only').forEach(el => {
+        el.style.display = role === 'admin' ? '' : 'none';
     });
 
     renderRooms();
@@ -397,47 +226,25 @@ function switchUserRole(role) {
     }
 }
 
-
-
 function logoutUser() {
     isStaffAuthenticated = false;
     currentRole = 'guest';
-
-    currentUser = {
-        role: 'GUEST',
-        name: 'Valued Guest',
-        email: '',
-        phone: '',
-        avatar: ''
-    };
-
-    document.body.classList.add('logged-out');
-
-    // Show Login Modal
-    const loginModal = document.getElementById('loginModal');
-    if (loginModal) {
-        loginModal.style.display = 'flex';
-        loginModal.classList.add('active');
-    }
-
+    document.getElementById('loginModal')?.classList.add('active');
     switchAuthForm('guest');
 }
 
-
+// ==========================================
+// 7. NAVIGATION & TAB SYSTEM
+// ==========================================
 
 function switchTab(tabId) {
-    document.querySelectorAll('.tab-page').forEach(function (page) {
-        page.classList.remove('active');
-    });
-
-    document.querySelectorAll('.nav-item').forEach(function (nav) {
-        nav.classList.remove('active');
-    });
+    document.querySelectorAll('.tab-page').forEach(page => page.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
 
     const targetPage = document.getElementById(tabId);
     if (targetPage) targetPage.classList.add('active');
 
-    const activeNav = document.querySelector('.nav-item[onclick*="' + tabId + '"]');
+    const activeNav = document.querySelector(`.nav-item[onclick*="${tabId}"]`);
     if (activeNav) activeNav.classList.add('active');
 
     toggleSidebar(false);
@@ -446,41 +253,35 @@ function switchTab(tabId) {
 function toggleSidebar(forceState) {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
-
     if (!sidebar) return;
 
     const isOpen = forceState !== undefined ? forceState : !sidebar.classList.contains('open');
-
-    if (isOpen) {
-        sidebar.classList.add('open');
-        if (overlay) overlay.classList.add('active');
-    } else {
-        sidebar.classList.remove('open');
-        if (overlay) overlay.classList.remove('active');
-    }
+    sidebar.classList.toggle('open', isOpen);
+    if (overlay) overlay.classList.toggle('active', isOpen);
 }
 
+// ==========================================
+// 8. ROOM MANAGEMENT & BOOKING
+// ==========================================
 
+function renderAll() {
+    renderDashboard();
+    renderRooms();
+    renderFrontDesk();
+    renderHousekeeping();
+    renderFinance();
+    renderGuests();
+}
 
 function populateRoomDropdown() {
     const select = document.getElementById('roomTypeSelect');
     if (!select) return;
 
-    const currentValue = select.value;
-
-    select.innerHTML = roomList
-        .map(function (room) {
-            return `
-                <option value="${escapeHTML(room.id)}|${escapeHTML(room.title)}|${room.price}">
-                    Room ${escapeHTML(room.id)} - ${escapeHTML(room.title)} (৳${room.price.toLocaleString()}/night)
-                </option>
-            `;
-        })
-        .join('');
-
-    if (currentValue && Array.from(select.options).some(function (option) { return option.value === currentValue; })) {
-        select.value = currentValue;
-    }
+    select.innerHTML = roomList.map(room => `
+        <option value="${escapeHTML(room.id)}|${escapeHTML(room.title)}|${room.price}">
+            Room ${escapeHTML(room.id)} - ${escapeHTML(room.title)} (৳${room.price.toLocaleString()}/night)
+        </option>
+    `).join('');
 }
 
 function calculateTotal() {
@@ -493,29 +294,19 @@ function calculateTotal() {
     const roomTotal = roomPrice * nights;
 
     let addonsTotal = 0;
-
-    document.querySelectorAll('input[name="foodMenu"]:checked, input[name="amenities"]:checked').forEach(function (cb) {
+    document.querySelectorAll('input[name="foodMenu"]:checked, input[name="amenities"]:checked').forEach(cb => {
         addonsTotal += parseFloat(cb.getAttribute('data-price')) || 0;
     });
 
     const grandTotal = roomTotal + addonsTotal;
 
-    const billNights = document.getElementById('billNights');
-    const billRoom = document.getElementById('billRoom');
-    const billAddons = document.getElementById('billAddons');
-    const billTotal = document.getElementById('billTotal');
-
-    if (billNights) billNights.textContent = nights + ' Night(s)';
-    if (billRoom) billRoom.textContent = '৳' + roomTotal.toLocaleString();
-    if (billAddons) billAddons.textContent = '৳' + addonsTotal.toLocaleString();
-    if (billTotal) billTotal.textContent = '৳' + grandTotal.toLocaleString();
+    if (document.getElementById('billNights')) document.getElementById('billNights').textContent = nights + ' Night(s)';
+    if (document.getElementById('billRoom')) document.getElementById('billRoom').textContent = '৳' + roomTotal.toLocaleString();
+    if (document.getElementById('billAddons')) document.getElementById('billAddons').textContent = '৳' + addonsTotal.toLocaleString();
+    if (document.getElementById('billTotal')) document.getElementById('billTotal').textContent = '৳' + grandTotal.toLocaleString();
 
     return grandTotal;
 }
-
-// ==========================================
-// 17. PAYMENT DETAILS TOGGLE
-// ==========================================
 
 function togglePaymentDetails() {
     const method = document.getElementById('paymentMethodSelect')?.value;
@@ -530,549 +321,282 @@ function togglePaymentDetails() {
     }
 
     detailsDiv.style.display = 'block';
-
-    if (method === 'bkash') {
-        instructions.innerHTML = '<b>bKash Merchant Payment:</b> Send money to <code>01700000000</code> with your booking ID.';
-    } else if (method === 'nagad') {
-        instructions.innerHTML = '<b>Nagad Merchant Payment:</b> Send money to <code>01800000000</code>.';
-    } else {
-        instructions.innerHTML = '<b>Online Gateway:</b> You will be redirected to complete secure card payment.';
-    }
+    if (method === 'bkash') instructions.innerHTML = '<b>bKash Payment:</b> Send money to <code>01700000000</code> with reference.';
+    else if (method === 'nagad') instructions.innerHTML = '<b>Nagad Payment:</b> Send money to <code>01800000000</code>.';
+    else instructions.innerHTML = '<b>Online Card Gateway:</b> Secure SSL Encryption standard.';
 }
-
-// ==========================================
-// 18. BOOKING SUBMISSION
-// ==========================================
 
 function handleBookingSubmit(event) {
     if (event) event.preventDefault();
 
     const name = document.getElementById('bookingGuestName')?.value.trim();
-    const email = document.getElementById('bookingGuestEmail')?.value.trim() || '';
-    const phone = document.getElementById('bookingGuestPhone')?.value.trim() || '';
-    const checkIn = document.getElementById('checkIn')?.value;
-    const checkOut = document.getElementById('checkOut')?.value;
     const roomSelect = document.getElementById('roomTypeSelect')?.value;
-    const method = document.getElementById('paymentMethodSelect')?.value || 'CASH';
-    const previewImg = document.getElementById('previewImg')?.src || '';
 
-    if (!name) {
-        alert('⚠️ Please enter guest name!');
-        return false;
-    }
-
-    if (!roomSelect) {
-        alert('⚠️ Please select a room!');
+    if (!name || !roomSelect) {
+        alert('⚠️ Please fill required fields!');
         return false;
     }
 
     const parts = roomSelect.split('|');
-    const roomId = parts[0];
-    const roomTitle = parts[1];
-
-    const room = roomList.find(function (r) { return r.id === roomId; });
-
-    if (!room) {
-        alert('❌ Selected room not found!');
-        return false;
-    }
+    const room = roomList.find(r => r.id === parts[0]);
 
     if (currentRole === 'guest' && room.status !== 'available') {
-        alert('⚠️ Sorry! This room is currently not available.');
+        alert('⚠️ Sorry! Guest can only book Available rooms.');
         return false;
     }
 
     const grandTotal = calculateTotal();
-
     const newBooking = {
         id: 'GP-' + Math.floor(1000 + Math.random() * 9000),
         guestName: name,
-        guestEmail: email,
-        guestPhone: phone,
-        roomNumber: roomId,
-        roomType: roomTitle,
-        checkIn: checkIn,
-        checkOut: checkOut,
+        guestEmail: document.getElementById('bookingGuestEmail')?.value || '',
+        guestPhone: document.getElementById('bookingGuestPhone')?.value || '',
+        roomNumber: room.id,
+        roomType: room.title,
+        checkIn: document.getElementById('checkIn')?.value,
+        checkOut: document.getElementById('checkOut')?.value,
         totalBill: grandTotal,
-        paymentMethod: method.toUpperCase(),
+        paymentMethod: (document.getElementById('paymentMethodSelect')?.value || 'CASH').toUpperCase(),
         status: 'Confirmed',
-        avatar: previewImg || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=c5a880&color=fff'
+        avatar: document.getElementById('previewImg')?.src || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name)
     };
 
     bookings.unshift(newBooking);
-
-    if (email && !guests.some(function (g) { return g.email.toLowerCase() === email.toLowerCase(); })) {
-        guests.push({
-            id: 'G-' + Math.floor(100 + Math.random() * 900),
-            name: name,
-            email: email,
-            phone: phone,
-            avatar: newBooking.avatar
-        });
-    }
-
-    // Mark room occupied
     room.status = 'occupied';
 
     populateRoomDropdown();
     renderAll();
 
-    alert(
-        '🎉 Booking Confirmed Successfully!\n\n' +
-        'Invoice ID: ' + newBooking.id + '\n' +
-        'Guest: ' + name + '\n' +
-        'Room: ' + roomId + '\n' +
-        'Total: ৳' + grandTotal.toLocaleString()
-    );
-
+    alert('🎉 Reservation Confirmed! Invoice ID: ' + newBooking.id);
     resetForm();
-
-    if (currentRole === 'guest') {
-        switchTab('tabRooms');
-    } else {
-        switchTab('tabDashboard');
-    }
-
+    switchTab('tabDashboard');
     return true;
 }
 
-// ==========================================
-// 19. BOOK FROM BROWSE ROOMS
-// ==========================================
-
 function bookRoomFromBrowse(roomId) {
-    const room = roomList.find(function (r) { return r.id === roomId; });
-
-    if (!room) {
-        alert('❌ Room not found!');
+    const room = roomList.find(r => r.id === roomId);
+    if (!room || room.status !== 'available') {
+        alert('⚠️ This room is not available for booking.');
         return;
-    }
-
-    if (room.status !== 'available') {
-        alert('⚠️ This room is currently not available.');
-        return;
-    }
-
-    const roomSelect = document.getElementById('roomTypeSelect');
-
-    if (roomSelect) {
-        const targetValue = room.id + '|' + room.title + '|' + room.price;
-        const optionExists = Array.from(roomSelect.options).some(function (option) {
-            return option.value === targetValue;
-        });
-
-        if (optionExists) {
-            roomSelect.value = targetValue;
-        }
-    }
-
-    if (currentRole === 'guest') {
-        const guestNameField = document.getElementById('bookingGuestName');
-        const guestEmailField = document.getElementById('bookingGuestEmail');
-        const guestPhoneField = document.getElementById('bookingGuestPhone');
-
-        if (guestNameField && currentUser.name) guestNameField.value = currentUser.name;
-        if (guestEmailField && currentUser.email) guestEmailField.value = currentUser.email;
-        if (guestPhoneField && currentUser.phone) guestPhoneField.value = currentUser.phone;
     }
 
     switchTab('tabBooking');
-    calculateTotal();
-
-    setTimeout(function () {
-        const reservationForm = document.getElementById('reservationForm');
-        if (reservationForm) {
-            reservationForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    }, 150);
-}
-
-// ==========================================
-// 20. RESET FORM
-// ==========================================
-
-function resetForm() {
-    const form = document.getElementById('reservationForm');
-    if (form) form.reset();
-
-    setupDefaultDates();
-    populateRoomDropdown();
-    calculateTotal();
-    togglePaymentDetails();
-}
-
-// ==========================================
-// 21. DASHBOARD
-// ==========================================
-
-function renderDashboard() {
-    const totalBookingsEl = document.getElementById('statTotalBookings');
-    const totalRevEl = document.getElementById('statRevenue');
-    const tbody = document.getElementById('dashboardTableBody');
-
-    const totalRev = bookings.reduce(function (sum, booking) {
-        return sum + booking.totalBill;
-    }, 0);
-
-    if (totalBookingsEl) totalBookingsEl.textContent = bookings.length;
-    if (totalRevEl) totalRevEl.textContent = '৳' + totalRev.toLocaleString();
-
-    if (tbody) {
-        tbody.innerHTML = bookings.map(function (b) {
-            return `
-                <tr>
-                    <td>
-                        <img src="${escapeHTML(b.avatar)}" class="table-img vibrant-img" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" alt="${escapeHTML(b.guestName)}">
-                    </td>
-                    <td><strong>${escapeHTML(b.id)}</strong></td>
-                    <td>${escapeHTML(b.guestName)}</td>
-                    <td>Room ${escapeHTML(b.roomNumber)} - ${escapeHTML(b.roomType)}</td>
-                    <td><small>${escapeHTML(b.checkIn)} to ${escapeHTML(b.checkOut)}</small></td>
-                    <td><strong>৳${b.totalBill.toLocaleString()}</strong></td>
-                    <td>
-                        <span class="badge ${b.status === 'Checked-In' ? 'badge-success' : 'badge-gold'}">
-                            ${escapeHTML(b.status)}
-                        </span>
-                    </td>
-                    <td>
-                        <button type="button" class="btn-secondary-sm" onclick="alert('Printing Receipt for ${escapeHTML(b.id)}')">
-                            <i class="fa-solid fa-print"></i>
-                        </button>
-                    </td>
-                </tr>
-            `;
-        }).join('');
+    const roomSelect = document.getElementById('roomTypeSelect');
+    if (roomSelect) {
+        roomSelect.value = `${room.id}|${room.title}|${room.price}`;
+        calculateTotal();
     }
 }
 
+function resetForm() {
+    document.getElementById('reservationForm')?.reset();
+    setupDefaultDates();
+    calculateTotal();
+}
+
 // ==========================================
-// 22. BROWSE ROOMS CARD RENDER
+// 9. RENDER HELPERS
 // ==========================================
+
+function renderDashboard() {
+    const totalRev = bookings.reduce((sum, b) => sum + b.totalBill, 0);
+    if (document.getElementById('statTotalBookings')) document.getElementById('statTotalBookings').textContent = bookings.length;
+    if (document.getElementById('statRevenue')) document.getElementById('statRevenue').textContent = '৳' + totalRev.toLocaleString();
+
+    const tbody = document.getElementById('dashboardTableBody');
+    if (tbody) {
+        tbody.innerHTML = bookings.map(b => `
+            <tr>
+                <td><img src="${escapeHTML(b.avatar)}" class="table-img" style="width:32px;height:32px;border-radius:50%;" alt="Guest"></td>
+                <td><strong>${escapeHTML(b.id)}</strong></td>
+                <td>${escapeHTML(b.guestName)}</td>
+                <td>Room ${escapeHTML(b.roomNumber)}</td>
+                <td><small>${escapeHTML(b.checkIn)} to ${escapeHTML(b.checkOut)}</small></td>
+                <td><strong>৳${b.totalBill.toLocaleString()}</strong></td>
+                <td><span class="badge badge-success">${escapeHTML(b.status)}</span></td>
+                <td><button class="btn-secondary-sm" onclick="alert('Printing receipt...')"><i class="fa-solid fa-print"></i></button></td>
+            </tr>
+        `).join('');
+    }
+}
 
 function renderRooms() {
     const container = document.getElementById('roomsCardsGrid');
     if (!container) return;
 
     const isAdmin = currentRole === 'admin';
-    const isGuest = currentRole === 'guest';
-
-    container.innerHTML = roomList.map(function (room) {
-        let statusClass = 'badge-danger';
-
-        if (room.status === 'available') {
-            statusClass = 'badge-success';
-        } else if (room.status === 'dirty' || room.status === 'maintenance') {
-            statusClass = 'badge-gold';
-        }
-
-        const adminControls = isAdmin ? `
-            <div class="admin-room-controls" style="display:flex; gap:5px; align-items:center; flex-wrap:wrap; margin-top:8px;">
-                <button type="button" class="btn-secondary-sm" onclick="editRoomPrice('${escapeHTML(room.id)}')">
-                    <i class="fa-solid fa-pen"></i> Price
-                </button>
-                <button type="button" class="btn-secondary-sm" onclick="toggleRoomStatus('${escapeHTML(room.id)}')">
-                    <i class="fa-solid fa-rotate"></i> Status
-                </button>
-            </div>
-        ` : '';
-
-        const guestBookingButton = isGuest ? `
-            <button type="button" class="btn-primary" style="width:100%; margin-top:10px; padding:10px 14px; border-radius:8px; border:none; cursor:pointer; font-weight:600; opacity:${room.status === 'available' ? '1' : '0.6'};" onclick="bookRoomFromBrowse('${escapeHTML(room.id)}')" ${room.status !== 'available' ? 'disabled' : ''}>
-                <i class="fa-solid fa-calendar-check"></i>
-                ${room.status === 'available' ? 'Book This Room' : 'Not Available'}
-            </button>
-        ` : '';
-
+    container.innerHTML = roomList.map(room => {
+        const isAvailable = room.status === 'available';
         return `
-            <div class="room-card glass-card" style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; overflow:hidden;">
+            <div class="room-card">
                 <div class="room-card-img-wrapper">
-                    <img src="${escapeHTML(room.img)}" class="vibrant-img" style="width:100%;height:180px;object-fit:cover;" alt="Room ${escapeHTML(room.id)}">
+                    <img src="${escapeHTML(room.img)}" alt="Room">
                 </div>
-
-                <div style="padding:15px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; gap:8px;">
-                        <h4 style="color:var(--gold);margin:0;">Room ${escapeHTML(room.id)}</h4>
-                        <span class="badge ${statusClass}">${escapeHTML(room.status.toUpperCase())}</span>
+                <div style="padding:12px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h4 style="color:var(--gold);">Room ${escapeHTML(room.id)}</h4>
+                        <span class="badge ${isAvailable ? 'badge-success' : 'badge-danger'}">${escapeHTML(room.status.toUpperCase())}</span>
                     </div>
+                    <h5>${escapeHTML(room.title)}</h5>
+                    <p style="color:var(--text-muted); font-size:0.8rem; margin:5px 0;">${escapeHTML(room.desc)}</p>
+                    <strong style="color:var(--gold); font-size:1rem;">৳${room.price.toLocaleString()}/night</strong>
 
-                    <h5 style="margin:0 0 8px 0;">${escapeHTML(room.title)}</h5>
-                    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:12px; min-height:38px;">${escapeHTML(room.desc)}</p>
-
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:10px; gap:10px; flex-wrap:wrap;">
-                        <strong style="font-size:1.1rem; color:var(--gold);">
-                            ৳${room.price.toLocaleString()}
-                            <small style="font-size:0.75rem;">/night</small>
-                        </strong>
-                        ${adminControls}
-                    </div>
-
-                    ${guestBookingButton}
+                    ${isAdmin ? `
+                        <div class="admin-room-controls">
+                            <button class="btn-secondary-sm" onclick="editRoomPrice('${room.id}')"><i class="fa-solid fa-pen"></i> Price</button>
+                            <button class="btn-secondary-sm" onclick="toggleRoomStatus('${room.id}')"><i class="fa-solid fa-rotate"></i> Status</button>
+                        </div>
+                    ` : `
+                        <button class="btn-primary" style="width:100%; margin-top:8px;" onclick="bookRoomFromBrowse('${room.id}')" ${!isAvailable ? 'disabled' : ''}>
+                            <i class="fa-solid fa-calendar-check"></i> ${isAvailable ? 'Book Room' : 'Unavailable'}
+                        </button>
+                    `}
                 </div>
             </div>
         `;
     }).join('');
 }
-
-// ==========================================
-// 23. FRONT DESK
-// ==========================================
 
 function renderFrontDesk() {
     const container = document.getElementById('frontDeskRoomGrid');
-    if (!container) return;
-
-    container.innerHTML = roomList.map(function (room) {
-        let borderColor = '#ed8936';
-
-        if (room.status === 'available') {
-            borderColor = '#48bb78';
-        } else if (room.status === 'occupied') {
-            borderColor = '#f56565';
-        }
-
-        return `
-            <div style="padding:15px; border-radius:10px; background:var(--bg-card); border-left:5px solid ${borderColor}; border-top:1px solid var(--border-color); border-right:1px solid var(--border-color); border-bottom:1px solid var(--border-color);">
-                <h3 style="margin:0;color:var(--gold);">Room ${escapeHTML(room.id)}</h3>
-                <p style="font-size:0.8rem; color:var(--text-muted); margin:4px 0;">${escapeHTML(room.title)}</p>
-                <span class="badge ${room.status === 'available' ? 'badge-success' : 'badge-danger'}">
-                    ${escapeHTML(room.status.toUpperCase())}
-                </span>
-            </div>
-        `;
-    }).join('');
+    if (container) {
+        container.innerHTML = `<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px;">
+            ${roomList.map(r => `
+                <div style="padding:10px; border-radius:8px; background:var(--bg-card); border-left:4px solid ${r.status==='available'?'#10b981':'#ef4444'};">
+                    <strong>Room ${r.id}</strong>
+                    <div style="font-size:0.75rem; color:var(--text-muted);">${r.status.toUpperCase()}</div>
+                </div>
+            `).join('')}
+        </div>`;
+    }
 }
-
-// ==========================================
-// 24. HOUSEKEEPING
-// ==========================================
 
 function renderHousekeeping() {
-    const cleanEl = document.getElementById('statCleanRooms');
-    const dirtyEl = document.getElementById('statDirtyRooms');
-    const maintEl = document.getElementById('statMaintRooms');
     const tbody = document.getElementById('housekeepingTableBody');
-
-    const cleanCount = roomList.filter(function (r) { return r.status === 'available'; }).length;
-    const dirtyCount = roomList.filter(function (r) { return r.status === 'dirty'; }).length;
-    const maintCount = roomList.filter(function (r) { return r.status === 'maintenance'; }).length;
-
-    if (cleanEl) cleanEl.textContent = cleanCount;
-    if (dirtyEl) dirtyEl.textContent = dirtyCount;
-    if (maintEl) maintEl.textContent = maintCount;
-
     if (tbody) {
-        tbody.innerHTML = roomList.map(function (room) {
-            return `
-                <tr>
-                    <td><strong>Room ${escapeHTML(room.id)}</strong></td>
-                    <td>${escapeHTML(room.title)}</td>
-                    <td>
-                        <span class="badge ${room.status === 'available' ? 'badge-success' : 'badge-gold'}">
-                            ${escapeHTML(room.status.toUpperCase())}
-                        </span>
-                    </td>
-                    <td>
-                        <button type="button" class="btn-secondary-sm" onclick="toggleRoomStatus('${escapeHTML(room.id)}')">
-                            <i class="fa-solid fa-broom"></i> Change Status
-                        </button>
-                    </td>
-                </tr>
-            `;
-        }).join('');
+        tbody.innerHTML = roomList.map(r => `
+            <tr>
+                <td><strong>Room ${r.id}</strong></td>
+                <td>${r.title}</td>
+                <td><span class="badge ${r.status==='available'?'badge-success':'badge-gold'}">${r.status.toUpperCase()}</span></td>
+                <td><button class="btn-secondary-sm" onclick="toggleRoomStatus('${r.id}')"><i class="fa-solid fa-broom"></i> Toggle</button></td>
+            </tr>
+        `).join('');
     }
 }
-
-// ==========================================
-// 25. FINANCE
-// ==========================================
 
 function renderFinance() {
-    const totalRevEl = document.getElementById('finTotalEarnings');
-    const pendingEl = document.getElementById('finPending');
     const tbody = document.getElementById('financeTableBody');
-
-    const totalRev = bookings.reduce(function (sum, booking) {
-        return sum + booking.totalBill;
-    }, 0);
-
-    if (totalRevEl) totalRevEl.textContent = '৳' + totalRev.toLocaleString();
-    if (pendingEl) pendingEl.textContent = '৳0';
-
     if (tbody) {
-        tbody.innerHTML = bookings.map(function (booking) {
-            return `
-                <tr>
-                    <td><strong>${escapeHTML(booking.id)}</strong></td>
-                    <td>${escapeHTML(booking.guestName)}</td>
-                    <td><span class="badge badge-gold">${escapeHTML(booking.paymentMethod)}</span></td>
-                    <td><strong style="color:#48bb78;">৳${booking.totalBill.toLocaleString()}</strong></td>
-                    <td>${escapeHTML(booking.checkIn)}</td>
-                    <td>
-                        <button type="button" class="btn-secondary-sm" onclick="alert('Downloading Receipt PDF...')">
-                            <i class="fa-solid fa-download"></i> Receipt
-                        </button>
-                    </td>
-                </tr>
-            `;
-        }).join('');
+        tbody.innerHTML = bookings.map(b => `
+            <tr>
+                <td><strong>${b.id}</strong></td>
+                <td>${b.guestName}</td>
+                <td><span class="badge badge-gold">${b.paymentMethod}</span></td>
+                <td>৳${b.totalBill.toLocaleString()}</td>
+                <td>${b.checkIn}</td>
+                <td><button class="btn-secondary-sm" onclick="alert('Downloading invoice PDF...')"><i class="fa-solid fa-download"></i></button></td>
+            </tr>
+        `).join('');
     }
 }
-
-// ==========================================
-// 26. GUEST DIRECTORY
-// ==========================================
 
 function renderGuests() {
     const tbody = document.getElementById('guestsTableBody');
-    if (!tbody) return;
-
-    tbody.innerHTML = guests.map(function (guest) {
-        return `
+    if (tbody) {
+        tbody.innerHTML = guests.map(g => `
             <tr>
-                <td>
-                    <img src="${escapeHTML(guest.avatar)}" class="table-img vibrant-img" style="width:36px;height:36px;border-radius:50%;object-fit:cover;" alt="${escapeHTML(guest.name)}">
-                </td>
-                <td><strong>${escapeHTML(guest.name)}</strong></td>
-                <td>${escapeHTML(guest.email)}</td>
-                <td>${escapeHTML(guest.phone)}</td>
-                <td>
-                    <button type="button" class="btn-secondary-sm" onclick="alert('Viewing guest history for ${escapeHTML(guest.name)}')">
-                        <i class="fa-solid fa-eye"></i> View
-                    </button>
-                </td>
+                <td><img src="${g.avatar}" style="width:30px;height:30px;border-radius:50%;" alt="Avatar"></td>
+                <td><strong>${g.name}</strong></td>
+                <td>${g.email}</td>
+                <td>${g.phone}</td>
+                <td><button class="btn-secondary-sm" onclick="alert('Viewing guest profile...')"><i class="fa-solid fa-eye"></i></button></td>
             </tr>
-        `;
-    }).join('');
+        `).join('');
+    }
 }
 
 // ==========================================
-// 27. ADMIN ONLY - ADD NEW ROOM
+// 10. ADMIN ACTIONS
 // ==========================================
 
 function promptAddNewRoom() {
-    if (currentRole !== 'admin') {
-        alert('❌ Only Admin can add new rooms.');
-        return;
-    }
+    if (currentRole !== 'admin') return;
 
-    const id = prompt('Enter New Room ID (e.g. 701):');
+    const id = prompt('Enter Room ID (e.g. 701):');
     if (!id) return;
-
-    const cleanId = id.trim();
-    if (!cleanId) {
-        alert('❌ Room ID cannot be empty.');
-        return;
-    }
-
-    if (roomList.some(function (room) { return room.id === cleanId; })) {
-        alert('❌ Room ' + cleanId + ' already exists!');
-        return;
-    }
-
-    const title = prompt('Enter Room Category Title:');
+    const title = prompt('Enter Room Category:');
     if (!title) return;
-
-    const cleanTitle = title.trim();
-    if (!cleanTitle) {
-        alert('❌ Room title cannot be empty.');
-        return;
-    }
-
-    const price = parseFloat(prompt('Enter Room Price per night (BDT):'));
-    if (isNaN(price) || price < 0) {
-        alert('❌ Please enter a valid room price.');
-        return;
-    }
+    const price = parseFloat(prompt('Enter Price per night:'));
+    if (isNaN(price)) return;
 
     roomList.push({
-        id: cleanId,
-        title: cleanTitle,
+        id: id,
+        title: title,
         price: price,
         status: 'available',
         img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=500',
-        desc: 'Newly added luxury accommodation.'
+        desc: 'Newly added resort accommodation.'
     });
 
     populateRoomDropdown();
     renderAll();
-
-    alert('✅ Room ' + cleanId + ' added to resort inventory!');
+    alert('✅ Room Added!');
 }
 
-// ==========================================
-// 28. ADMIN ONLY - EDIT ROOM PRICE
-// ==========================================
-
 function editRoomPrice(roomId) {
-    if (currentRole !== 'admin') {
-        alert('❌ Only Admin can edit room price.');
-        return;
-    }
-
-    const room = roomList.find(function (r) { return r.id === roomId; });
+    if (currentRole !== 'admin') return;
+    const room = roomList.find(r => r.id === roomId);
     if (!room) return;
 
-    const newPrice = parseFloat(prompt('Enter new price for Room ' + room.id + ':', room.price));
-
-    if (!isNaN(newPrice) && newPrice >= 0) {
+    const newPrice = parseFloat(prompt('Enter new price for Room ' + room.id, room.price));
+    if (!isNaN(newPrice)) {
         room.price = newPrice;
         populateRoomDropdown();
         renderAll();
-        alert('✅ Room ' + room.id + ' price updated to ৳' + newPrice.toLocaleString());
     }
 }
 
-// ==========================================
-// 29. ROOM STATUS TOGGLE
-// ==========================================
-
 function toggleRoomStatus(roomId) {
-    const room = roomList.find(function (r) { return r.id === roomId; });
+    const room = roomList.find(r => r.id === roomId);
     if (!room) return;
-
     const statuses = ['available', 'occupied', 'dirty', 'maintenance'];
-    const currentIndex = statuses.indexOf(room.status);
-
-    room.status = statuses[(currentIndex + 1) % statuses.length];
+    room.status = statuses[(statuses.indexOf(room.status) + 1) % statuses.length];
     renderAll();
 }
 
 // ==========================================
-// 30. IMAGE PREVIEW HANDLERS
+// 11. IMAGE PREVIEW HANDLERS
 // ==========================================
 
 function updateGuestImageFromUrl() {
     const url = document.getElementById('imgUrlInput')?.value;
-    const img = document.getElementById('previewImg');
-    if (url && img) img.src = url;
+    if (url && document.getElementById('previewImg')) {
+        document.getElementById('previewImg').src = url;
+    }
 }
 
 function previewUploadImage(event) {
     const file = event?.target?.files?.[0];
-    const img = document.getElementById('previewImg');
-    if (!file || !img) return;
-
-    const reader = new FileReader();
-    reader.onload = function (e) {
-        img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+    if (file && document.getElementById('previewImg')) {
+        const reader = new FileReader();
+        reader.onload = e => document.getElementById('previewImg').src = e.target.result;
+        reader.readAsDataURL(file);
+    }
 }
 
 function updateGuestAuthImageFromUrl() {
     const url = document.getElementById('guestAuthPhotoUrl')?.value;
-    const img = document.getElementById('guestAuthPreviewImg');
-    if (url && img) img.src = url;
+    if (url && document.getElementById('guestAuthPreviewImg')) {
+        document.getElementById('guestAuthPreviewImg').src = url;
+    }
 }
 
 function previewGuestAuthImage(event) {
     const file = event?.target?.files?.[0];
-    const img = document.getElementById('guestAuthPreviewImg');
-    if (!file || !img) return;
-
-    const reader = new FileReader();
-    reader.onload = function (e) {
-        img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+    if (file && document.getElementById('guestAuthPreviewImg')) {
+        const reader = new FileReader();
+        reader.onload = e => document.getElementById('guestAuthPreviewImg').src = e.target.result;
+        reader.readAsDataURL(file);
+    }
 }
