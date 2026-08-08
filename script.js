@@ -137,9 +137,28 @@ function autoFillGuestInfo() {
 }
 
 // ==========================================
-// 3. INITIALIZATION
+// 3. INITIALIZATION (UPDATED FOR RELOAD PERSISTENCE)
 // ==========================================
 document.addEventListener('DOMContentLoaded', function () {
+    // 1. Reload Check: Restore persistent session from localStorage
+    const savedRole = localStorage.getItem('currentRole');
+    const savedUser = localStorage.getItem('currentUser');
+
+    if (savedRole && savedUser) {
+        try {
+            currentRole = savedRole;
+            currentUser = JSON.parse(savedUser);
+            
+            // Hide login modal if user is already logged in
+            const loginModal = document.getElementById('loginModal');
+            if (loginModal) {
+                loginModal.classList.remove('active');
+            }
+        } catch (e) {
+            console.error('Failed to parse saved session user', e);
+        }
+    }
+
     initClock();
     setupDefaultDates();
     populateRoomDropdown();
@@ -357,7 +376,7 @@ function toggleRoomStatus(roomId) {
 }
 
 // ==========================================
-// 8. AUTH & ROLE MANAGEMENT
+// 8. AUTH & ROLE MANAGEMENT (UPDATED FOR LOCALSTORAGE)
 // ==========================================
 function switchAuthForm(type) {
     const guestForm = document.getElementById('guestLoginForm');
@@ -385,8 +404,6 @@ function handleStaffLogin(event) {
 
     if (email.toLowerCase() === 'admin@grandpalace.com' && password === 'admin123') {
         currentRole = 'admin';
-        document.getElementById('loginModal')?.classList.remove('active');
-
         currentUser = {
             role: 'ADMINISTRATOR',
             name: 'MD. EMTIAZ HOSSAIN SAMI',
@@ -394,6 +411,12 @@ function handleStaffLogin(event) {
             phone: '+8801700000000',
             avatar: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
         };
+
+        // Save session to localStorage
+        localStorage.setItem('currentRole', currentRole);
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+        document.getElementById('loginModal')?.classList.remove('active');
 
         switchUserRole('admin');
         alert('Welcome Back, Admin!');
@@ -417,6 +440,11 @@ function handleGuestLoginSubmit(event) {
     };
 
     currentRole = 'guest';
+
+    // Save session to localStorage
+    localStorage.setItem('currentRole', currentRole);
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
     document.getElementById('loginModal')?.classList.remove('active');
 
     switchUserRole('guest');
@@ -426,6 +454,11 @@ function handleGuestLoginSubmit(event) {
 
 function switchUserRole(role) {
     currentRole = role;
+
+    // Save active role to localStorage when manually switched
+    localStorage.setItem('currentRole', currentRole);
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
     const selector = document.getElementById('roleSelector');
     if (selector) selector.value = role;
 
@@ -452,7 +485,19 @@ function switchUserRole(role) {
 }
 
 function logoutUser() {
+    // Clear saved session on logout
+    localStorage.removeItem('currentRole');
+    localStorage.removeItem('currentUser');
+
     currentRole = 'guest';
+    currentUser = {
+        role: 'GUEST',
+        name: 'Valued Guest',
+        email: '',
+        phone: '',
+        avatar: 'https://ui-avatars.com/api/?name=Guest&background=c5a880&color=fff'
+    };
+
     document.getElementById('loginModal')?.classList.add('active');
     switchAuthForm('guest');
 }
