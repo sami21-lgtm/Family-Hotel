@@ -231,12 +231,19 @@ function handleGuestLoginSubmit(event) {
     alert(`🎉 Welcome ${name} to Grand Palace Resort & Spa!`);
 }
 
-// ৪. রোল অনুযায়ী সাইডবার ও ড্যাশবোর্ড ফিল্টার করার ফাংশন
+// ৪. রোল অনুযায়ী সাইডবার ও ড্যাশবোর্ড ফিল্টার করার ফাংশন
 function switchUserRole(role) {
     currentRole = role;
 
     const selector = document.getElementById('roleSelector');
     if (selector) selector.value = role;
+
+    // Body Class Management for CSS Hiding
+    if (role === 'guest') {
+        document.body.classList.add('role-guest');
+    } else {
+        document.body.classList.remove('role-guest');
+    }
 
     // নেভিগেশন আইটেম ফিল্টারিং
     document.querySelectorAll('.nav-item').forEach(item => {
@@ -249,7 +256,7 @@ function switchUserRole(role) {
         }
     });
 
-    // রোল অনুযায়ী ট্যাব সুইচ
+    // রোল অনুযায়ী ট্যাব সুইচ
     if (role === 'guest') {
         switchTab('tabRooms');
     } else {
@@ -436,7 +443,7 @@ function renderDashboard() {
     if (tbody) {
         tbody.innerHTML = bookings.map(b => `
             <tr>
-                <td><img src="${b.avatar}" class="table-img" style="width:36px; height:36px; border-radius:50%; object-fit:cover;"></td>
+                <td><img src="${b.avatar}" class="table-img vibrant-img" style="width:36px; height:36px; border-radius:50%; object-fit:cover;"></td>
                 <td><strong>${b.id}</strong></td>
                 <td>${escapeHTML(b.guestName)}</td>
                 <td>Room ${b.roomNumber} - ${escapeHTML(b.roomType)}</td>
@@ -459,8 +466,10 @@ function renderRooms() {
     container.innerHTML = `
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;" class="mt-15">
             ${roomList.map(r => `
-                <div class="card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden;">
-                    <img src="${r.img}" style="width: 100%; height: 180px; object-fit: cover;">
+                <div class="room-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden;">
+                    <div class="room-card-img-wrapper">
+                        <img src="${r.img}" class="vibrant-img" style="width: 100%; height: 180px; object-fit: cover;">
+                    </div>
                     <div style="padding: 15px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                             <h4 style="color: var(--gold); margin: 0;">Room ${r.id}</h4>
@@ -471,8 +480,8 @@ function renderRooms() {
                         <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 10px;">
                             <strong style="font-size: 1.1rem; color: var(--gold);">৳${r.price.toLocaleString()} <small style="font-size: 0.75rem;">/night</small></strong>
                             <div style="display: flex; gap: 5px;">
-                                <button type="button" class="btn-secondary-sm role-admin-only" onclick="editRoomPrice('${r.id}')"><i class="fa-solid fa-pen"></i> Price</button>
-                                <button type="button" class="btn-secondary-sm role-admin-only" onclick="toggleRoomStatus('${r.id}')"><i class="fa-solid fa-rotate"></i> Status</button>
+                                <button type="button" class="btn-secondary-sm role-admin-only admin-edit-btn" onclick="editRoomPrice('${r.id}')"><i class="fa-solid fa-pen"></i> Price</button>
+                                <button type="button" class="btn-secondary-sm role-admin-only admin-status-select" onclick="toggleRoomStatus('${r.id}')"><i class="fa-solid fa-rotate"></i> Status</button>
                             </div>
                         </div>
                     </div>
@@ -531,14 +540,14 @@ function renderHousekeeping() {
 
 // Finance Table
 function renderFinance() {
-    const totalRevEl = document.getElementById('finTotalRev');
-    const totalInvEl = document.getElementById('finTotalInvoices');
+    const totalRevEl = document.getElementById('finTotalEarnings');
+    const pendingEl = document.getElementById('finPending');
     const tbody = document.getElementById('financeTableBody');
 
     const totalRev = bookings.reduce((sum, b) => sum + b.totalBill, 0);
 
     if (totalRevEl) totalRevEl.textContent = `৳${totalRev.toLocaleString()}`;
-    if (totalInvEl) totalInvEl.textContent = bookings.length;
+    if (pendingEl) pendingEl.textContent = `৳0`;
 
     if (tbody) {
         tbody.innerHTML = bookings.map(b => `
@@ -561,7 +570,7 @@ function renderGuests() {
 
     tbody.innerHTML = guests.map(g => `
         <tr>
-            <td><img src="${g.avatar}" class="table-img" style="width:36px; height:36px; border-radius:50%; object-fit:cover;"></td>
+            <td><img src="${g.avatar}" class="table-img vibrant-img" style="width:36px; height:36px; border-radius:50%; object-fit:cover;"></td>
             <td><strong>${escapeHTML(g.name)}</strong></td>
             <td>${escapeHTML(g.email)}</td>
             <td>${escapeHTML(g.phone)}</td>
