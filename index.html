@@ -14,6 +14,45 @@
     
     <!-- External Stylesheet -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- Embedded Image Vibrancy & Premium Look CSS -->
+    <style>
+        /* High-Quality Color Vibrancy & Saturation Boost for Images */
+        .vibrant-img, 
+        .service-image-box img, 
+        .room-card img, 
+        .table-img, 
+        .avatar-img {
+            filter: saturate(1.25) contrast(1.05) brightness(1.02);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), filter 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        /* Hover Zoom Effect & Vibrant Border Glow */
+        .service-image-box, .room-card-img-wrapper {
+            overflow: hidden;
+            border-radius: 12px;
+            position: relative;
+            border: 1px solid rgba(197, 168, 128, 0.2);
+        }
+
+        .service-image-box:hover img, 
+        .room-card-img-wrapper:hover img {
+            transform: scale(1.08);
+            filter: saturate(1.4) contrast(1.1) brightness(1.05);
+        }
+
+        .service-card:hover, .room-card:hover {
+            box-shadow: 0 8px 25px rgba(197, 168, 128, 0.25);
+            border-color: var(--gold, #c5a880);
+        }
+
+        /* Hide Admin Controls in Guest View */
+        body.role-guest .role-admin-only,
+        body.role-guest .admin-edit-btn,
+        body.role-guest .admin-status-select {
+            display: none !important;
+        }
+    </style>
 </head>
 <body class="logged-out">
 
@@ -66,7 +105,7 @@
                 <div class="form-group mt-10">
                     <label for="guestAuthPhotoUpload" style="color: var(--text-muted); font-size: 0.82rem; display: block; margin-bottom: 5px;" data-i18n="lblUploadPhoto">Or Upload Profile Picture:</label>
                     <div class="avatar-preview-box" style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; border: 1px dashed var(--gold);">
-                        <img id="guestAuthPreviewImg" src="https://ui-avatars.com/api/?name=Guest&background=c5a880&color=fff" class="table-img" alt="Guest Avatar Preview" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=Guest'">
+                        <img id="guestAuthPreviewImg" src="https://ui-avatars.com/api/?name=Guest&background=c5a880&color=fff" class="table-img vibrant-img" alt="Guest Avatar Preview" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=Guest'">
                         <input type="file" id="guestAuthPhotoUpload" accept="image/*" onchange="previewGuestAuthImage(event)" style="font-size: 0.8rem; color: var(--text-main); width: 100%;">
                     </div>
                 </div>
@@ -76,7 +115,7 @@
                 </button>
             </form>
 
-            <!-- STAFF ADMIN LOGIN FORM (UPDATED WITH DEFAULT CREDENTIALS) -->
+            <!-- STAFF ADMIN LOGIN FORM -->
             <form id="staffLoginForm" onsubmit="handleStaffLogin(event)" class="mt-10" style="display: none;">
                 <h4 style="color: var(--text-main); text-align: center;" data-i18n="staffLoginHead">Staff Admin Login</h4>
                 <p style="text-align: center; color: #4299e1; font-size: 0.8rem;" class="mb-10"><i class="fa-solid fa-lock"></i> Requires Password Login</p>
@@ -117,7 +156,7 @@
 
             <!-- User Profile Summary -->
             <div class="user-profile-card">
-                <img id="sidebarAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="User Avatar" class="avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=Admin&background=c5a880&color=fff'">
+                <img id="sidebarAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="User Avatar" class="avatar-img vibrant-img" onerror="this.src='https://ui-avatars.com/api/?name=Admin&background=c5a880&color=fff'">
                 <div class="user-info">
                     <h4 id="sidebarUserName">MD. EMTIAZ HOSSAIN SAMI</h4>
                     <span id="sidebarUserRole">Role: ADMINISTRATOR</span>
@@ -145,27 +184,27 @@
                 </li>
 
                 <!-- SECTION 2: STAFF PORTAL (ADMIN/ROLE) -->
-                <li class="nav-section-label" style="color: #4299e1; font-size: 0.75rem; font-weight: bold; padding: 16px 15px 4px; text-transform: uppercase; letter-spacing: 1px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 8px;">
+                <li class="nav-section-label role-admin-only" style="color: #4299e1; font-size: 0.75rem; font-weight: bold; padding: 16px 15px 4px; text-transform: uppercase; letter-spacing: 1px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 8px;">
                     <i class="fa-solid fa-shield-halved"></i> Staff Portal (Admin)
                 </li>
 
-                <li class="nav-item active role-admin role-frontdesk" onclick="switchTab('tabDashboard')">
+                <li class="nav-item active role-admin role-frontdesk role-admin-only" onclick="switchTab('tabDashboard')">
                     <i class="fa-solid fa-chart-line"></i> <span data-i18n="navDashboard">Live Executive Dashboard</span>
                 </li>
                 
-                <li class="nav-item role-admin role-frontdesk" onclick="switchTab('tabFrontDesk')">
+                <li class="nav-item role-admin role-frontdesk role-admin-only" onclick="switchTab('tabFrontDesk')">
                     <i class="fa-solid fa-desktop"></i> <span data-i18n="navFrontDesk">Front Desk</span>
                 </li>
                 
-                <li class="nav-item role-admin role-housekeeping" onclick="switchTab('tabHousekeeping')">
+                <li class="nav-item role-admin role-housekeeping role-admin-only" onclick="switchTab('tabHousekeeping')">
                     <i class="fa-solid fa-broom"></i> <span data-i18n="navHousekeeping">Housekeeping</span>
                 </li>
                 
-                <li class="nav-item role-admin role-finance" onclick="switchTab('tabFinance')">
+                <li class="nav-item role-admin role-finance role-admin-only" onclick="switchTab('tabFinance')">
                     <i class="fa-solid fa-chart-line"></i> <span data-i18n="navFinance">Financials</span>
                 </li>
                 
-                <li class="nav-item role-admin role-frontdesk" onclick="switchTab('tabGuests')">
+                <li class="nav-item role-admin role-frontdesk role-admin-only" onclick="switchTab('tabGuests')">
                     <i class="fa-solid fa-users"></i> <span data-i18n="navGuests">Guest Directory</span>
                 </li>
             </ul>
@@ -199,7 +238,7 @@
 
                 <div class="topbar-right">
                     <button type="button" id="mobileLangToggle" class="btn-secondary-sm" onclick="toggleLanguage()">🇧🇩 BN</button>
-                    <img id="topbarAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" class="avatar-img clickable" onclick="logoutUser()" title="Click to Logout" alt="Profile Avatar" onerror="this.src='https://ui-avatars.com/api/?name=Admin&background=c5a880&color=fff'">
+                    <img id="topbarAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" class="avatar-img vibrant-img clickable" onclick="logoutUser()" title="Click to Logout" alt="Profile Avatar" onerror="this.src='https://ui-avatars.com/api/?name=Admin&background=c5a880&color=fff'">
                 </div>
             </header>
 
@@ -207,7 +246,7 @@
             <main class="main-content">
 
                 <!-- TAB 1: EXECUTIVE DASHBOARD -->
-                <section id="tabDashboard" class="tab-page active">
+                <section id="tabDashboard" class="tab-page active role-admin-only">
                     <div class="page-header">
                         <h2 data-i18n="dashTitle"><i class="fa-solid fa-chart-line"></i> Live Executive Dashboard</h2>
                         <p data-i18n="dashSub">Live status of resort reservations, revenue metrics, and operational performance.</p>
@@ -271,63 +310,66 @@
                             <h2 data-i18n="roomsTitle"><i class="fa-solid fa-images"></i> Browse Rooms & Custom Photos</h2>
                             <p data-i18n="roomsSub">Explore room categories, pricing, amenities, and gallery.</p>
                         </div>
+                        <!-- Add New Room Button ONLY Visible in Admin Mode -->
                         <button type="button" class="btn-primary-sm role-admin-only" onclick="promptAddNewRoom()" style="padding: 8px 16px;">
                             <i class="fa-solid fa-plus"></i> <span data-i18n="btnAddRoom">Add New Room</span>
                         </button>
                     </div>
                     <div id="roomsCardsGrid"></div>
                 </section>
-<!-- TAB 3: SERVICES & MENUS -->
-<section id="tabServices" class="tab-page">
-    <div class="page-header">
-        <h2 data-i18n="servicesTitle"><i class="fa-solid fa-utensils"></i> Food, Gym & Pool Menu</h2>
-        <p data-i18n="servicesSub">Explore gourmet dining options, luxury spa services, gym access, and pool passes.</p>
-    </div>
-    <div class="services-grid" id="servicesGrid">
-        
-        <!-- Dining Card -->
-        <div class="service-card" style="overflow: hidden; padding-top: 0;">
-            <div class="service-image-box" style="margin: -20px -20px 15px -20px; height: 160px; overflow: hidden;">
-                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80" alt="Dining & Cuisine" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
-            <div class="service-icon"><i class="fa-solid fa-utensils"></i></div>
-            <h3>Dining & Cuisine Addons</h3>
-            <p>Experience world-class culinary delights right at your room or dining room.</p>
-            <ul class="service-list">
-                <li><strong>Bengali Traditional Feast:</strong> ৳500</li>
-                <li><strong>Authentic Thai Gourmet:</strong> ৳750</li>
-                <li><strong>Continental Buffet:</strong> ৳1200</li>
-            </ul>
-        </div>
 
-        <!-- Gym Card -->
-        <div class="service-card" style="overflow: hidden; padding-top: 0;">
-            <div class="service-image-box" style="margin: -20px -20px 15px -20px; height: 160px; overflow: hidden;">
-                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80" alt="Fitness & Gym" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
-            <div class="service-icon"><i class="fa-solid fa-dumbbell"></i></div>
-            <h3>Fitness Center & Gym</h3>
-            <p>State-of-the-art health club equipment and personal training assistance.</p>
-            <ul class="service-list">
-                <li><strong>VIP Gym Pass (Daily):</strong> ৳400</li>
-            </ul>
-        </div>
+                <!-- TAB 3: SERVICES & MENUS -->
+                <section id="tabServices" class="tab-page">
+                    <div class="page-header">
+                        <h2 data-i18n="servicesTitle"><i class="fa-solid fa-utensils"></i> Food, Gym & Pool Menu</h2>
+                        <p data-i18n="servicesSub">Explore gourmet dining options, luxury spa services, gym access, and pool passes.</p>
+                    </div>
+                    <div class="services-grid" id="servicesGrid">
+                        
+                        <!-- Dining Card with Vibrant Styling -->
+                        <div class="service-card" style="overflow: hidden; padding-top: 0;">
+                            <div class="service-image-box" style="margin: -20px -20px 15px -20px; height: 160px;">
+                                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80" alt="Dining & Cuisine" class="vibrant-img" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div class="service-icon"><i class="fa-solid fa-utensils"></i></div>
+                            <h3>Dining & Cuisine Addons</h3>
+                            <p>Experience world-class culinary delights right at your room or dining room.</p>
+                            <ul class="service-list">
+                                <li><strong>Bengali Traditional Feast:</strong> ৳500</li>
+                                <li><strong>Authentic Thai Gourmet:</strong> ৳750</li>
+                                <li><strong>Continental Buffet:</strong> ৳1200</li>
+                            </ul>
+                        </div>
 
-        <!-- Pool & Spa Card -->
-        <div class="service-card" style="overflow: hidden; padding-top: 0;">
-            <div class="service-image-box" style="margin: -20px -20px 15px -20px; height: 160px; overflow: hidden;">
-                <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=600&q=80" alt="Pool & Spa" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
-            <div class="service-icon"><i class="fa-solid fa-person-swimming"></i></div>
-            <h3>Pool & Wellness Spa</h3>
-            <p>Temperature-controlled infinity pool access and relaxing spa treatments.</p>
-            <ul class="service-list">
-                <li><strong>Swimming Pool Pass (Daily):</strong> ৳500</li>
-            </ul>
-        </div>
+                        <!-- Gym Card with Vibrant Styling -->
+                        <div class="service-card" style="overflow: hidden; padding-top: 0;">
+                            <div class="service-image-box" style="margin: -20px -20px 15px -20px; height: 160px;">
+                                <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80" alt="Fitness & Gym" class="vibrant-img" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div class="service-icon"><i class="fa-solid fa-dumbbell"></i></div>
+                            <h3>Fitness Center & Gym</h3>
+                            <p>State-of-the-art health club equipment and personal training assistance.</p>
+                            <ul class="service-list">
+                                <li><strong>VIP Gym Pass (Daily):</strong> ৳400</li>
+                            </ul>
+                        </div>
 
-    </div>
-</section>
+                        <!-- Pool & Spa Card with Vibrant Styling -->
+                        <div class="service-card" style="overflow: hidden; padding-top: 0;">
+                            <div class="service-image-box" style="margin: -20px -20px 15px -20px; height: 160px;">
+                                <img src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=600&q=80" alt="Pool & Spa" class="vibrant-img" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div class="service-icon"><i class="fa-solid fa-person-swimming"></i></div>
+                            <h3>Pool & Wellness Spa</h3>
+                            <p>Temperature-controlled infinity pool access and relaxing spa treatments.</p>
+                            <ul class="service-list">
+                                <li><strong>Swimming Pool Pass (Daily):</strong> ৳500</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </section>
+
                 <!-- TAB 4: CUSTOM BOOKING FORM -->
                 <section id="tabBooking" class="tab-page">
                     <div class="page-header">
@@ -360,7 +402,7 @@
                             <div class="form-group mb-15">
                                 <label for="guestPhotoUpload" data-i18n="lblPhotoAttach">Guest Photo Attachment</label>
                                 <div class="avatar-preview-box mt-5" style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; border: 1px dashed var(--gold);">
-                                    <img id="previewImg" src="https://ui-avatars.com/api/?name=Guest&background=c5a880&color=fff" class="table-img" alt="Guest Preview" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=Guest'">
+                                    <img id="previewImg" src="https://ui-avatars.com/api/?name=Guest&background=c5a880&color=fff" class="table-img vibrant-img" alt="Guest Preview" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=Guest'">
                                     <input type="file" id="guestPhotoUpload" accept="image/*" onchange="previewUploadImage(event)">
                                 </div>
                             </div>
@@ -432,7 +474,7 @@
                 </section>
 
                 <!-- TAB 5: FRONT DESK -->
-                <section id="tabFrontDesk" class="tab-page">
+                <section id="tabFrontDesk" class="tab-page role-admin-only">
                     <div class="page-header">
                         <h2 data-i18n="fdTitle"><i class="fa-solid fa-desktop"></i> Front Desk Room Tracker</h2>
                         <p data-i18n="fdSub">Monitor live room statuses, active check-ins, and departures.</p>
@@ -441,7 +483,7 @@
                 </section>
 
                 <!-- TAB 6: HOUSEKEEPING -->
-                <section id="tabHousekeeping" class="tab-page">
+                <section id="tabHousekeeping" class="tab-page role-admin-only">
                     <div class="page-header">
                         <h2 data-i18n="hkTitle"><i class="fa-solid fa-broom"></i> Housekeeping Status</h2>
                         <p data-i18n="hkSub">Cleanliness tracking, room preparation, and maintenance status.</p>
@@ -486,52 +528,32 @@
                     </div>
                 </section>
 
-                <!-- TAB 7: FINANCIALS (FIXED & COMPLETED) -->
-                <section id="tabFinance" class="tab-page">
+                <!-- TAB 7: FINANCIALS -->
+                <section id="tabFinance" class="tab-page role-admin-only">
                     <div class="page-header">
-                        <h2 data-i18n="finTitle"><i class="fa-solid fa-chart-line"></i> Financial Revenue Reports</h2>
-                        <p data-i18n="finSub">Automatic revenue breakdown, transaction logs, and printable receipts.</p>
+                        <h2 data-i18n="finTitle"><i class="fa-solid fa-chart-line"></i> Financial Analytics & Revenue</h2>
+                        <p data-i18n="finSub">Overview of financial transactions, billings, and income records.</p>
                     </div>
-
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-info">
-                                <h3 data-i18n="finGrandRev">Grand Revenue</h3>
-                                <div id="finTotalRev" class="stat-value">৳0</div>
+                                <h3>Total Earnings</h3>
+                                <div id="finTotalEarnings" class="stat-value">৳0</div>
                             </div>
                             <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-info">
-                                <h3 data-i18n="finTotalInvoices">Total Invoices Issued</h3>
-                                <div id="finTotalInvoices" class="stat-value">0</div>
+                                <h3>Pending Payments</h3>
+                                <div id="finPending" class="stat-value">৳0</div>
                             </div>
-                            <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
+                            <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
                         </div>
-                    </div>
-
-                    <div class="table-responsive mt-15">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th data-i18n="tblInvId">Invoice ID</th>
-                                    <th data-i18n="tblGuestName">Guest Name</th>
-                                    <th data-i18n="tblAmount">Amount</th>
-                                    <th data-i18n="tblMethod">Payment Gateway</th>
-                                    <th data-i18n="tblDate">Date</th>
-                                    <th data-i18n="tblAction">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="financeTableBody"></tbody>
-                        </table>
                     </div>
                 </section>
 
             </main>
         </div>
     </div>
-
-    <!-- External JavaScript File Connection -->
-    <script src="script.js"></script>
 </body>
 </html>
