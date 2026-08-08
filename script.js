@@ -95,14 +95,24 @@ function getNightsBetween(checkInStr, checkOutStr) {
 // ==========================================
 function setAppMode(mode) {
     if (mode === 'staff' && !isStaffAuthenticated) {
-        const inputPass = prompt("🔒 STAFF PORTAL LOGIN\nPlease enter Admin/Staff Password:");
-        if (inputPass === STAFF_DEFAULT_PASS) {
-            isStaffAuthenticated = true;
-            alert("✅ Login Successful! Accessing Staff/Admin Portal.");
+        const loginModal = document.getElementById('loginModal');
+        if (loginModal) {
+            loginModal.classList.add('active');
         } else {
-            alert("❌ Access Denied! Incorrect Password.");
-            return;
+            const pass = prompt("🔒 STAFF PORTAL LOGIN\nPlease enter Admin/Staff Password:");
+            if (pass === STAFF_DEFAULT_PASS) {
+                isStaffAuthenticated = true;
+                document.body.classList.remove('logged-out');
+            } else {
+                alert("❌ Access Denied! Incorrect Password.");
+                return;
+            }
         }
+    }
+
+    // যদি স্টাফ অথেনটিকেটেড না থাকে এবং মোডাল ওপেন হয়, তবে ভিউ চেঞ্জ না করা
+    if (mode === 'staff' && !isStaffAuthenticated) {
+        return;
     }
 
     appMode = mode;
@@ -116,11 +126,13 @@ function setAppMode(mode) {
         if (staffPortalEl) staffPortalEl.style.display = 'none';
         if (navGuestBtn) navGuestBtn.classList.add('active');
         if (navStaffBtn) navStaffBtn.classList.remove('active');
-    } else {
+    } else if (mode === 'staff' && isStaffAuthenticated) {
         if (guestPortalEl) guestPortalEl.style.display = 'none';
         if (staffPortalEl) staffPortalEl.style.display = 'block';
         if (navStaffBtn) navStaffBtn.classList.add('active');
         if (navGuestBtn) navGuestBtn.classList.remove('active');
+        
+        switchTab('tabFrontDesk'); // ডিফল্ট ট্যাবে রিডাইরেক্ট
     }
 
     renderRooms();
@@ -129,6 +141,7 @@ function setAppMode(mode) {
 
 function staffLogout() {
     isStaffAuthenticated = false;
+    document.body.classList.add('logged-out');
     alert("🔒 Staff Logged Out Successfully.");
     setAppMode('guest');
 }
@@ -591,39 +604,32 @@ function handleBookingSubmit(e) {
     setupDefaultDates();
     calculateBilling();
 }
-// ==========================================
-// ADMIN / STAFF PORTAL NAVIGATION & TAB SWITCHER
-// ==========================================
 
-// ১. এডমিন সাইডবার পেজ স্যুইচিং (Tab Switcher)
+// ==========================================
+// 8. ADMIN / STAFF NAVIGATION & MODAL HANDLERS
+// ==========================================
 function switchTab(tabId) {
-    // সব ট্যাব হাইড করা
     document.querySelectorAll('.tab-page').forEach(page => {
         page.classList.remove('active');
     });
 
-    // সাইডবার বাটনের active ক্লাস রিমুভ করা
     document.querySelectorAll('.nav-item').forEach(nav => {
         nav.classList.remove('active');
     });
 
-    // টার্গেট পেজ শো করা
     const targetPage = document.getElementById(tabId);
     if (targetPage) {
         targetPage.classList.add('active');
     }
 
-    // সম্পর্কিত নেভিগেশন আইটেম Active করা
     const activeNav = document.querySelector(`.nav-item[onclick*="${tabId}"]`);
     if (activeNav) {
         activeNav.classList.add('active');
     }
 
-    // মোবাইলে ট্যাব চেঞ্জ হলে সাইডবার বন্ধ করা
     toggleSidebar(false);
 }
 
-// ২. কাস্টম এডমিন লগইন মডাল হ্যান্ডলার
 function handleStaffLogin(event) {
     if (event) event.preventDefault();
     
@@ -645,7 +651,6 @@ function handleStaffLogin(event) {
     }
 }
 
-// ৩. মোবাইল সাইডবার টগল
 function toggleSidebar(forceState) {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
@@ -659,38 +664,5 @@ function toggleSidebar(forceState) {
     } else {
         sidebar.classList.remove('open');
         if (overlay) overlay.classList.remove('active');
-    }
-}
-
-// ৪. পোর্টাল মোড চেঞ্জ (আপডেটেড)
-function setAppMode(mode) {
-    if (mode === 'staff' && !isStaffAuthenticated) {
-        const loginModal = document.getElementById('loginModal');
-        if (loginModal) {
-            loginModal.classList.add('active');
-        } else {
-            const pass = prompt("🔒 STAFF PORTAL LOGIN\nEnter Password:");
-            if (pass === STAFF_DEFAULT_PASS) {
-                isStaffAuthenticated = true;
-            } else {
-                alert("❌ Incorrect Password!");
-                return;
-            }
-        }
-    }
-
-    appMode = mode;
-    const guestPortalEl = document.getElementById('guestPortal');
-    const staffPortalEl = document.getElementById('staffPortal');
-
-    if (mode === 'guest') {
-        if (guestPortalEl) guestPortalEl.style.display = 'block';
-        if (staffPortalEl) staffPortalEl.style.display = 'none';
-    } else if (mode === 'staff' && isStaffAuthenticated) {
-        if (guestPortalEl) guestPortalEl.style.display = 'none';
-        if (staffPortalEl) staffPortalEl.style.display = 'block';
-        
-        // ডিফল্ট ফ্রন্টডেস্ক ট্যাবে নিয়ে যাওয়া
-        switchTab('tabFrontDesk');
     }
 }
