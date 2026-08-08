@@ -8,6 +8,7 @@ let currentUser = {
     role: 'ADMINISTRATOR',
     name: 'MD. EMTIAZ HOSSAIN SAMI',
     email: 'admin@grandpalace.com',
+    phone: '+8801700000000',
     avatar: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
 };
 
@@ -123,6 +124,18 @@ function getNightsBetween(cIn, cOut) {
     return diff > 0 ? diff : 1;
 }
 
+function autoFillGuestInfo() {
+    if (currentUser && currentUser.name && currentUser.name !== 'Valued Guest') {
+        const nameInput = document.getElementById('bookingGuestName');
+        const emailInput = document.getElementById('bookingGuestEmail');
+        const phoneInput = document.getElementById('bookingGuestPhone');
+
+        if (nameInput) nameInput.value = currentUser.name;
+        if (emailInput && currentUser.email) emailInput.value = currentUser.email;
+        if (phoneInput && currentUser.phone) phoneInput.value = currentUser.phone;
+    }
+}
+
 // ==========================================
 // 3. INITIALIZATION
 // ==========================================
@@ -161,8 +174,15 @@ function setupDefaultDates() {
 
     const cIn = document.getElementById('checkIn');
     const cOut = document.getElementById('checkOut');
-    if (cIn && !cIn.value) cIn.value = today;
-    if (cOut && !cOut.value) cOut.value = tomorrow;
+    
+    if (cIn) {
+        cIn.min = today;
+        if (!cIn.value) cIn.value = today;
+    }
+    if (cOut) {
+        cOut.min = tomorrow;
+        if (!cOut.value) cOut.value = tomorrow;
+    }
 }
 
 function renderAll() {
@@ -278,15 +298,10 @@ function orderAddonService(serviceName) {
         checkbox.checked = true;
     }
     
-    if (currentUser.name && currentUser.name !== 'Valued Guest') {
-        if (document.getElementById('bookingGuestName')) document.getElementById('bookingGuestName').value = currentUser.name;
-        if (document.getElementById('bookingGuestEmail')) document.getElementById('bookingGuestEmail').value = currentUser.email || '';
-        if (document.getElementById('bookingGuestPhone')) document.getElementById('bookingGuestPhone').value = currentUser.phone || '';
-    }
-
+    autoFillGuestInfo();
     switchTab('tabBooking');
     calculateTotal();
-    alert('✅ ' + serviceName + ' has been added to your booking!');
+    alert('✅ "' + serviceName + '" has been added to your booking list!');
 }
 
 // ==========================================
@@ -376,6 +391,7 @@ function handleStaffLogin(event) {
             role: 'ADMINISTRATOR',
             name: 'MD. EMTIAZ HOSSAIN SAMI',
             email: email,
+            phone: '+8801700000000',
             avatar: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
         };
 
@@ -404,6 +420,7 @@ function handleGuestLoginSubmit(event) {
     document.getElementById('loginModal')?.classList.remove('active');
 
     switchUserRole('guest');
+    autoFillGuestInfo();
     alert('🎉 Welcome ' + name + '!');
 }
 
@@ -417,16 +434,19 @@ function switchUserRole(role) {
     const nameEl = document.getElementById('sidebarUserName');
     const roleEl = document.getElementById('sidebarUserRole');
     const avatarEl = document.getElementById('sidebarUserAvatar');
+    const topbarAvatar = document.getElementById('topbarAvatar');
 
     if (role === 'admin') {
         if (nameEl) nameEl.textContent = 'MD. EMTIAZ HOSSAIN SAMI';
         if (roleEl) roleEl.textContent = 'Role: ADMINISTRATOR';
         if (avatarEl) avatarEl.src = 'Md. EmTIAZ hOSSAIN sAMI LOGO.png';
+        if (topbarAvatar) topbarAvatar.src = 'Md. EmTIAZ hOSSAIN sAMI LOGO.png';
         switchTab('tabAdminRooms');
     } else {
         if (nameEl) nameEl.textContent = currentUser.name || 'Valued Guest';
         if (roleEl) roleEl.textContent = 'Role: GUEST';
         if (avatarEl) avatarEl.src = currentUser.avatar;
+        if (topbarAvatar) topbarAvatar.src = currentUser.avatar;
         switchTab('tabRooms');
     }
 }
@@ -509,12 +529,7 @@ function bookRoomFromBrowse(roomId) {
     const select = document.getElementById('roomTypeSelect');
     if (select) select.value = `${room.id}|${room.title}|${room.price}`;
 
-    if (currentUser.name && currentUser.name !== 'Valued Guest') {
-        if (document.getElementById('bookingGuestName')) document.getElementById('bookingGuestName').value = currentUser.name;
-        if (document.getElementById('bookingGuestEmail')) document.getElementById('bookingGuestEmail').value = currentUser.email || '';
-        if (document.getElementById('bookingGuestPhone')) document.getElementById('bookingGuestPhone').value = currentUser.phone || '';
-    }
-
+    autoFillGuestInfo();
     switchTab('tabBooking');
     calculateTotal();
 }
@@ -523,6 +538,8 @@ function handleBookingSubmit(event) {
     if (event) event.preventDefault();
 
     const name = document.getElementById('bookingGuestName')?.value.trim();
+    const email = document.getElementById('bookingGuestEmail')?.value.trim() || '';
+    const phone = document.getElementById('bookingGuestPhone')?.value.trim() || '';
     const roomSelect = document.getElementById('roomTypeSelect')?.value;
 
     if (!name || !roomSelect) {
@@ -535,11 +552,14 @@ function handleBookingSubmit(event) {
     const roomTitle = parts[1];
     const total = calculateTotal();
 
+    const bookingId = 'GP-' + Math.floor(1000 + Math.random() * 9000);
+
+    // 1. Add to Bookings List
     bookings.unshift({
-        id: 'GP-' + Math.floor(1000 + Math.random() * 9000),
+        id: bookingId,
         guestName: name,
-        guestEmail: document.getElementById('bookingGuestEmail')?.value || '',
-        guestPhone: document.getElementById('bookingGuestPhone')?.value || '',
+        guestEmail: email,
+        guestPhone: phone,
         roomNumber: roomId,
         roomType: roomTitle,
         checkIn: document.getElementById('checkIn')?.value,
@@ -549,11 +569,23 @@ function handleBookingSubmit(event) {
         avatar: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=c5a880&color=fff'
     });
 
+    // 2. Auto-sync with Guest Directory if new
+    const existingGuest = guests.find(g => (email && g.email === email) || (phone && g.phone === phone));
+    if (!existingGuest) {
+        guests.unshift({
+            id: 'G-' + Math.floor(100 + Math.random() * 900),
+            name: name,
+            email: email,
+            phone: phone
+        });
+    }
+
+    // 3. Update Room Status to Occupied
     const room = roomList.find(r => r.id === roomId);
     if (room) room.status = 'occupied';
 
     renderAll();
-    alert('🎉 Booking Confirmed Successfully!\nInvoice ID: ' + bookings[0].id);
+    alert('🎉 Booking Confirmed Successfully!\nInvoice ID: ' + bookingId);
     resetForm();
 
     if (currentRole === 'guest') switchTab('tabRooms');
@@ -649,10 +681,10 @@ function renderGuests() {
     if (tbody) {
         tbody.innerHTML = guests.map(g => `
             <tr>
-                <td><img src="https://ui-avatars.com/api/?name=${encodeURIComponent(g.name)}" class="avatar-img" style="width:32px;height:32px;" alt=""></td>
+                <td><img src="https://ui-avatars.com/api/?name=${encodeURIComponent(g.name)}&background=c5a880&color=fff" class="avatar-img" style="width:32px;height:32px;" alt=""></td>
                 <td><strong>${escapeHTML(g.name)}</strong></td>
-                <td>${escapeHTML(g.email)}</td>
-                <td>${escapeHTML(g.phone)}</td>
+                <td>${escapeHTML(g.email || 'N/A')}</td>
+                <td>${escapeHTML(g.phone || 'N/A')}</td>
             </tr>
         `).join('');
     }
