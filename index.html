@@ -16,6 +16,157 @@
 
     <!-- External CSS -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- Modern Dark Glassmorphism Custom Style -->
+    <style>
+        :root {
+            --bg-dark: #0a0e17;
+            --glass-bg: rgba(21, 30, 47, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-card: rgba(30, 41, 59, 0.7);
+            --primary-gold: #d4af37;
+            --gold-hover: #f39c12;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-cyan: #38bdf8;
+            --danger-red: #ef4444;
+            --success-green: #10b981;
+        }
+
+        body {
+            background: radial-gradient(circle at top right, #1e293b, #0f172a, #070a11);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* Glassmorphism Classes */
+        .auth-card, .sidebar, .topbar, .stat-card, .service-card, .form-container, .glass-card, .calc-summary-card {
+            background: var(--glass-bg) !important;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border-radius: 16px;
+        }
+
+        /* Role Display Logic Control */
+        /* Admin View Logic */
+        body.role-admin .admin-only-control {
+            display: flex !important;
+        }
+
+        body.role-admin .guest-only-control {
+            display: none !important;
+        }
+
+        /* Guest View Logic */
+        body.role-guest .admin-only-control,
+        body.role-guest .role-admin-only {
+            display: none !important;
+        }
+
+        body.role-guest .guest-only-control {
+            display: block !important;
+        }
+
+        /* Buttons & Inputs Styling */
+        .btn-primary, .btn-block-gold {
+            background: linear-gradient(135deg, var(--primary-gold), #b8860b) !important;
+            color: #000 !important;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover, .btn-block-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-book-now {
+            width: 100%;
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            color: #fff !important;
+            font-size: 1rem;
+            padding: 12px;
+        }
+
+        /* Room Cards Grid Layout */
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .room-card {
+            overflow: hidden;
+            border-radius: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .room-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .room-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .room-details {
+            padding: 15px;
+        }
+
+        /* Admin Controls Inside Room Card */
+        .admin-room-controls {
+            flex-direction: column;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border: 1px dashed rgba(212, 175, 55, 0.3);
+        }
+
+        .control-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .glass-input, .glass-select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        .glass-select option {
+            background: #0f172a;
+            color: #fff;
+        }
+
+        .btn-save-room {
+            background: var(--accent-cyan);
+            color: #000;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 
 <body class="role-admin">
@@ -147,7 +298,7 @@
         <!-- =====================================================
              SIDEBAR
         ====================================================== -->
-        <aside id="sidebar">
+        <aside id="sidebar" class="sidebar">
             <!-- Brand -->
             <div class="brand-header">
                 <i class="fa-solid fa-crown brand-icon"></i>
@@ -357,15 +508,50 @@
                             <p data-i18n="roomsSub">Explore room categories, pricing, amenities, and gallery.</p>
                         </div>
 
-                        <!-- ADMIN ONLY -->
-                        <button type="button" class="btn-primary-sm role-admin-only" onclick="promptAddNewRoom()">
+                        <!-- ADMIN ONLY: Add New Room Button -->
+                        <button type="button" class="btn-primary role-admin-only" onclick="promptAddNewRoom()">
                             <i class="fa-solid fa-plus"></i>
                             <span data-i18n="btnAddRoom">Add New Room</span>
                         </button>
                     </div>
 
-                    <!-- JS Room Cards -->
-                    <div id="roomsCardsGrid"></div>
+                    <!-- JS & HTML Rooms Cards Container -->
+                    <div id="roomsCardsGrid" class="rooms-grid">
+                        
+                        <!-- SAMPLE ROOM CARD (Admin View vs Guest View Dynamic Setup) -->
+                        <div class="room-card glass-card">
+                            <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=600&q=80" alt="Royal Presidential Suite" class="room-img">
+                            <div class="room-details">
+                                <h3>Royal Presidential Suite</h3>
+                                <p class="text-muted">Panoramic Sea View, Private Jacuzzi, King Size Bed.</p>
+
+                                <!-- ADMIN CONTROL: Price & Status Buttons/Fields -->
+                                <div class="admin-room-controls admin-only-control">
+                                    <div class="control-group">
+                                        <label><i class="fa-solid fa-tag"></i> Price (৳):</label>
+                                        <input type="number" class="glass-input" value="15000" placeholder="Set Price">
+                                    </div>
+                                    <div class="control-group">
+                                        <label><i class="fa-solid fa-toggle-on"></i> Status:</label>
+                                        <select class="glass-select">
+                                            <option value="available" selected>Available</option>
+                                            <option value="booked">Booked</option>
+                                            <option value="maintenance">Maintenance</option>
+                                        </select>
+                                    </div>
+                                    <button class="btn-save-room"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+                                </div>
+
+                                <!-- GUEST VIEW: Only Book Now Button -->
+                                <div class="guest-room-controls guest-only-control mt-10">
+                                    <button class="btn-primary btn-book-now" onclick="switchTab('tabBooking')">
+                                        <i class="fa-solid fa-calendar-check"></i> Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </section>
 
                 <!-- =================================================
@@ -572,127 +758,10 @@
                                 </button>
 
                                 <button type="button" class="btn-secondary-sm" onclick="resetForm()" data-i18n="btnReset">
-                                    Reset
+                                    <i class="fa-solid fa-rotate-left"></i> Reset Form
                                 </button>
                             </div>
                         </form>
-                    </div>
-                </section>
-
-                <!-- =================================================
-                     TAB 5 - FRONT DESK
-                ================================================== -->
-                <section id="tabFrontDesk" class="tab-page role-admin-only">
-                    <div class="page-header">
-                        <h2 data-i18n="fdTitle"><i class="fa-solid fa-desktop"></i> Front Desk Room Tracker</h2>
-                        <p data-i18n="fdSub">Monitor live room statuses, active check-ins, and departures.</p>
-                    </div>
-
-                    <div id="frontDeskRoomGrid"></div>
-                </section>
-
-                <!-- =================================================
-                     TAB 6 - HOUSEKEEPING
-                ================================================== -->
-                <section id="tabHousekeeping" class="tab-page role-admin-only">
-                    <div class="page-header">
-                        <h2 data-i18n="hkTitle"><i class="fa-solid fa-broom"></i> Housekeeping Status</h2>
-                        <p data-i18n="hkSub">Cleanliness tracking, room preparation, and maintenance status.</p>
-                    </div>
-
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-info">
-                                <h3 data-i18n="hkClean">Available & Clean</h3>
-                                <div id="statCleanRooms" class="stat-value">0</div>
-                            </div>
-                            <div class="stat-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-info">
-                                <h3 data-i18n="hkDirty">Needs Cleaning (Dirty)</h3>
-                                <div id="statDirtyRooms" class="stat-value">0</div>
-                            </div>
-                            <div class="stat-icon"><i class="fa-solid fa-broom"></i></div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-info">
-                                <h3 data-i18n="hkMaintenance">Under Maintenance</h3>
-                                <div id="statMaintRooms" class="stat-value">0</div>
-                            </div>
-                            <div class="stat-icon"><i class="fa-solid fa-wrench"></i></div>
-                        </div>
-                    </div>
-
-                    <div class="table-responsive mt-15">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th data-i18n="tblRoom">Room</th>
-                                    <th data-i18n="tblCategory">Category</th>
-                                    <th data-i18n="tblStatus">Status</th>
-                                    <th data-i18n="tblAction">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="housekeepingTableBody"></tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <!-- =================================================
-                     TAB 7 - FINANCE
-                ================================================== -->
-                <section id="tabFinance" class="tab-page role-admin-only">
-                    <div class="page-header">
-                        <h2 data-i18n="finTitle"><i class="fa-solid fa-chart-line"></i> Financial Analytics & Revenue</h2>
-                        <p data-i18n="finSub">Overview of financial transactions, billings, and income records.</p>
-                    </div>
-
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-info">
-                                <h3>Total Earnings</h3>
-                                <div id="finTotalEarnings" class="stat-value">৳0</div>
-                            </div>
-                            <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-info">
-                                <h3>Pending Payments</h3>
-                                <div id="finPending" class="stat-value">৳0</div>
-                            </div>
-                            <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- =================================================
-                     TAB 8 - GUEST DIRECTORY
-                ================================================== -->
-                <section id="tabGuests" class="tab-page role-admin-only">
-                    <div class="page-header">
-                        <h2 data-i18n="navGuests"><i class="fa-solid fa-users"></i> Guest Directory</h2>
-                        <p>Manage and review registered guest information and booking records.</p>
-                    </div>
-
-                    <div class="table-responsive mt-15">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Photo</th>
-                                    <th>Guest Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Room</th>
-                                    <th>Booking Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="guestDirectoryTableBody"></tbody>
-                        </table>
                     </div>
                 </section>
 
@@ -700,10 +769,5 @@
         </div>
     </div>
 
-    <!-- =========================================================
-         EXTERNAL JAVASCRIPT
-    ========================================================= -->
-    <script src="script.js"></script>
 </body>
-
 </html>
