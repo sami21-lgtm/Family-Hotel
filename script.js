@@ -150,19 +150,37 @@ function switchAuthForm(type) {
     }
 }
 
+// UPDATED STAFF LOGIN FUNCTION WITH EMAIL & PASSWORD VALIDATION
 function handleStaffLogin(event) {
     if (event) event.preventDefault();
-    const passInput = document.getElementById('loginPasswordInput')?.value;
 
+    const emailInput = document.getElementById('staffEmailInput')?.value || document.getElementById('loginEmailInput')?.value || '';
+    const passInput = document.getElementById('loginPasswordInput')?.value;
+    const roleSelect = document.getElementById('staffRoleSelect')?.value || 'admin';
+
+    // Validate Email Entry
+    if (!emailInput.trim()) {
+        alert("⚠️ Please enter your Staff Email!");
+        return;
+    }
+
+    // Validate Password Entry
     if (passInput === STAFF_DEFAULT_PASS) {
         isStaffAuthenticated = true;
         document.body.classList.remove('logged-out');
 
+        currentUser = {
+            role: roleSelect.toUpperCase(),
+            name: "MD. EMTIAZ HOSSAIN SAMI",
+            email: emailInput.trim(),
+            avatar: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
+        };
+
         const loginModal = document.getElementById('loginModal');
         if (loginModal) loginModal.classList.remove('active');
 
-        switchUserRole('admin');
-        alert("✅ Welcome Admin! Staff Portal Unlocked.");
+        switchUserRole(roleSelect);
+        alert(`✅ Welcome Staff! Logged in as ${currentUser.email} (${roleSelect.toUpperCase()}).`);
     } else {
         alert("❌ Incorrect Password! (Default Password: admin123)");
     }
@@ -205,7 +223,7 @@ function switchUserRole(role) {
         if (roleEl) roleEl.textContent = "Role: PUBLIC GUEST";
         switchTab('tabRooms');
     } else {
-        if (nameEl) nameEl.textContent = "MD. EMTIAZ HOSSAIN SAMI";
+        if (nameEl) nameEl.textContent = currentUser.name || "MD. EMTIAZ HOSSAIN SAMI";
         if (roleEl) roleEl.textContent = `Role: ${role.toUpperCase()}`;
         switchTab('tabDashboard');
     }
