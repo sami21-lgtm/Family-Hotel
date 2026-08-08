@@ -28,8 +28,8 @@ body {
     font-family: var(--font-body);
     background-color: var(--bg-dark);
     background-image:
-        linear-gradient(rgba(15, 17, 21, 0.78), rgba(15, 17, 21, 0.78)),
-        url("premium_photo-1661964071015-d97428970584.jpg");
+        linear-gradient(rgba(15, 17, 21, 0.85), rgba(15, 17, 21, 0.85)),
+        url("https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -188,22 +188,22 @@ body {
     color: #14171d;
     border: none;
     border-radius: 8px;
-    padding: 12px 18px;
+    padding: 10px 16px;
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.btn-block-gold { width: 100%; }
+.btn-block-gold { width: 100%; padding: 12px; }
 
 .btn-primary-sm {
-    padding: 8px 14px;
-    font-size: 0.85rem;
+    padding: 6px 12px;
+    font-size: 0.82rem;
 }
 
 .btn-block-gold:hover,
@@ -218,7 +218,7 @@ body {
     color: var(--text-main);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    padding: 8px 14px;
+    padding: 6px 12px;
     font-size: 0.82rem;
     cursor: pointer;
     display: inline-flex;
@@ -228,6 +228,20 @@ body {
 
 .btn-secondary-sm:hover {
     background: rgba(255, 255, 255, 0.12);
+}
+
+.btn-disabled {
+    background: rgba(255, 255, 255, 0.04);
+    color: #777;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    cursor: not-allowed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .form-actions {
@@ -286,7 +300,7 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 15px;
+    padding: 12px;
     margin: 0 15px 15px;
     background: rgba(255, 255, 255, 0.04);
     border-radius: 10px;
@@ -294,15 +308,15 @@ body {
 }
 
 .avatar-img {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--gold);
 }
 
 .user-info h4 {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     margin-bottom: 2px;
 }
 
@@ -525,17 +539,21 @@ tbody td {
     border-bottom: 1px solid var(--border-color);
 }
 
+/* ============ BADGES ============ */
+
 .badge {
     display: inline-block;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.72rem;
-    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
-.badge-success { background: rgba(72, 187, 120, 0.15); color: #48bb78; }
-.badge-danger { background: rgba(245, 101, 101, 0.15); color: #f56565; }
-.badge-gold { background: rgba(197, 168, 128, 0.15); color: var(--gold); }
+.badge-success { background: rgba(38, 115, 76, 0.4); color: #48bb78; border: 1px solid rgba(72, 187, 120, 0.3); }
+.badge-danger { background: rgba(153, 38, 38, 0.4); color: #f56565; border: 1px solid rgba(245, 101, 101, 0.3); }
+.badge-gold { background: rgba(115, 96, 38, 0.4); color: var(--gold); border: 1px solid rgba(197, 168, 128, 0.3); }
 
 /* ============ SERVICES GRID ============ */
 
@@ -628,7 +646,7 @@ tbody td {
 
 .summary-line.grand-total strong { color: var(--gold); }
 
-/* ============ ROOM CARDS GRID & ROLE CONTROLS ============ */
+/* ============ ROOM CARDS GRID (EXACT AS IMAGE 1) ============ */
 
 .rooms-grid {
     display: grid;
@@ -638,7 +656,7 @@ tbody td {
 }
 
 .room-card {
-    background: var(--bg-card);
+    background: rgba(26, 29, 36, 0.92);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     overflow: hidden;
@@ -647,8 +665,8 @@ tbody td {
 
 .room-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    border-color: rgba(197, 168, 128, 0.35);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border-color: rgba(197, 168, 128, 0.3);
 }
 
 .room-card-img-wrapper {
@@ -665,17 +683,9 @@ tbody td {
     display: block;
 }
 
-.admin-room-controls {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
 /* ============ ROLE VISIBILITY CONTROL ============ */
 
 body.role-guest .role-admin-only,
-body.role-guest .admin-room-controls,
 body.role-guest #addNewRoomBtn {
     display: none !important;
 }
