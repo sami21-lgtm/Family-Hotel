@@ -1,6 +1,6 @@
 // --- GLOBAL APPLICATION STATE & TRANSLATIONS ---
 let currentLang = 'en'; // 'en' or 'bn'
-let currentRole = 'admin'; // 'admin', 'frontdesk', 'housekeeping', 'finance', 'guest'
+let currentRole = 'admin'; // 'admin', 'frontdesk', 'housekeeping', 'finance'
 
 let currentUser = {
     role: 'ADMINISTRATOR',
@@ -637,7 +637,7 @@ function handleLoginSubmit(e) {
 
     const password = passElem ? passElem.value.trim() : '';
 
-    // Verify Admin Password (admin123 or blank)
+    // Verify Admin/Staff Password (admin123 or blank)
     if (password === 'admin123' || password === '') {
         document.body.classList.remove('logged-out');
 
@@ -654,28 +654,6 @@ function handleLoginSubmit(e) {
     } else {
         alert(currentLang === 'bn' ? '❌ ভুল পাসওয়ার্ড! (ডিফল্ট: admin123)' : '❌ Invalid Password! (Default: admin123)');
     }
-}
-
-function handleGuestLogin(e) {
-    if (e) e.preventDefault();
-
-    const fName = document.getElementById('fName') ? document.getElementById('fName').value : 'Guest';
-    const lName = document.getElementById('lName') ? document.getElementById('lName').value : 'User';
-    const emailElem = document.getElementById('email') || document.getElementById('guestEmail');
-    const previewImg = document.getElementById('previewImg') ? document.getElementById('previewImg').src : '';
-
-    document.body.classList.remove('logged-out');
-
-    currentUser = {
-        role: 'GUEST',
-        name: `${fName} ${lName}`.trim(),
-        email: emailElem ? emailElem.value : 'guest@resort.com',
-        photo: previewImg || 'https://ui-avatars.com/api/?name=Guest'
-    };
-
-    updateUserUI();
-    closeLoginModal();
-    switchUserRole('guest');
 }
 
 function logoutUser() {
@@ -706,27 +684,6 @@ function handleAuthButtonClick() {
     const loginModal = document.getElementById('loginModal');
     if (loginModal) {
         loginModal.classList.add('active');
-    }
-}
-
-function previewUploadImage(e) {
-    if (!e || !e.target || !e.target.files) return;
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            const img = document.getElementById('previewImg');
-            if (img) img.src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-}
-
-function updateGuestImageFromUrl() {
-    const urlElem = document.getElementById('imgUrlInput');
-    const previewImg = document.getElementById('previewImg');
-    if (urlElem && previewImg && urlElem.value) {
-        previewImg.src = urlElem.value;
     }
 }
 
