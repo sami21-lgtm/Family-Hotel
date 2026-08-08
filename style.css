@@ -20,20 +20,64 @@
     padding: 0;
 }
 
+/* ==========================================
+   GLOBAL BODY BACKGROUND
+   ========================================== */
+
+html {
+    min-height: 100%;
+}
+
 body {
     font-family: var(--font-body);
-    background: var(--bg-dark);
+    background-color: var(--bg-dark);
+    background-image:
+        linear-gradient(
+            rgba(15, 17, 21, 0.72),
+            rgba(15, 17, 21, 0.72)
+        ),
+        url("premium_photo-1661964071015-d97428970584.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     color: var(--text-main);
     min-height: 100vh;
 }
 
-.text-center { text-align: center; }
-.mt-5 { margin-top: 5px; }
-.mt-10 { margin-top: 10px; }
-.mt-15 { margin-top: 15px; }
-.mt-20 { margin-top: 20px; }
-.mb-10 { margin-bottom: 10px; }
-.mb-15 { margin-bottom: 15px; }
+/* Keep content above the background */
+.app-container {
+    position: relative;
+    z-index: 1;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-5 {
+    margin-top: 5px;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.mt-15 {
+    margin-top: 15px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mb-15 {
+    margin-bottom: 15px;
+}
 
 .sr-only {
     position: absolute;
@@ -48,6 +92,7 @@ body {
 }
 
 /* ============ MODAL / AUTH ============ */
+
 .modal {
     display: none;
     position: fixed;
@@ -140,6 +185,7 @@ body {
 }
 
 /* ============ BUTTONS ============ */
+
 .btn-block-gold,
 .btn-primary,
 .btn-primary-sm {
@@ -199,6 +245,7 @@ body {
 }
 
 /* ============ APP LAYOUT ============ */
+
 .app-container {
     display: flex;
     min-height: 100vh;
@@ -217,9 +264,12 @@ body {
 }
 
 /* ============ SIDEBAR ============ */
+
 #sidebar {
     width: 270px;
-    background: var(--bg-sidebar);
+    background: rgba(20, 23, 29, 0.94);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
@@ -323,6 +373,7 @@ body {
 }
 
 /* ============ MAIN WRAPPER ============ */
+
 .main-wrapper {
     flex: 1;
     display: flex;
@@ -335,7 +386,9 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 15px 25px;
-    background: var(--bg-sidebar);
+    background: rgba(20, 23, 29, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border-bottom: 1px solid var(--border-color);
     position: sticky;
     top: 0;
@@ -401,6 +454,7 @@ body {
 }
 
 /* ============ TAB PAGES ============ */
+
 .tab-page {
     display: none;
 }
@@ -410,6 +464,7 @@ body {
 }
 
 /* ============ STATS GRID ============ */
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -418,7 +473,9 @@ body {
 }
 
 .stat-card {
-    background: var(--bg-card);
+    background: rgba(26, 29, 36, 0.92);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 20px;
@@ -459,9 +516,12 @@ body {
 }
 
 /* ============ TABLES ============ */
+
 .table-responsive {
     overflow-x: auto;
-    background: var(--bg-card);
+    background: rgba(26, 29, 36, 0.92);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     border-radius: 12px;
     border: 1px solid var(--border-color);
 }
@@ -501,6 +561,7 @@ tbody tr:hover {
 }
 
 /* ============ BADGES ============ */
+
 .badge {
     display: inline-block;
     padding: 4px 10px;
@@ -525,6 +586,7 @@ tbody tr:hover {
 }
 
 /* ============ SERVICES GRID ============ */
+
 .services-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -532,7 +594,9 @@ tbody tr:hover {
 }
 
 .service-card {
-    background: var(--bg-card);
+    background: rgba(26, 29, 36, 0.92);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 20px;
@@ -567,8 +631,11 @@ tbody tr:hover {
 }
 
 /* ============ FORM CONTAINER ============ */
+
 .form-container {
-    background: var(--bg-card);
+    background: rgba(26, 29, 36, 0.92);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     border: 1px solid var(--border-color);
     border-radius: 14px;
     padding: 25px;
@@ -618,6 +685,7 @@ tbody tr:hover {
 }
 
 /* ============ ROLE VISIBILITY ============ */
+
 body.role-guest .role-admin-only,
 body.role-guest .admin-edit-btn,
 body.role-guest .admin-status-select {
@@ -625,7 +693,9 @@ body.role-guest .admin-status-select {
 }
 
 /* ============ RESPONSIVE ============ */
+
 @media (max-width: 900px) {
+
     #sidebar {
         position: fixed;
         left: -270px;
@@ -643,6 +713,7 @@ body.role-guest .admin-status-select {
 }
 
 @media (max-width: 600px) {
+
     .main-content {
         padding: 15px;
     }
