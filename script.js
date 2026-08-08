@@ -1,4 +1,6 @@
-
+// ==========================================
+// GRAND PALACE RESORT & SPA - SCRIPT
+// ==========================================
 
 let currentRole = 'admin'; // admin, guest, frontdesk, etc.
 let isStaffAuthenticated = true;
@@ -9,8 +11,6 @@ let currentUser = {
     email: 'admin@grandpalace.com',
     avatar: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
 };
-
-
 
 let roomList = [
     {
@@ -79,10 +79,6 @@ let roomList = [
     }
 ];
 
-// ==========================================
-// 3. BOOKINGS
-// ==========================================
-
 let bookings = [
     {
         id: "GP-8801",
@@ -114,10 +110,6 @@ let bookings = [
     }
 ];
 
-// ==========================================
-// 4. GUEST DIRECTORY
-// ==========================================
-
 let guests = [
     {
         id: "G-101",
@@ -134,10 +126,6 @@ let guests = [
         avatar: "https://ui-avatars.com/api/?name=Sultana+Rahman&background=c5a880&color=fff"
     }
 ];
-
-// ==========================================
-// 5. HELPERS
-// ==========================================
 
 function escapeHTML(str) {
     if (str === null || str === undefined) return '';
@@ -158,10 +146,6 @@ function getNightsBetween(checkInStr, checkOutStr) {
     const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
     return diffDays > 0 ? diffDays : 1;
 }
-
-// ==========================================
-// 6. INITIALIZATION
-// ==========================================
 
 document.addEventListener('DOMContentLoaded', function () {
     initClock();
@@ -185,10 +169,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     switchUserRole(currentRole);
 });
-
-// ==========================================
-// 7. CLOCK & DATES
-// ==========================================
 
 function initClock() {
     const clockEl = document.getElementById('currentDateDisplay');
@@ -214,10 +194,6 @@ function setupDefaultDates() {
     if (cOut && !cOut.value) cOut.value = tomorrow;
 }
 
-// ==========================================
-// 8. RENDER ALL
-// ==========================================
-
 function renderAll() {
     renderDashboard();
     renderRooms();
@@ -228,14 +204,20 @@ function renderAll() {
 }
 
 // ==========================================
-// 9. BROWSE ROOMS (GUEST vs ADMIN DYNAMIC VIEW)
+// BROWSE ROOMS (GUEST vs ADMIN DYNAMIC VIEW)
 // ==========================================
 
 function renderRooms() {
     const container = document.getElementById('roomsCardsGrid');
     if (!container) return;
 
-    const isAdmin = currentRole === 'admin';
+    const isAdmin = (currentRole === 'admin');
+
+    // Add New Room Button visibility handle
+    const addBtn = document.getElementById('addNewRoomBtn');
+    if (addBtn) {
+        addBtn.style.display = isAdmin ? 'inline-flex' : 'none';
+    }
 
     container.innerHTML = roomList.map(function (room) {
         let statusClass = 'badge-danger';
@@ -245,9 +227,9 @@ function renderRooms() {
             statusClass = 'badge-gold';
         }
 
-        // ADMIN ONLY CONTROLS
-        const adminControls = `
-            <div class="admin-room-controls" style="display:${isAdmin ? 'flex' : 'none'};">
+        // ADMIN ONLY CONTROLS (Price Edit & Status Toggle Buttons)
+        const adminControls = isAdmin ? `
+            <div class="admin-room-controls" style="display: flex; gap: 6px;">
                 <button type="button" class="btn-secondary-sm" onclick="editRoomPrice('${escapeHTML(room.id)}')">
                     <i class="fa-solid fa-pen"></i> Price
                 </button>
@@ -255,17 +237,17 @@ function renderRooms() {
                     <i class="fa-solid fa-rotate"></i> Status
                 </button>
             </div>
-        `;
+        ` : '';
 
-        // GUEST ONLY BOOKING BUTTON
-        const guestBookingButton = `
-            <div style="display:${!isAdmin ? 'block' : 'none'}; width:100%; margin-top:12px;">
+        // GUEST ONLY BOOKING BUTTON (No Price or Status edit allowed for Guest)
+        const guestBookingButton = !isAdmin ? `
+            <div class="guest-room-controls" style="width:100%; margin-top:12px;">
                 <button type="button" class="btn-primary" style="width:100%;" onclick="bookRoomFromBrowse('${escapeHTML(room.id)}')" ${room.status !== 'available' ? 'disabled' : ''}>
                     <i class="fa-solid fa-calendar-check"></i>
-                    ${room.status === 'available' ? 'Book This Room' : 'Not Available'}
+                    ${room.status === 'available' ? 'Book This Room (৳' + room.price.toLocaleString() + ')' : 'Not Available'}
                 </button>
             </div>
-        `;
+        ` : '';
 
         return `
             <div class="room-card">
@@ -298,7 +280,7 @@ function renderRooms() {
 }
 
 // ==========================================
-// 10. AUTH & ROLE MANAGEMENT
+// AUTH & ROLE MANAGEMENT
 // ==========================================
 
 function switchAuthForm(type) {
@@ -381,7 +363,6 @@ function switchUserRole(role) {
 
     document.body.className = 'role-' + role;
 
-    // Update Profile Info in Sidebar
     const nameEl = document.getElementById('sidebarUserName');
     const roleEl = document.getElementById('sidebarUserRole');
     const avatarEl = document.getElementById('sidebarUserAvatar');
@@ -393,7 +374,7 @@ function switchUserRole(role) {
     } else {
         if (nameEl) nameEl.textContent = currentUser.name || 'Valued Guest';
         if (roleEl) roleEl.textContent = 'Role: GUEST';
-        if (avatarEl) avatarEl.src = currentUser.avatar;
+        if (avatarEl) avatarEl.src = currentUser.avatar || 'https://ui-avatars.com/api/?name=Guest&background=c5a880&color=fff';
     }
 
     renderRooms();
@@ -413,10 +394,6 @@ function logoutUser() {
     if (loginModal) loginModal.classList.add('active');
     switchAuthForm('guest');
 }
-
-// ==========================================
-// 11. NAVIGATION & TABS
-// ==========================================
 
 function switchTab(tabId) {
     document.querySelectorAll('.tab-page').forEach(page => page.classList.remove('active'));
@@ -445,10 +422,6 @@ function toggleSidebar(forceState) {
         if (overlay) overlay.classList.remove('active');
     }
 }
-
-// ==========================================
-// 12. CALCULATOR & BOOKING ACTIONS
-// ==========================================
 
 function populateRoomDropdown() {
     const select = document.getElementById('roomTypeSelect');
@@ -556,7 +529,7 @@ function handleBookingSubmit(event) {
 }
 
 // ==========================================
-// 13. ADMIN ACTIONS: EDIT PRICE & STATUS
+// ADMIN ACTIONS: ADD ROOM, EDIT PRICE & STATUS
 // ==========================================
 
 function promptAddNewRoom() {
@@ -598,6 +571,7 @@ function editRoomPrice(roomId) {
 }
 
 function toggleRoomStatus(roomId) {
+    if (currentRole !== 'admin') return;
     const room = roomList.find(r => r.id === roomId);
     if (!room) return;
 
@@ -628,10 +602,6 @@ function togglePaymentDetails() {
     detailsDiv.style.display = 'block';
     instructions.innerHTML = '<b>Payment Gateway Instructions:</b> Complete payment via ' + method.toUpperCase() + ' merchant number.';
 }
-
-// ==========================================
-// 14. TABLES RENDER
-// ==========================================
 
 function renderDashboard() {
     const totalBookingsEl = document.getElementById('statTotalBookings');
