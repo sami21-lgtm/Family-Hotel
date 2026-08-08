@@ -104,12 +104,33 @@ body.logged-out #loginModal, #loginModal.active {
 .stat-value { font-size: 1.6rem; font-weight: 700; color: var(--gold); margin-top: 5px; }
 .stat-icon { width: 50px; height: 50px; background: rgba(212, 175, 55, 0.1); color: var(--gold); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
 
+/* Dynamic Room Cards Accents (New) */
+.room-status-card.available { border-left: 4px solid var(--status-avail); }
+.room-status-card.occupied  { border-left: 4px solid var(--status-occ); }
+.room-status-card.dirty     { border-left: 4px solid var(--status-dirty); }
+.room-status-card.maintenance { border-left: 4px solid var(--status-maint); }
+
+/* Custom Cards for Rooms & Services (New) */
+.custom-card { overflow: hidden; padding: 0; }
+.custom-card img { width: 100%; height: 180px; object-fit: cover; }
+.custom-card .card-body { padding: 18px; display: flex; flex-direction: column; gap: 6px; }
+.custom-card h3 { font-size: 1.1rem; color: var(--text-main); font-family: var(--font-head); }
+.custom-card p { font-size: 0.85rem; color: var(--text-muted); }
+.custom-card strong { color: var(--gold); font-size: 1rem; margin-top: 4px; }
+
 /* Tables & Badges */
 .table-responsive { width: 100%; overflow-x: auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: var(--shadow); backdrop-filter: blur(10px); }
 table { width: 100%; border-collapse: collapse; text-align: left; white-space: nowrap; }
 th, td { padding: 15px 20px; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
 th { background: rgba(0, 0, 0, 0.4); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; }
 .table-img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
+
+/* Dynamic Status Badges (New) */
+.status-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; display: inline-block; letter-spacing: 0.5px; }
+.badge-available, .badge-checked-in { background: rgba(16, 185, 129, 0.15); color: var(--status-avail); border: 1px solid var(--status-avail); }
+.badge-occupied, .badge-confirmed   { background: rgba(239, 68, 68, 0.15); color: var(--status-occ); border: 1px solid var(--status-occ); }
+.badge-dirty                       { background: rgba(245, 158, 11, 0.15); color: var(--status-dirty); border: 1px solid var(--status-dirty); }
+.badge-maintenance                 { background: rgba(107, 114, 128, 0.15); color: var(--status-maint); border: 1px solid var(--status-maint); }
 
 /* Forms & Inputs */
 .form-container { background: var(--bg-card); border: 1px solid var(--border-color); padding: 25px; border-radius: 12px; box-shadow: var(--shadow); backdrop-filter: blur(10px); }
@@ -123,6 +144,9 @@ input[type="text"], input[type="email"], input[type="password"], input[type="dat
 }
 input:focus, select:focus, .custom-select:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2); }
 
+/* Disabled Select Options Styling (New) */
+select option:disabled { color: #64748b; background-color: #0f172a; font-style: italic; }
+
 .calc-summary-card { background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color); padding: 18px; border-radius: 8px; }
 .summary-line { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 5px; }
 .summary-line.grand-total { font-size: 1.1rem; color: var(--gold); border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 8px; }
@@ -135,7 +159,7 @@ input:focus, select:focus, .custom-select:focus { border-color: var(--gold); box
 .btn-secondary-sm { background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; transition: var(--trans); }
 .form-actions { display: flex; gap: 10px; }
 
-/* Modals */
+/* Modals & Invoice Popup */
 .modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; pointer-events: none; transition: var(--trans); }
 .modal.active { opacity: 1; pointer-events: auto; }
 .modal-content { background: var(--bg-card); border: 1px solid var(--border-color); width: 90%; max-width: 500px; padding: 25px; border-radius: 14px; box-shadow: var(--shadow); position: relative; max-height: 90vh; overflow-y: auto; }
@@ -143,6 +167,11 @@ input:focus, select:focus, .custom-select:focus { border-color: var(--gold); box
 .close-modal-btn:hover { color: var(--gold); }
 .divider { border: 0; height: 1px; background: var(--border-color); margin: 18px 0; }
 .avatar-preview-box { display: flex; align-items: center; gap: 12px; }
+
+/* Invoice Box Styling (New) */
+.invoice-box { background: rgba(0, 0, 0, 0.4); padding: 16px; border-radius: 8px; margin: 15px 0; border: 1px dashed var(--gold); }
+.invoice-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; }
+.invoice-row.total-row { font-size: 1.1rem; color: var(--gold); font-weight: 700; border-top: 1px solid var(--border-color); padding-top: 10px; margin-top: 10px; }
 
 .mt-5 { margin-top: 5px; } .mt-10 { margin-top: 10px; } .mt-15 { margin-top: 15px; } .mt-20 { margin-top: 20px; }
 
