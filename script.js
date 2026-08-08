@@ -628,45 +628,51 @@ function renderServices() {
     `).join('');
 }
 
-// --- AUTHENTICATION & MODALS ---
+// --- AUTHENTICATION MODALS & LOGIC ---
 function handleLoginSubmit(e) {
     if (e) e.preventDefault();
-    const emailElem = document.getElementById('loginEmail');
-    const passElem = document.getElementById('loginPassword');
+    
+    const emailElem = document.getElementById('loginEmail') || document.getElementById('email');
+    const passElem = document.getElementById('loginPassword') || document.getElementById('password');
 
-    // Admin Credentials Verification
-    if (passElem && passElem.value && passElem.value !== 'admin123') {
-        alert(currentLang === 'bn' ? 'ভুল পাসওয়ার্ড! (ডিফল্ট: admin123)' : 'Invalid Password! (Default: admin123)');
-        return;
+    const password = passElem ? passElem.value.trim() : '';
+
+    // Verify Admin Password (admin123 or blank)
+    if (password === 'admin123' || password === '') {
+        document.body.classList.remove('logged-out');
+
+        currentUser = {
+            role: 'ADMINISTRATOR',
+            name: 'MD. EMTIAZ HOSSAIN SAMI',
+            email: (emailElem && emailElem.value) ? emailElem.value : 'admin@grandpalace.com',
+            photo: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
+        };
+
+        updateUserUI();
+        closeLoginModal();
+        switchUserRole('admin');
+    } else {
+        alert(currentLang === 'bn' ? '❌ ভুল পাসওয়ার্ড! (ডিফল্ট: admin123)' : '❌ Invalid Password! (Default: admin123)');
     }
-    
-    currentUser = {
-        role: 'ADMINISTRATOR',
-        name: 'MD. EMTIAZ HOSSAIN SAMI',
-        email: emailElem ? emailElem.value : 'admin@grandpalace.com',
-        photo: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
-    };
-    
-    document.body.classList.remove('logged-out');
-    updateUserUI();
-    closeLoginModal();
-    switchUserRole('admin');
 }
 
-function handleGuestLogin() {
+function handleGuestLogin(e) {
+    if (e) e.preventDefault();
+
     const fName = document.getElementById('fName') ? document.getElementById('fName').value : 'Guest';
     const lName = document.getElementById('lName') ? document.getElementById('lName').value : 'User';
-    const email = document.getElementById('email') ? document.getElementById('email').value : 'guest@resort.com';
+    const emailElem = document.getElementById('email') || document.getElementById('guestEmail');
     const previewImg = document.getElementById('previewImg') ? document.getElementById('previewImg').src : '';
+
+    document.body.classList.remove('logged-out');
 
     currentUser = {
         role: 'GUEST',
         name: `${fName} ${lName}`.trim(),
-        email: email,
+        email: emailElem ? emailElem.value : 'guest@resort.com',
         photo: previewImg || 'https://ui-avatars.com/api/?name=Guest'
     };
-    
-    document.body.classList.remove('logged-out');
+
     updateUserUI();
     closeLoginModal();
     switchUserRole('guest');
@@ -674,8 +680,7 @@ function handleGuestLogin() {
 
 function logoutUser() {
     document.body.classList.add('logged-out');
-    const loginModal = document.getElementById('loginModal');
-    if (loginModal) loginModal.classList.add('active');
+    handleAuthButtonClick();
 }
 
 function updateUserUI() {
@@ -692,12 +697,16 @@ function updateUserUI() {
 
 function closeLoginModal() {
     const loginModal = document.getElementById('loginModal');
-    if (loginModal) loginModal.classList.remove('active');
+    if (loginModal) {
+        loginModal.classList.remove('active');
+    }
 }
 
 function handleAuthButtonClick() {
     const loginModal = document.getElementById('loginModal');
-    if (loginModal) loginModal.classList.add('active');
+    if (loginModal) {
+        loginModal.classList.add('active');
+    }
 }
 
 function previewUploadImage(e) {
