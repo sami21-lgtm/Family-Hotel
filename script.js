@@ -386,9 +386,12 @@ function handleBookingSubmit(event) {
     const totalBillElem = document.getElementById('billTotal');
     const totalBill = totalBillElem ? parseInt(totalBillElem.textContent.replace(/[^\d]/g, '')) || 0 : 0;
 
+    const guestNameInput = document.getElementById('bookingGuestName');
+    const finalGuestName = (guestNameInput && guestNameInput.value.trim()) ? guestNameInput.value.trim() : currentUser.name;
+
     const newBooking = {
         id: `GP-${Math.floor(1000 + Math.random() * 9000)}`,
-        guestName: currentUser.name,
+        guestName: finalGuestName,
         guestPhoto: currentUser.photo,
         roomNumber: roomNo,
         roomType: roomName,
@@ -625,10 +628,17 @@ function renderServices() {
     `).join('');
 }
 
-// --- AUTHENTICATION MODALS ---
+// --- AUTHENTICATION & MODALS ---
 function handleLoginSubmit(e) {
     if (e) e.preventDefault();
     const emailElem = document.getElementById('loginEmail');
+    const passElem = document.getElementById('loginPassword');
+
+    // Admin Credentials Verification
+    if (passElem && passElem.value && passElem.value !== 'admin123') {
+        alert(currentLang === 'bn' ? 'ভুল পাসওয়ার্ড! (ডিফল্ট: admin123)' : 'Invalid Password! (Default: admin123)');
+        return;
+    }
     
     currentUser = {
         role: 'ADMINISTRATOR',
@@ -636,8 +646,11 @@ function handleLoginSubmit(e) {
         email: emailElem ? emailElem.value : 'admin@grandpalace.com',
         photo: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
     };
+    
+    document.body.classList.remove('logged-out');
     updateUserUI();
     closeLoginModal();
+    switchUserRole('admin');
 }
 
 function handleGuestLogin() {
@@ -650,10 +663,19 @@ function handleGuestLogin() {
         role: 'GUEST',
         name: `${fName} ${lName}`.trim(),
         email: email,
-        photo: previewImg
+        photo: previewImg || 'https://ui-avatars.com/api/?name=Guest'
     };
+    
+    document.body.classList.remove('logged-out');
     updateUserUI();
     closeLoginModal();
+    switchUserRole('guest');
+}
+
+function logoutUser() {
+    document.body.classList.add('logged-out');
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal) loginModal.classList.add('active');
 }
 
 function updateUserUI() {
