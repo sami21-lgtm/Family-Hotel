@@ -1,30 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Grand Palace Resort & Spa - Advanced Management Dashboard">
     <title>Grand Palace Resort & Spa - Management Dashboard</title>
+
     <!-- Google Fonts & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Stylesheet -->
+    
+    <!-- External Stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="logged-out">
 
     <!-- MANDATORY AUTHENTICATION & LOGIN MODAL -->
-    <div id="loginModal" class="modal active">
+    <div id="loginModal" class="modal active" role="dialog" aria-labelledby="authTitle">
         <div class="modal-content auth-card">
-            <h3 class="modal-title" style="color: var(--gold); text-align: center; font-family: var(--font-head); font-size: 1.5rem;">System Authentication</h3>
+            <h3 id="authTitle" class="modal-title" style="color: var(--gold); text-align: center; font-family: var(--font-head); font-size: 1.5rem;">System Authentication</h3>
             
-            <!-- Staff Admin Login Form Only -->
+            <!-- Staff Admin Login Form -->
             <form onsubmit="handleLoginSubmit(event)" class="mt-15">
                 <h4 style="color: var(--text-main);">Staff Admin Login</h4>
                 <div class="form-group mt-10">
-                    <input type="email" id="loginEmail" placeholder="Enter Staff Email" required>
+                    <label for="loginEmail" class="sr-only">Staff Email</label>
+                    <input type="email" id="loginEmail" placeholder="Enter Staff Email" required autocomplete="username">
                 </div>
                 <div class="form-group mt-10">
-                    <input type="password" id="loginPassword" placeholder="Enter Staff Password" required>
+                    <label for="loginPassword" class="sr-only">Staff Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter Staff Password" required autocomplete="current-password">
                 </div>
                 <button type="submit" class="btn-block-gold mt-15">
                     <i class="fa-solid fa-lock"></i> Login as Admin
@@ -48,7 +55,7 @@
 
             <!-- User Profile Summary -->
             <div class="user-profile-card">
-                <img id="sidebarAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="Avatar" class="avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=Admin'">
+                <img id="sidebarAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="User Avatar" class="avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=Admin'">
                 <div class="user-info">
                     <h4 id="sidebarUserName">MD. EMTIAZ HOSSAIN SAMI</h4>
                     <span id="sidebarUserRole">Role: ADMINISTRATOR</span>
@@ -93,7 +100,7 @@
                     <option value="finance">Finance</option>
                     <option value="guest">Guest View</option>
                 </select>
-                <button class="btn-secondary-sm mt-10" style="width:100%" onclick="logoutUser()">
+                <button type="button" class="btn-secondary-sm mt-10" style="width:100%" onclick="logoutUser()">
                     <i class="fa-solid fa-right-from-bracket"></i> Logout
                 </button>
             </div>
@@ -104,13 +111,15 @@
             <!-- Topbar Header -->
             <header class="topbar">
                 <div class="topbar-left">
-                    <button class="mobile-nav-toggle" onclick="toggleSidebar(true)"><i class="fa-solid fa-bars"></i></button>
+                    <button type="button" class="mobile-nav-toggle" onclick="toggleSidebar(true)" aria-label="Toggle Navigation">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
                     <div id="currentDateDisplay" class="date-clock-badge">--:-- --</div>
                 </div>
 
                 <div class="topbar-right">
-                    <button id="mobileLangToggle" class="btn-secondary-sm" onclick="toggleLanguage()">🇧🇩 BN</button>
-                    <img id="topbarAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" class="avatar-img clickable" onclick="logoutUser()" title="Click to Logout" alt="Profile" onerror="this.src='https://ui-avatars.com/api/?name=Admin'">
+                    <button type="button" id="mobileLangToggle" class="btn-secondary-sm" onclick="toggleLanguage()">🇧🇩 BN</button>
+                    <img id="topbarAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" class="avatar-img clickable" onclick="logoutUser()" title="Click to Logout" alt="Profile Avatar" onerror="this.src='https://ui-avatars.com/api/?name=Admin'">
                 </div>
             </header>
 
@@ -194,56 +203,58 @@
                     <div class="form-container">
                         <form id="reservationForm" onsubmit="handleBookingSubmit(event)">
                             
-                            <!-- Guest Details with Photo Settings -->
+                            <!-- Guest Details -->
                             <h4 style="color: var(--gold);" class="mb-10">Guest Information</h4>
                             <div class="form-grid mb-15">
                                 <div class="form-group">
-                                    <label>Guest Full Name *</label>
+                                    <label for="bookingGuestName">Guest Full Name *</label>
                                     <input type="text" id="bookingGuestName" placeholder="e.g. Tanvir Ahmed" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Guest Email *</label>
+                                    <label for="bookingGuestEmail">Guest Email *</label>
                                     <input type="email" id="bookingGuestEmail" placeholder="tanvir@example.com" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Phone Number *</label>
-                                    <input type="text" id="bookingGuestPhone" placeholder="+8801700000000" required>
+                                    <label for="bookingGuestPhone">Phone Number *</label>
+                                    <input type="tel" id="bookingGuestPhone" placeholder="+8801700000000" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Avatar / Photo URL</label>
+                                    <label for="imgUrlInput">Avatar / Photo URL</label>
                                     <input type="text" id="imgUrlInput" placeholder="Avatar Photo URL" onchange="updateGuestImageFromUrl()">
                                 </div>
                             </div>
 
                             <!-- Guest Photo Upload & Preview Box -->
                             <div class="form-group mb-15">
-                                <label>Guest Photo Attachment</label>
+                                <label for="guestPhotoUpload">Guest Photo Attachment</label>
                                 <div class="avatar-preview-box mt-5">
-                                    <img id="previewImg" src="https://ui-avatars.com/api/?name=Guest" class="table-img" alt="Preview">
-                                    <input type="file" accept="image/*" onchange="previewUploadImage(event)">
+                                    <img id="previewImg" src="https://ui-avatars.com/api/?name=Guest" class="table-img" alt="Guest Preview">
+                                    <input type="file" id="guestPhotoUpload" accept="image/*" onchange="previewUploadImage(event)">
                                 </div>
                             </div>
 
                             <div class="divider"></div>
 
+                            <!-- Room & Stay Details -->
                             <h4 style="color: var(--gold);" class="mb-10">Stay & Room Details</h4>
                             <div class="form-grid">
                                 <div class="form-group">
-                                    <label data-i18n="lblCheckIn">Check-In *</label>
+                                    <label for="checkIn" data-i18n="lblCheckIn">Check-In *</label>
                                     <input type="date" id="checkIn" onchange="calculateTotal()" required>
                                 </div>
                                 <div class="form-group">
-                                    <label data-i18n="lblCheckOut">Check-Out *</label>
+                                    <label for="checkOut" data-i18n="lblCheckOut">Check-Out *</label>
                                     <input type="date" id="checkOut" onchange="calculateTotal()" required>
                                 </div>
                                 <div class="form-group">
-                                    <label data-i18n="lblRoomType">Select Room *</label>
+                                    <label for="roomTypeSelect" data-i18n="lblRoomType">Select Room *</label>
                                     <select id="roomTypeSelect" class="custom-select" onchange="calculateTotal()" required></select>
                                 </div>
                             </div>
 
                             <div class="divider"></div>
 
+                            <!-- Cuisine, Amenities & Payment Gateway -->
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label data-i18n="cuisineOpt">Cuisine & Services</label>
@@ -257,7 +268,7 @@
                                     <label class="checkbox-label"><input type="checkbox" name="amenities" data-price="400" onchange="calculateTotal()"> VIP Gym Pass (+৳400)</label>
                                 </div>
                                 <div class="form-group">
-                                    <label data-i18n="lblGateway">Select Gateway *</label>
+                                    <label for="paymentMethodSelect" data-i18n="lblGateway">Select Gateway *</label>
                                     <select id="paymentMethodSelect" class="custom-select" onchange="togglePaymentDetails()" required>
                                         <option value="cash">Cash on Arrival</option>
                                         <option value="bkash">bKash Mobile Banking</option>
@@ -272,6 +283,7 @@
                                 <p id="paymentInstructions"></p>
                             </div>
 
+                            <!-- Price Calculation Card -->
                             <div class="calc-summary-card mt-20">
                                 <h4 data-i18n="calcSummary">Real-time Calculation</h4>
                                 <div class="summary-line"><span data-i18n="invNights">Stay Duration:</span> <strong id="billNights">1 Night(s)</strong></div>
@@ -424,7 +436,7 @@
     </div>
 
     <!-- PRINT / INVOICE MODAL -->
-    <div id="detailsModal" class="modal" onclick="closeModalOnOutsideClick(event)">
+    <div id="detailsModal" class="modal" onclick="closeModalOnOutsideClick(event)" role="dialog" aria-modal="true">
         <div class="modal-content">
             <span class="close-modal-btn" onclick="closeModal()">&times;</span>
             <div id="modalContent"></div>
