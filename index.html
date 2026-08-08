@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- External Stylesheet -->
     <link rel="stylesheet" href="style.css">
 
@@ -64,7 +64,7 @@
                 <h3 id="authTitle" class="modal-title" style="color: var(--gold); font-family: var(--font-head); font-size: 1.5rem;" data-i18n="authTitle">GRAND PALACE APP</h3>
                 <small style="color: var(--text-muted);">Access Management Portal</small>
             </div>
-            
+
             <!-- Auth Portal Switcher Tabs -->
             <div class="auth-tabs-toggle mt-15 mb-15" style="display: flex; gap: 10px; justify-content: center;">
                 <button type="button" id="btnGuestAuth" class="btn-secondary-sm active" onclick="switchAuthForm('guest')">
@@ -84,12 +84,12 @@
                     <label for="guestAuthName" class="sr-only">Full Name</label>
                     <input type="text" id="guestAuthName" placeholder="Enter Your Full Name *" required autocomplete="name">
                 </div>
-                
+
                 <div class="form-group mt-10">
                     <label for="guestAuthEmail" class="sr-only">Email Address</label>
                     <input type="email" id="guestAuthEmail" placeholder="Enter Your Email Address *" required autocomplete="email">
                 </div>
-                
+
                 <div class="form-group mt-10">
                     <label for="guestAuthPhone" class="sr-only">Phone Number</label>
                     <input type="tel" id="guestAuthPhone" placeholder="Enter Your Phone Number *" required autocomplete="tel">
@@ -119,7 +119,7 @@
             <form id="staffLoginForm" onsubmit="handleStaffLogin(event)" class="mt-10" style="display: none;">
                 <h4 style="color: var(--text-main); text-align: center;" data-i18n="staffLoginHead">Staff Admin Login</h4>
                 <p style="text-align: center; color: #4299e1; font-size: 0.8rem;" class="mb-10"><i class="fa-solid fa-lock"></i> Requires Password Login</p>
-                
+
                 <div class="form-group mt-10">
                     <label for="loginEmail" class="sr-only">Staff Email</label>
                     <input type="email" id="loginEmail" placeholder="Enter Staff Email" value="admin@grandpalace.com" required autocomplete="username">
@@ -128,12 +128,12 @@
                     <label for="loginPasswordInput" class="sr-only">Staff Password</label>
                     <input type="password" id="loginPasswordInput" placeholder="Enter Admin Password" value="admin123" required autocomplete="current-password">
                 </div>
-                
+
                 <div class="text-center mt-5">
                     <small style="color: var(--text-muted); font-size: 0.75rem;">Default Admin: admin@grandpalace.com | admin123</small>
                 </div>
 
-                <button type="submit" class="btn-block-gold mt-15">
+                <button type="submit" id="staffLoginSubmitBtn" class="btn-block-gold mt-15">
                     <i class="fa-solid fa-right-to-bracket"></i> Login to Dashboard
                 </button>
             </form>
@@ -165,20 +165,20 @@
 
             <!-- SIDEBAR MENU ITEMS -->
             <ul class="nav-menu">
-                
+
                 <!-- SECTION 1: GUEST PORTAL (PUBLIC) -->
                 <li class="nav-section-label" style="color: #48bb78; font-size: 0.75rem; font-weight: bold; padding: 10px 15px 4px; text-transform: uppercase; letter-spacing: 1px;">
                     <i class="fa-solid fa-globe"></i> Guest Portal (Public)
                 </li>
-                
+
                 <li class="nav-item role-admin role-guest" onclick="switchTab('tabRooms')">
                     <i class="fa-solid fa-images"></i> <span data-i18n="navRooms">Browse Rooms & Photos</span>
                 </li>
-                
+
                 <li class="nav-item role-admin role-guest" onclick="switchTab('tabServices')">
                     <i class="fa-solid fa-utensils"></i> <span data-i18n="navServices">Food, Gym & Pool Menu</span>
                 </li>
-                
+
                 <li class="nav-item role-admin role-frontdesk role-guest" onclick="switchTab('tabBooking')">
                     <i class="fa-solid fa-calendar-days"></i> <span data-i18n="navBooking">Custom Booking Form</span>
                 </li>
@@ -191,19 +191,19 @@
                 <li class="nav-item active role-admin role-frontdesk role-admin-only" onclick="switchTab('tabDashboard')">
                     <i class="fa-solid fa-chart-line"></i> <span data-i18n="navDashboard">Live Executive Dashboard</span>
                 </li>
-                
+
                 <li class="nav-item role-admin role-frontdesk role-admin-only" onclick="switchTab('tabFrontDesk')">
                     <i class="fa-solid fa-desktop"></i> <span data-i18n="navFrontDesk">Front Desk</span>
                 </li>
-                
+
                 <li class="nav-item role-admin role-housekeeping role-admin-only" onclick="switchTab('tabHousekeeping')">
                     <i class="fa-solid fa-broom"></i> <span data-i18n="navHousekeeping">Housekeeping</span>
                 </li>
-                
+
                 <li class="nav-item role-admin role-finance role-admin-only" onclick="switchTab('tabFinance')">
                     <i class="fa-solid fa-chart-line"></i> <span data-i18n="navFinance">Financials</span>
                 </li>
-                
+
                 <li class="nav-item role-admin role-frontdesk role-admin-only" onclick="switchTab('tabGuests')">
                     <i class="fa-solid fa-users"></i> <span data-i18n="navGuests">Guest Directory</span>
                 </li>
@@ -325,7 +325,7 @@
                         <p data-i18n="servicesSub">Explore gourmet dining options, luxury spa services, gym access, and pool passes.</p>
                     </div>
                     <div class="services-grid" id="servicesGrid">
-                        
+
                         <!-- Dining Card with Vibrant Styling -->
                         <div class="service-card" style="overflow: hidden; padding-top: 0;">
                             <div class="service-image-box" style="margin: -20px -20px 15px -20px; height: 160px;">
@@ -555,5 +555,8 @@
             </main>
         </div>
     </div>
+
+    <!-- External Script -->
+    <script src="script.js"></script>
 </body>
 </html>
