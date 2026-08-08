@@ -145,7 +145,7 @@
                     <i class="fa-solid fa-globe"></i> Guest Portal (Public)
                 </li>
 
-                <li class="nav-item role-admin role-guest" onclick="switchTab('tabRooms')">
+                <li class="nav-item role-admin role-guest active" onclick="switchTab('tabRooms')">
                     <i class="fa-solid fa-images"></i>
                     <span>Browse Rooms & Photos</span>
                 </li>
@@ -164,7 +164,7 @@
                     <i class="fa-solid fa-shield-halved"></i> Staff Portal (Admin)
                 </li>
 
-                <li class="nav-item active role-admin role-frontdesk role-admin-only" onclick="switchTab('tabDashboard')">
+                <li class="nav-item role-admin role-frontdesk role-admin-only" onclick="switchTab('tabDashboard')">
                     <i class="fa-solid fa-chart-line"></i>
                     <span>Live Executive Dashboard</span>
                 </li>
@@ -227,8 +227,27 @@
 
             <main class="main-content">
 
-                <!-- TAB 1 - DASHBOARD -->
-                <section id="tabDashboard" class="tab-page active role-admin-only">
+                <!-- TAB 1 - BROWSE ROOMS (Main Active View) -->
+                <section id="tabRooms" class="tab-page active">
+                    <div class="page-header rooms-page-header">
+                        <div>
+                            <h2><i class="fa-solid fa-images"></i> Browse Rooms & Custom Photos</h2>
+                            <p>Explore room categories, pricing, amenities, and gallery.</p>
+                        </div>
+
+                        <!-- ADMIN ONLY: Add New Room Button -->
+                        <button type="button" id="addNewRoomBtn" class="btn-primary role-admin-only" onclick="promptAddNewRoom()">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Add New Room</span>
+                        </button>
+                    </div>
+
+                    <!-- Dynamic Rooms Cards Grid Container -->
+                    <div id="roomsCardsGrid" class="rooms-grid"></div>
+                </section>
+
+                <!-- TAB 2 - DASHBOARD -->
+                <section id="tabDashboard" class="tab-page role-admin-only">
                     <div class="page-header">
                         <h2><i class="fa-solid fa-chart-line"></i> Live Executive Dashboard</h2>
                         <p>Live status of resort reservations, revenue metrics, and operational performance.</p>
@@ -287,25 +306,6 @@
                             <tbody id="dashboardTableBody"></tbody>
                         </table>
                     </div>
-                </section>
-
-                <!-- TAB 2 - BROWSE ROOMS -->
-                <section id="tabRooms" class="tab-page">
-                    <div class="page-header rooms-page-header">
-                        <div>
-                            <h2><i class="fa-solid fa-images"></i> Browse Rooms & Custom Photos</h2>
-                            <p>Explore room categories, pricing, amenities, and gallery.</p>
-                        </div>
-
-                        <!-- ADMIN ONLY: Add New Room Button -->
-                        <button type="button" id="addNewRoomBtn" class="btn-primary role-admin-only" onclick="promptAddNewRoom()" style="display:none;">
-                            <i class="fa-solid fa-plus"></i>
-                            <span>Add New Room</span>
-                        </button>
-                    </div>
-
-                    <!-- Dynamic Rooms Cards Grid Container (JS rendered) -->
-                    <div id="roomsCardsGrid" class="rooms-grid"></div>
                 </section>
 
                 <!-- TAB 3 - SERVICES MENU -->
