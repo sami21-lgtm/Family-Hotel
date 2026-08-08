@@ -1,10 +1,4 @@
-// ==========================================
-// 1. GLOBAL STATE
-// ==========================================
-
-let currentRole = 'admin';
-// Roles: admin, frontdesk, housekeeping, finance, guest
-
+let currentRole = 'admin'; // Roles: admin, frontdesk, housekeeping, finance, guest
 let isStaffAuthenticated = false;
 
 let currentUser = {
@@ -14,9 +8,7 @@ let currentUser = {
     avatar: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
 };
 
-// ==========================================
-// 2. ROOMS INVENTORY
-// ==========================================
+
 
 let roomList = [
     {
@@ -85,9 +77,6 @@ let roomList = [
     }
 ];
 
-// ==========================================
-// 3. BOOKINGS
-// ==========================================
 
 let bookings = [
     {
@@ -120,9 +109,7 @@ let bookings = [
     }
 ];
 
-// ==========================================
-// 4. GUEST DIRECTORY
-// ==========================================
+
 
 let guests = [
     {
@@ -141,13 +128,10 @@ let guests = [
     }
 ];
 
-// ==========================================
-// 5. HELPERS
-// ==========================================
+
 
 function escapeHTML(str) {
     if (str === null || str === undefined) return '';
-
     return String(str)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -158,23 +142,17 @@ function escapeHTML(str) {
 
 function getNightsBetween(checkInStr, checkOutStr) {
     if (!checkInStr || !checkOutStr) return 1;
-
     const start = new Date(checkInStr);
     const end = new Date(checkOutStr);
 
-    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-        return 1;
-    }
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) return 1;
 
     const diffTime = end - start;
     const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-
     return diffDays > 0 ? diffDays : 1;
 }
 
-// ==========================================
-// 6. INITIALIZATION
-// ==========================================
+
 
 document.addEventListener('DOMContentLoaded', function () {
     initClock();
@@ -183,66 +161,37 @@ document.addEventListener('DOMContentLoaded', function () {
     renderAll();
     calculateTotal();
 
+    // Booking Form Event Listeners
     const resForm = document.getElementById('reservationForm');
-
     if (resForm) {
         resForm.addEventListener('change', calculateTotal);
         resForm.addEventListener('input', calculateTotal);
-
-        resForm.addEventListener('submit', function (event) {
-            handleBookingSubmit(event);
-        });
+        resForm.addEventListener('submit', handleBookingSubmit);
     }
 
-    // ------------------------------
-    // STAFF LOGIN
-    // ------------------------------
+    // Staff Login Listeners
     const staffForm = document.getElementById('staffLoginForm');
-
     if (staffForm) {
         staffForm.addEventListener('submit', handleStaffLogin);
     }
 
-    // Some HTML versions use a button instead of a form submit.
-    const staffLoginBtn = document.getElementById('staffLoginSubmitBtn');
-
-    if (staffLoginBtn && !staffForm) {
-        staffLoginBtn.addEventListener('click', handleStaffLogin);
-    }
-
-    const staffPassField = document.getElementById('loginPasswordInput');
-
-    if (staffPassField) {
-        staffPassField.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter' && !staffForm) {
-                event.preventDefault();
-                handleStaffLogin(event);
-            }
-        });
-    }
-
-    // ------------------------------
-    // GUEST LOGIN
-    // ------------------------------
+    // Guest Login Listeners
     const guestForm = document.getElementById('guestLoginForm');
-
     if (guestForm) {
         guestForm.addEventListener('submit', handleGuestLoginSubmit);
     }
 
+    // Set initial role state
     switchUserRole(currentRole);
 });
 
-// ==========================================
-// 7. CLOCK
-// ==========================================
+
 
 function initClock() {
     const clockEl = document.getElementById('currentDateDisplay');
 
     const update = function () {
         const now = new Date();
-
         if (clockEl) {
             clockEl.innerHTML =
                 '<i class="fa-regular fa-clock"></i> ' +
@@ -256,15 +205,11 @@ function initClock() {
     setInterval(update, 1000);
 }
 
-// ==========================================
-// 8. DEFAULT DATES
-// ==========================================
+
 
 function setupDefaultDates() {
     const today = new Date().toISOString().split('T')[0];
-    const tomorrow = new Date(Date.now() + 86400000)
-        .toISOString()
-        .split('T')[0];
+    const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
 
     const cIn = document.getElementById('checkIn');
     const cOut = document.getElementById('checkOut');
@@ -273,9 +218,7 @@ function setupDefaultDates() {
     if (cOut && !cOut.value) cOut.value = tomorrow;
 }
 
-// ==========================================
-// 9. RENDER ALL
-// ==========================================
+
 
 function renderAll() {
     renderDashboard();
@@ -286,14 +229,11 @@ function renderAll() {
     renderGuests();
 }
 
-// ==========================================
-// 10. AUTHENTICATION FORM SWITCH
-// ==========================================
+
 
 function switchAuthForm(type) {
     const guestForm = document.getElementById('guestLoginForm');
     const staffForm = document.getElementById('staffLoginForm');
-
     const btnGuest = document.getElementById('btnGuestAuth');
     const btnStaff = document.getElementById('btnStaffAuth');
 
@@ -312,9 +252,7 @@ function switchAuthForm(type) {
     }
 }
 
-// ==========================================
-// 11. STAFF / ADMIN LOGIN
-// ==========================================
+
 
 function handleStaffLogin(event) {
     if (event) event.preventDefault();
@@ -345,17 +283,17 @@ function handleStaffLogin(event) {
         return false;
     }
 
-    // Successful authentication
+    // Authenticated
     isStaffAuthenticated = true;
     currentRole = 'admin';
 
     document.body.classList.remove('logged-out');
 
+    // Hide Login Modal
     const loginModal = document.getElementById('loginModal');
-
     if (loginModal) {
         loginModal.classList.remove('active');
-        loginModal.style.display = '';
+        loginModal.style.display = 'none';
     }
 
     currentUser = {
@@ -365,37 +303,16 @@ function handleStaffLogin(event) {
         avatar: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
     };
 
+    updateUserProfilesUI();
     switchUserRole('admin');
 
-    const nameEl = document.getElementById('sidebarUserName');
-    const roleEl = document.getElementById('sidebarUserRole');
-    const avatarEl = document.getElementById('sidebarUserAvatar');
-
-    if (nameEl) {
-        nameEl.textContent = currentUser.name;
-    }
-
-    if (roleEl) {
-        roleEl.textContent = 'Role: ADMINISTRATOR';
-    }
-
-    if (avatarEl) {
-        avatarEl.src = currentUser.avatar;
-    }
-
-    // Clear password after successful login
-    if (passField) {
-        passField.value = '';
-    }
-
+    if (passField) passField.value = '';
     alert('Welcome Back, Admin!');
 
     return true;
 }
 
-// ==========================================
-// 12. GUEST LOGIN
-// ==========================================
+
 
 function handleGuestLoginSubmit(event) {
     if (event) event.preventDefault();
@@ -417,40 +334,41 @@ function handleGuestLoginSubmit(event) {
 
     document.body.classList.remove('logged-out');
 
+    // Hide Login Modal
     const loginModal = document.getElementById('loginModal');
-
     if (loginModal) {
         loginModal.classList.remove('active');
-        loginModal.style.display = '';
+        loginModal.style.display = 'none';
     }
 
+    updateUserProfilesUI();
     switchUserRole('guest');
-
-    const nameEl = document.getElementById('sidebarUserName');
-    const roleEl = document.getElementById('sidebarUserRole');
-    const avatarEl = document.getElementById('sidebarUserAvatar');
-
-    if (nameEl) nameEl.textContent = name;
-    if (roleEl) roleEl.textContent = 'Role: GUEST';
-    if (avatarEl) avatarEl.src = currentUser.avatar;
 
     alert('🎉 Welcome ' + name + ' to Grand Palace Resort & Spa!');
 
     return true;
 }
 
-// ==========================================
-// 13. ROLE MANAGEMENT
-// ==========================================
+// Helper to keep User Info consistent across Header & Sidebar
+function updateUserProfilesUI() {
+    const nameEl = document.getElementById('sidebarUserName');
+    const roleEl = document.getElementById('sidebarUserRole');
+    const sidebarAvatarEl = document.getElementById('sidebarAvatar');
+    const topbarAvatarEl = document.getElementById('topbarAvatar');
+
+    if (nameEl) nameEl.textContent = currentUser.name;
+    if (roleEl) roleEl.textContent = 'Role: ' + currentUser.role;
+    if (sidebarAvatarEl) sidebarAvatarEl.src = currentUser.avatar;
+    if (topbarAvatarEl) topbarAvatarEl.src = currentUser.avatar;
+}
+
+
 
 function switchUserRole(role) {
     currentRole = role;
 
     const selector = document.getElementById('roleSelector');
-
-    if (selector) {
-        selector.value = role;
-    }
+    if (selector) selector.value = role;
 
     document.body.classList.toggle('role-guest', role === 'guest');
 
@@ -470,11 +388,6 @@ function switchUserRole(role) {
         element.style.display = role === 'admin' ? '' : 'none';
     });
 
-    // Add New Room = ADMIN ONLY
-    document.querySelectorAll('#addNewRoomBtn, .add-new-room-btn').forEach(function (button) {
-        button.style.display = role === 'admin' ? '' : 'none';
-    });
-
     renderRooms();
 
     if (role === 'guest') {
@@ -484,9 +397,7 @@ function switchUserRole(role) {
     }
 }
 
-// ==========================================
-// 14. LOGOUT
-// ==========================================
+
 
 function logoutUser() {
     isStaffAuthenticated = false;
@@ -502,19 +413,17 @@ function logoutUser() {
 
     document.body.classList.add('logged-out');
 
+    // Show Login Modal
     const loginModal = document.getElementById('loginModal');
-
     if (loginModal) {
+        loginModal.style.display = 'flex';
         loginModal.classList.add('active');
-        loginModal.style.display = '';
     }
 
     switchAuthForm('guest');
 }
 
-// ==========================================
-// 15. NAVIGATION
-// ==========================================
+
 
 function switchTab(tabId) {
     document.querySelectorAll('.tab-page').forEach(function (page) {
@@ -526,16 +435,10 @@ function switchTab(tabId) {
     });
 
     const targetPage = document.getElementById(tabId);
-
-    if (targetPage) {
-        targetPage.classList.add('active');
-    }
+    if (targetPage) targetPage.classList.add('active');
 
     const activeNav = document.querySelector('.nav-item[onclick*="' + tabId + '"]');
-
-    if (activeNav) {
-        activeNav.classList.add('active');
-    }
+    if (activeNav) activeNav.classList.add('active');
 
     toggleSidebar(false);
 }
@@ -550,26 +453,17 @@ function toggleSidebar(forceState) {
 
     if (isOpen) {
         sidebar.classList.add('open');
-
-        if (overlay) {
-            overlay.classList.add('active');
-        }
+        if (overlay) overlay.classList.add('active');
     } else {
         sidebar.classList.remove('open');
-
-        if (overlay) {
-            overlay.classList.remove('active');
-        }
+        if (overlay) overlay.classList.remove('active');
     }
 }
 
-// ==========================================
-// 16. BOOKING CALCULATOR
-// ==========================================
+
 
 function populateRoomDropdown() {
     const select = document.getElementById('roomTypeSelect');
-
     if (!select) return;
 
     const currentValue = select.value;
@@ -620,7 +514,7 @@ function calculateTotal() {
 }
 
 // ==========================================
-// 17. PAYMENT
+// 17. PAYMENT DETAILS TOGGLE
 // ==========================================
 
 function togglePaymentDetails() {
@@ -683,7 +577,6 @@ function handleBookingSubmit(event) {
         return false;
     }
 
-    // Guests can book available rooms only.
     if (currentRole === 'guest' && room.status !== 'available') {
         alert('⚠️ Sorry! This room is currently not available.');
         return false;
@@ -718,7 +611,7 @@ function handleBookingSubmit(event) {
         });
     }
 
-    // Booking makes the room occupied.
+    // Mark room occupied
     room.status = 'occupied';
 
     populateRoomDropdown();
@@ -783,44 +676,13 @@ function bookRoomFromBrowse(roomId) {
         if (guestPhoneField && currentUser.phone) guestPhoneField.value = currentUser.phone;
     }
 
-    const reservationForm = document.getElementById('reservationForm');
-    let bookingTabFound = false;
-
-    if (reservationForm) {
-        const parentTab = reservationForm.closest('.tab-page');
-
-        if (parentTab && parentTab.id) {
-            switchTab(parentTab.id);
-            bookingTabFound = true;
-        }
-    }
-
-    if (!bookingTabFound) {
-        const possibleTabs = [
-            'tabReservation',
-            'tabBooking',
-            'tabNewBooking',
-            'tabReservationForm',
-            'tabFrontDesk'
-        ];
-
-        const availableTab = possibleTabs.find(function (id) {
-            return document.getElementById(id);
-        });
-
-        if (availableTab) {
-            switchTab(availableTab);
-        }
-    }
-
+    switchTab('tabBooking');
     calculateTotal();
 
     setTimeout(function () {
+        const reservationForm = document.getElementById('reservationForm');
         if (reservationForm) {
-            reservationForm.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
+            reservationForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }, 150);
 }
@@ -831,10 +693,7 @@ function bookRoomFromBrowse(roomId) {
 
 function resetForm() {
     const form = document.getElementById('reservationForm');
-
-    if (form) {
-        form.reset();
-    }
+    if (form) form.reset();
 
     setupDefaultDates();
     populateRoomDropdown();
@@ -887,76 +746,71 @@ function renderDashboard() {
 }
 
 // ==========================================
-// 22. BROWSE ROOMS
+// 22. BROWSE ROOMS CARD RENDER
 // ==========================================
 
 function renderRooms() {
     const container = document.getElementById('roomsCardsGrid');
-
     if (!container) return;
 
     const isAdmin = currentRole === 'admin';
     const isGuest = currentRole === 'guest';
 
-    container.innerHTML = `
-        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; width:100%;" class="mt-15">
-            ${roomList.map(function (room) {
-                let statusClass = 'badge-danger';
+    container.innerHTML = roomList.map(function (room) {
+        let statusClass = 'badge-danger';
 
-                if (room.status === 'available') {
-                    statusClass = 'badge-success';
-                } else if (room.status === 'dirty' || room.status === 'maintenance') {
-                    statusClass = 'badge-gold';
-                }
+        if (room.status === 'available') {
+            statusClass = 'badge-success';
+        } else if (room.status === 'dirty' || room.status === 'maintenance') {
+            statusClass = 'badge-gold';
+        }
 
-                const adminControls = isAdmin ? `
-                    <div class="admin-room-controls" style="display:flex; gap:5px; align-items:center; flex-wrap:wrap;">
-                        <button type="button" class="btn-secondary-sm" onclick="editRoomPrice('${escapeHTML(room.id)}')">
-                            <i class="fa-solid fa-pen"></i> Price
-                        </button>
-                        <button type="button" class="btn-secondary-sm" onclick="toggleRoomStatus('${escapeHTML(room.id)}')">
-                            <i class="fa-solid fa-rotate"></i> Status
-                        </button>
+        const adminControls = isAdmin ? `
+            <div class="admin-room-controls" style="display:flex; gap:5px; align-items:center; flex-wrap:wrap; margin-top:8px;">
+                <button type="button" class="btn-secondary-sm" onclick="editRoomPrice('${escapeHTML(room.id)}')">
+                    <i class="fa-solid fa-pen"></i> Price
+                </button>
+                <button type="button" class="btn-secondary-sm" onclick="toggleRoomStatus('${escapeHTML(room.id)}')">
+                    <i class="fa-solid fa-rotate"></i> Status
+                </button>
+            </div>
+        ` : '';
+
+        const guestBookingButton = isGuest ? `
+            <button type="button" class="btn-primary" style="width:100%; margin-top:10px; padding:10px 14px; border-radius:8px; border:none; cursor:pointer; font-weight:600; opacity:${room.status === 'available' ? '1' : '0.6'};" onclick="bookRoomFromBrowse('${escapeHTML(room.id)}')" ${room.status !== 'available' ? 'disabled' : ''}>
+                <i class="fa-solid fa-calendar-check"></i>
+                ${room.status === 'available' ? 'Book This Room' : 'Not Available'}
+            </button>
+        ` : '';
+
+        return `
+            <div class="room-card glass-card" style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; overflow:hidden;">
+                <div class="room-card-img-wrapper">
+                    <img src="${escapeHTML(room.img)}" class="vibrant-img" style="width:100%;height:180px;object-fit:cover;" alt="Room ${escapeHTML(room.id)}">
+                </div>
+
+                <div style="padding:15px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; gap:8px;">
+                        <h4 style="color:var(--gold);margin:0;">Room ${escapeHTML(room.id)}</h4>
+                        <span class="badge ${statusClass}">${escapeHTML(room.status.toUpperCase())}</span>
                     </div>
-                ` : '';
 
-                const guestBookingButton = isGuest ? `
-                    <button type="button" class="btn-primary" style="width:100%; margin-top:10px; padding:10px 14px; border-radius:8px; border:none; cursor:pointer; font-weight:600; opacity:${room.status === 'available' ? '1' : '0.6'};" onclick="bookRoomFromBrowse('${escapeHTML(room.id)}')" ${room.status !== 'available' ? 'disabled' : ''}>
-                        <i class="fa-solid fa-calendar-check"></i>
-                        ${room.status === 'available' ? 'Book This Room' : 'Not Available'}
-                    </button>
-                ` : '';
+                    <h5 style="margin:0 0 8px 0;">${escapeHTML(room.title)}</h5>
+                    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:12px; min-height:38px;">${escapeHTML(room.desc)}</p>
 
-                return `
-                    <div class="room-card" style="background:var(--bg-card); border:1px solid var(--border-color); border-radius:12px; overflow:hidden;">
-                        <div class="room-card-img-wrapper">
-                            <img src="${escapeHTML(room.img)}" class="vibrant-img" style="width:100%;height:180px;object-fit:cover;" alt="Room ${escapeHTML(room.id)}">
-                        </div>
-
-                        <div style="padding:15px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; gap:8px;">
-                                <h4 style="color:var(--gold);margin:0;">Room ${escapeHTML(room.id)}</h4>
-                                <span class="badge ${statusClass}">${escapeHTML(room.status.toUpperCase())}</span>
-                            </div>
-
-                            <h5 style="margin:0 0 8px 0;">${escapeHTML(room.title)}</h5>
-                            <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:12px; min-height:38px;">${escapeHTML(room.desc)}</p>
-
-                            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:10px; gap:10px; flex-wrap:wrap;">
-                                <strong style="font-size:1.1rem; color:var(--gold);">
-                                    ৳${room.price.toLocaleString()}
-                                    <small style="font-size:0.75rem;">/night</small>
-                                </strong>
-                                ${adminControls}
-                            </div>
-
-                            ${guestBookingButton}
-                        </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:10px; gap:10px; flex-wrap:wrap;">
+                        <strong style="font-size:1.1rem; color:var(--gold);">
+                            ৳${room.price.toLocaleString()}
+                            <small style="font-size:0.75rem;">/night</small>
+                        </strong>
+                        ${adminControls}
                     </div>
-                `;
-            }).join('')}
-        </div>
-    `;
+
+                    ${guestBookingButton}
+                </div>
+            </div>
+        `;
+    }).join('');
 }
 
 // ==========================================
@@ -965,32 +819,27 @@ function renderRooms() {
 
 function renderFrontDesk() {
     const container = document.getElementById('frontDeskRoomGrid');
-
     if (!container) return;
 
-    container.innerHTML = `
-        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:15px;" class="mt-15">
-            ${roomList.map(function (room) {
-                let borderColor = '#ed8936';
+    container.innerHTML = roomList.map(function (room) {
+        let borderColor = '#ed8936';
 
-                if (room.status === 'available') {
-                    borderColor = '#48bb78';
-                } else if (room.status === 'occupied') {
-                    borderColor = '#f56565';
-                }
+        if (room.status === 'available') {
+            borderColor = '#48bb78';
+        } else if (room.status === 'occupied') {
+            borderColor = '#f56565';
+        }
 
-                return `
-                    <div style="padding:15px; border-radius:10px; background:var(--bg-card); border-left:5px solid ${borderColor}; border-top:1px solid var(--border-color); border-right:1px solid var(--border-color); border-bottom:1px solid var(--border-color);">
-                        <h3 style="margin:0;color:var(--gold);">Room ${escapeHTML(room.id)}</h3>
-                        <p style="font-size:0.8rem; color:var(--text-muted); margin:4px 0;">${escapeHTML(room.title)}</p>
-                        <span class="badge ${room.status === 'available' ? 'badge-success' : 'badge-danger'}">
-                            ${escapeHTML(room.status.toUpperCase())}
-                        </span>
-                    </div>
-                `;
-            }).join('')}
-        </div>
-    `;
+        return `
+            <div style="padding:15px; border-radius:10px; background:var(--bg-card); border-left:5px solid ${borderColor}; border-top:1px solid var(--border-color); border-right:1px solid var(--border-color); border-bottom:1px solid var(--border-color);">
+                <h3 style="margin:0;color:var(--gold);">Room ${escapeHTML(room.id)}</h3>
+                <p style="font-size:0.8rem; color:var(--text-muted); margin:4px 0;">${escapeHTML(room.title)}</p>
+                <span class="badge ${room.status === 'available' ? 'badge-success' : 'badge-danger'}">
+                    ${escapeHTML(room.status.toUpperCase())}
+                </span>
+            </div>
+        `;
+    }).join('');
 }
 
 // ==========================================
@@ -1075,7 +924,6 @@ function renderFinance() {
 
 function renderGuests() {
     const tbody = document.getElementById('guestsTableBody');
-
     if (!tbody) return;
 
     tbody.innerHTML = guests.map(function (guest) {
@@ -1168,16 +1016,14 @@ function editRoomPrice(roomId) {
 
     if (!isNaN(newPrice) && newPrice >= 0) {
         room.price = newPrice;
-
         populateRoomDropdown();
         renderAll();
-
         alert('✅ Room ' + room.id + ' price updated to ৳' + newPrice.toLocaleString());
     }
 }
 
 // ==========================================
-// 29. ROOM STATUS
+// 29. ROOM STATUS TOGGLE
 // ==========================================
 
 function toggleRoomStatus(roomId) {
@@ -1188,58 +1034,45 @@ function toggleRoomStatus(roomId) {
     const currentIndex = statuses.indexOf(room.status);
 
     room.status = statuses[(currentIndex + 1) % statuses.length];
-
     renderAll();
 }
 
 // ==========================================
-// 30. IMAGE PREVIEW
+// 30. IMAGE PREVIEW HANDLERS
 // ==========================================
 
 function updateGuestImageFromUrl() {
     const url = document.getElementById('imgUrlInput')?.value;
     const img = document.getElementById('previewImg');
-
-    if (url && img) {
-        img.src = url;
-    }
+    if (url && img) img.src = url;
 }
 
 function previewUploadImage(event) {
     const file = event?.target?.files?.[0];
     const img = document.getElementById('previewImg');
-
     if (!file || !img) return;
 
     const reader = new FileReader();
-
     reader.onload = function (e) {
         img.src = e.target.result;
     };
-
     reader.readAsDataURL(file);
 }
 
 function updateGuestAuthImageFromUrl() {
     const url = document.getElementById('guestAuthPhotoUrl')?.value;
     const img = document.getElementById('guestAuthPreviewImg');
-
-    if (url && img) {
-        img.src = url;
-    }
+    if (url && img) img.src = url;
 }
 
 function previewGuestAuthImage(event) {
     const file = event?.target?.files?.[0];
     const img = document.getElementById('guestAuthPreviewImg');
-
     if (!file || !img) return;
 
     const reader = new FileReader();
-
     reader.onload = function (e) {
         img.src = e.target.result;
     };
-
     reader.readAsDataURL(file);
 }
