@@ -49,6 +49,10 @@ body {
 .app-container {
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-wrap: nowrap; /* Prevent content drop */
+    width: 100%;
+    min-height: 100vh;
 }
 
 .text-center {
@@ -162,6 +166,15 @@ body {
     border-color: var(--gold);
 }
 
+.form-group input::placeholder {
+    color: rgba(240, 237, 230, 0.4);
+}
+
+.form-group select option {
+    background: #1a1d24;
+    color: var(--text-main);
+}
+
 .form-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -231,7 +244,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .btn-secondary-sm:hover {
@@ -244,12 +257,20 @@ body {
     flex-wrap: wrap;
 }
 
-/* ============ APP LAYOUT ============ */
-
-.app-container {
-    display: flex;
-    min-height: 100vh;
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
 }
+
+button,
+.nav-item,
+.room-card,
+input,
+select {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ============ SIDEBAR & OVERLAY ============ */
 
 #sidebarOverlay {
     display: none;
@@ -263,10 +284,9 @@ body {
     display: block;
 }
 
-/* ============ SIDEBAR ============ */
-
 #sidebar {
     width: 270px;
+    flex-shrink: 0; /* Prevents sidebar from squishing or pushing layout */
     background: rgba(20, 23, 29, 0.94);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -378,7 +398,9 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-width: 0;
+    min-width: 0; /* Important for preventing grid overflow */
+    width: calc(100% - 270px);
+    max-width: calc(100% - 270px);
 }
 
 .topbar {
@@ -568,6 +590,7 @@ tbody tr:hover {
     border-radius: 20px;
     font-size: 0.72rem;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .badge-success {
@@ -684,50 +707,8 @@ tbody tr:hover {
     color: var(--gold);
 }
 
-/* ============ ROLE VISIBILITY ============ */
+/* ============ ROOM CARDS ============ */
 
-body.role-guest .role-admin-only,
-body.role-guest .admin-edit-btn,
-body.role-guest .admin-status-select {
-    display: none !important;
-}
-
-/* ============ RESPONSIVE ============ */
-
-@media (max-width: 900px) {
-
-    #sidebar {
-        position: fixed;
-        left: -270px;
-        z-index: 100;
-        transition: left 0.3s ease;
-    }
-
-    #sidebar.open {
-        left: 0;
-    }
-
-    .mobile-nav-toggle {
-        display: block;
-    }
-}
-
-@media (max-width: 600px) {
-
-    .main-content {
-        padding: 15px;
-    }
-
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-}
-/* ==========================================
-   GRAND PALACE - ROOM ROLE CONTROLS
-   ADMIN / GUEST UI
-========================================== */
-
-/* Room card layout */
 #roomsCardsGrid {
     width: 100%;
 }
@@ -736,13 +717,9 @@ body.role-guest .admin-status-select {
     width: 100%;
 }
 
-/* Individual room card */
 .room-card {
     position: relative;
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        border-color 0.25s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .room-card:hover {
@@ -751,7 +728,6 @@ body.role-guest .admin-status-select {
     border-color: rgba(197, 168, 128, 0.35) !important;
 }
 
-/* Room image */
 .room-card-img-wrapper {
     width: 100%;
     height: 180px;
@@ -771,7 +747,6 @@ body.role-guest .admin-status-select {
     transform: scale(1.04);
 }
 
-/* Room information */
 .room-card h4,
 .room-card h5 {
     font-family: var(--font-head);
@@ -782,15 +757,6 @@ body.role-guest .admin-status-select {
     font-size: 1rem;
 }
 
-/* Room status */
-.room-card .badge {
-    white-space: nowrap;
-}
-
-/* ==========================================
-   ADMIN ROOM CONTROLS
-========================================== */
-
 .room-card .btn-secondary-sm {
     white-space: nowrap;
 }
@@ -799,10 +765,6 @@ body.role-guest .admin-status-select {
     border-color: var(--gold);
     color: var(--gold);
 }
-
-/* ==========================================
-   GUEST BOOKING BUTTON
-========================================== */
 
 .room-card .btn-primary {
     width: 100%;
@@ -817,24 +779,9 @@ body.role-guest .admin-status-select {
     box-shadow: none;
 }
 
-/* Guest role:
-   Admin room controls stay completely hidden */
-body.role-guest .room-admin-controls,
-body.role-guest .admin-room-controls,
-body.role-guest .admin-edit-btn,
-body.role-guest .admin-status-select {
-    display: none !important;
-}
-
-/* ==========================================
-   ADD NEW ROOM BUTTON
-========================================== */
-
 #addNewRoomBtn,
 .add-new-room-btn {
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 #addNewRoomBtn:hover,
@@ -843,47 +790,74 @@ body.role-guest .admin-status-select {
     box-shadow: 0 6px 18px rgba(197, 168, 128, 0.3);
 }
 
-/* Guest should never see Add New Room */
+/* ============ ROLE VISIBILITY ============ */
+
+body.role-guest .role-admin-only,
+body.role-guest .admin-edit-btn,
+body.role-guest .admin-status-select,
+body.role-guest .room-admin-controls,
+body.role-guest .admin-room-controls,
 body.role-guest #addNewRoomBtn,
 body.role-guest .add-new-room-btn {
     display: none !important;
 }
 
-
-
 body.role-guest #reservationForm {
     max-width: 900px;
 }
 
-/* ==========================================
-   ROOM GRID RESPONSIVE
-========================================== */
+/* ============ RESPONSIVE DESIGN ============ */
 
 @media (max-width: 1100px) {
-
     #roomsCardsGrid > div {
-        grid-template-columns:
-            repeat(2, minmax(250px, 1fr)) !important;
+        grid-template-columns: repeat(2, minmax(250px, 1fr)) !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .main-wrapper {
+        width: 100%;
+        max-width: 100%;
     }
 
+    #sidebar {
+        position: fixed;
+        left: -270px;
+        z-index: 100;
+        transition: left 0.3s ease;
+    }
+
+    #sidebar.open {
+        left: 0;
+    }
+
+    .mobile-nav-toggle {
+        display: block;
+    }
 }
 
 @media (max-width: 700px) {
-
     #roomsCardsGrid > div {
-        grid-template-columns:
-            1fr !important;
+        grid-template-columns: 1fr !important;
     }
 
     .room-card-img-wrapper,
     .room-card-img-wrapper img {
         height: 200px;
     }
+}
 
+@media (max-width: 600px) {
+    .main-content {
+        padding: 15px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 480px) {
-
     .room-card-img-wrapper,
     .room-card-img-wrapper img {
         height: 180px;
@@ -897,32 +871,4 @@ body.role-guest #reservationForm {
         padding: 7px 10px;
         font-size: 0.75rem;
     }
-
-}
-
-
-.form-group input::placeholder {
-    color: rgba(240, 237, 230, 0.4);
-}
-
-.form-group select option {
-    background: #1a1d24;
-    color: var(--text-main);
-}
-
-
-
-button:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
-}
-
-
-
-button,
-.nav-item,
-.room-card,
-input,
-select {
-    -webkit-tap-highlight-color: transparent;
 }
