@@ -15,25 +15,27 @@
     <!-- MANDATORY AUTHENTICATION & LOGIN MODAL (No Close Button) -->
     <div id="loginModal" class="modal active">
         <div class="modal-content auth-card">
-            <h3 class="modal-title">System Authentication</h3>
+            <h3 class="modal-title" style="color: var(--gold); text-align: center; font-family: var(--font-head); font-size: 1.5rem;">System Authentication</h3>
             
             <!-- Staff Admin Login Form -->
             <form onsubmit="handleLoginSubmit(event)" class="mt-15">
-                <h4>Staff Admin Login</h4>
+                <h4 style="color: var(--text-main);">Staff Admin Login</h4>
                 <div class="form-group mt-10">
                     <input type="email" id="loginEmail" placeholder="Enter Staff Email" required>
                 </div>
                 <div class="form-group mt-10">
                     <input type="password" id="loginPassword" placeholder="Enter Staff Password" required>
                 </div>
-                <button type="submit" class="btn-block-gold mt-15">Login as Admin</button>
+                <button type="submit" class="btn-block-gold mt-15">
+                    <i class="fa-solid fa-lock"></i> Login as Admin
+                </button>
             </form>
 
             <div class="divider"></div>
 
             <!-- Guest Quick Access Form -->
             <div class="guest-register-box">
-                <h4>Guest Quick Access</h4>
+                <h4 style="color: var(--text-main);">Guest Quick Access</h4>
                 <div class="form-grid mt-10">
                     <input type="text" id="fName" placeholder="First Name">
                     <input type="text" id="lName" placeholder="Last Name">
@@ -46,7 +48,9 @@
                     <input type="file" accept="image/*" onchange="previewUploadImage(event)">
                 </div>
 
-                <button type="button" onclick="handleGuestLogin()" class="btn-secondary-sm btn-block-gold mt-15">Continue as Guest</button>
+                <button type="button" onclick="handleGuestLogin()" class="btn-secondary-sm btn-block-gold mt-15">
+                    <i class="fa-solid fa-user-check"></i> Continue as Guest
+                </button>
             </div>
         </div>
     </div>
@@ -104,7 +108,7 @@
             <!-- Role Switcher & Logout Quick Actions -->
             <div class="role-switch-box">
                 <small data-i18n="activeRole">Active System Role:</small>
-                <select onchange="switchUserRole(this.value)" class="custom-select mt-5">
+                <select id="roleSelector" onchange="switchUserRole(this.value)" class="custom-select mt-5">
                     <option value="admin">Administrator</option>
                     <option value="frontdesk">Front Desk</option>
                     <option value="housekeeping">Housekeeping</option>
@@ -122,7 +126,7 @@
             <!-- Topbar Header -->
             <header class="topbar">
                 <div class="topbar-left">
-                    <button class="mobile-nav-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+                    <button class="mobile-nav-toggle" onclick="toggleSidebar(true)"><i class="fa-solid fa-bars"></i></button>
                     <div id="currentDateDisplay" class="date-clock-badge">--:-- --</div>
                 </div>
 
@@ -211,18 +215,39 @@
 
                     <div class="form-container">
                         <form id="reservationForm" onsubmit="handleBookingSubmit(event)">
+                            
+                            <!-- Guest Details (Added for Staff/Guest Dynamic Input) -->
+                            <h4 style="color: var(--gold);" class="mb-10">Guest Information</h4>
+                            <div class="form-grid mb-15">
+                                <div class="form-group">
+                                    <label>Guest Full Name *</label>
+                                    <input type="text" id="bookingGuestName" placeholder="e.g. Tanvir Ahmed" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Guest Email *</label>
+                                    <input type="email" id="bookingGuestEmail" placeholder="tanvir@example.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone Number *</label>
+                                    <input type="text" id="bookingGuestPhone" placeholder="+8801700000000" required>
+                                </div>
+                            </div>
+
+                            <div class="divider"></div>
+
+                            <h4 style="color: var(--gold);" class="mb-10">Stay & Room Details</h4>
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label data-i18n="lblCheckIn">Check-In *</label>
-                                    <input type="date" id="checkIn" required>
+                                    <input type="date" id="checkIn" onchange="calculateTotal()" required>
                                 </div>
                                 <div class="form-group">
                                     <label data-i18n="lblCheckOut">Check-Out *</label>
-                                    <input type="date" id="checkOut" required>
+                                    <input type="date" id="checkOut" onchange="calculateTotal()" required>
                                 </div>
                                 <div class="form-group">
                                     <label data-i18n="lblRoomType">Select Room *</label>
-                                    <select id="roomTypeSelect" class="custom-select" required></select>
+                                    <select id="roomTypeSelect" class="custom-select" onchange="calculateTotal()" required></select>
                                 </div>
                             </div>
 
@@ -231,14 +256,14 @@
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label data-i18n="cuisineOpt">Cuisine & Services</label>
-                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" data-price="500"> Bengali Traditional Feast (+৳500)</label>
-                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" data-price="750"> Authentic Thai Gourmet (+৳750)</label>
-                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" data-price="1200"> Continental Buffet (+৳1200)</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" data-price="500" onchange="calculateTotal()"> Bengali Traditional Feast (+৳500)</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" data-price="750" onchange="calculateTotal()"> Authentic Thai Gourmet (+৳750)</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" data-price="1200" onchange="calculateTotal()"> Continental Buffet (+৳1200)</label>
                                 </div>
                                 <div class="form-group">
                                     <label data-i18n="amenitiesOpt">Pool & Gym Access</label>
-                                    <label class="checkbox-label"><input type="checkbox" name="amenities" data-price="500"> Swimming Pool Pass (+৳500)</label>
-                                    <label class="checkbox-label"><input type="checkbox" name="amenities" data-price="400"> VIP Gym Pass (+৳400)</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="amenities" data-price="500" onchange="calculateTotal()"> Swimming Pool Pass (+৳500)</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="amenities" data-price="400" onchange="calculateTotal()"> VIP Gym Pass (+৳400)</label>
                                 </div>
                                 <div class="form-group">
                                     <label data-i18n="lblGateway">Select Gateway *</label>
@@ -340,12 +365,14 @@
                                 <h3>Grand Revenue</h3>
                                 <div id="finTotalRev" class="stat-value">৳0</div>
                             </div>
+                            <div class="stat-icon"><i class="fa-solid fa-wallet"></i></div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-info">
                                 <h3>Total Invoices Issued</h3>
                                 <div id="finTotalInvoices" class="stat-value">0</div>
                             </div>
+                            <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
                         </div>
                     </div>
 
