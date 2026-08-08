@@ -1,368 +1,411 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Grand Palace Resort & Spa Management System">
-    <meta name="theme-color" content="#d4af37">
-    <title>Grand Palace | Luxury Resort & Spa System</title>
-    
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Grand Palace Resort & Spa - Management Dashboard</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="app-locked">
+<body>
 
-    <!-- MAIN APP CONTAINER (Strictly Blurred & Disabled until Authentication) -->
-    <div id="appContainer" class="app-container content-hidden">
-        
-        <!-- Mobile Top Bar -->
-        <header class="mobile-top-bar">
-            <div class="mobile-brand">
-                <i class="fa-solid fa-crown"></i>
-                <span>GRAND PALACE</span>
-            </div>
-            <div class="mobile-actions">
-                <button class="lang-btn-sm" onclick="toggleLanguage()" id="mobileLangToggle">🇧🇩 BN</button>
-                <button class="menu-toggle" id="menuToggleBtn" onclick="toggleSidebar()" aria-label="Toggle Navigation">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-            </div>
-        </header>
+    <div class="app-container">
+        <!-- Sidebar Mobile Overlay -->
+        <div id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
 
         <!-- Sidebar Navigation -->
-        <aside class="sidebar" id="sidebar">
-            <div class="brand-desktop">
-                <i class="fa-solid fa-hotel brand-icon"></i>
-                <div>
-                    <h2>GRAND PALACE</h2>
-                    <span>RESORT & SPA</span>
-                </div>
+        <aside id="sidebar">
+            <div class="brand-header">
+                <i class="fa-solid fa-crown brand-icon"></i>
+                <h1 data-i18n="brand">GRAND PALACE</h1>
+                <p data-i18n="subbrand">RESORT & SPA</p>
             </div>
 
-            <!-- Dynamic Role Selector -->
-            <div class="role-selector-box">
-                <label for="systemRoleSelect">Active System Role:</label>
-                <select id="systemRoleSelect" onchange="switchUserRole(this.value)" class="role-dropdown">
-                    <option value="admin">👑 Admin (Full Access)</option>
-                    <option value="frontdesk">🛎️ Front Desk Staff</option>
-                    <option value="housekeeping">🧹 Housekeeping Staff</option>
-                    <option value="finance">📊 Finance & Accounts</option>
-                    <option value="guest">👤 Guest Mode</option>
-                </select>
-            </div>
-
-            <nav class="nav-menu" id="navMenu">
-                <a href="#" class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
-                    <i class="fa-solid fa-chart-line"></i> <span>Dashboard</span>
-                </a>
-                <a href="#" class="nav-item role-frontdesk role-admin role-guest" data-tab="rooms" onclick="switchTab('rooms')">
-                    <i class="fa-solid fa-bed"></i> <span>Rooms & Inventory</span>
-                </a>
-                <a href="#" class="nav-item role-frontdesk role-admin role-guest" data-tab="booking" onclick="switchTab('booking')">
-                    <i class="fa-solid fa-calendar-plus"></i> <span>New Booking</span>
-                </a>
-                <a href="#" class="nav-item role-frontdesk role-admin" data-tab="frontdesk" onclick="switchTab('frontdesk')">
-                    <i class="fa-solid fa-concierge-bell"></i> <span>Front Desk Status</span>
-                </a>
-                <a href="#" class="nav-item role-housekeeping role-admin" data-tab="housekeeping" onclick="switchTab('housekeeping')">
-                    <i class="fa-solid fa-broom"></i> <span>Housekeeping</span>
-                </a>
-                <a href="#" class="nav-item role-finance role-admin" data-tab="finance" onclick="switchTab('finance')">
-                    <i class="fa-solid fa-file-invoice-dollar"></i> <span>Finance & Reports</span>
-                </a>
-                <a href="#" class="nav-item role-frontdesk role-admin role-finance" data-tab="guests" onclick="switchTab('guests')">
-                    <i class="fa-solid fa-users"></i> <span>Guest Directory</span>
-                </a>
-                <a href="#" class="nav-item role-guest role-admin role-frontdesk" data-tab="services" onclick="switchTab('services')">
-                    <i class="fa-solid fa-utensils"></i> <span>Food & Facilities</span>
-                </a>
-            </nav>
-
-            <div class="sidebar-contact-card">
-                <span class="contact-title">Direct Support</span>
-                <a href="tel:+8801723434535" class="modern-contact-btn">
-                    <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
-                    <div class="contact-details">
-                        <small>Call Us 24/7</small>
-                        <span>+880 1723-434535</span>
-                    </div>
-                </a>
-            </div>
-
-            <div class="sidebar-footer">
+            <!-- User Profile Summary -->
+            <div class="user-profile-card">
+                <img id="sidebarAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" alt="Avatar" class="avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=Admin'">
                 <div class="user-info">
-                    <img src="https://ui-avatars.com/api/?name=User&background=d4af37&color=fff" alt="Avatar" class="admin-avatar" id="sidebarAvatar">
-                    <div>
-                        <strong class="admin-name" id="sidebarUserName">Guest User</strong>
-                        <small class="admin-role" id="sidebarUserRole">Guest Mode</small>
-                    </div>
+                    <h4 id="sidebarUserName">MD. EMTIAZ HOSSAIN SAMI</h4>
+                    <span id="sidebarUserRole">Role: ADMINISTRATOR</span>
                 </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <ul class="nav-menu">
+                <li class="nav-item active role-admin role-frontdesk" data-tab="dashboard" onclick="switchTab('dashboard')">
+                    <i class="fa-solid fa-chart-line"></i> <span data-i18n="navDashboard">Dashboard</span>
+                </li>
+                <li class="nav-item role-admin" data-tab="rooms" onclick="switchTab('rooms')">
+                    <i class="fa-solid fa-bed"></i> <span data-i18n="navRooms">Rooms & Inventory</span>
+                </li>
+                <li class="nav-item role-admin role-frontdesk role-guest" data-tab="booking" onclick="switchTab('booking')">
+                    <i class="fa-solid fa-calendar-plus"></i> <span data-i18n="navBooking">New Booking</span>
+                </li>
+                <li class="nav-item role-admin role-frontdesk" data-tab="frontdesk" onclick="switchTab('frontdesk')">
+                    <i class="fa-solid fa-concierge-bell"></i> <span data-i18n="navFrontDesk">Front Desk Status</span>
+                </li>
+                <li class="nav-item role-admin role-housekeeping" data-tab="housekeeping" onclick="switchTab('housekeeping')">
+                    <i class="fa-solid fa-broom"></i> <span data-i18n="navHousekeeping">Housekeeping</span>
+                </li>
+                <li class="nav-item role-admin role-finance" data-tab="finance" onclick="switchTab('finance')">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> <span data-i18n="navFinance">Finance & Reports</span>
+                </li>
+                <li class="nav-item role-admin role-frontdesk" data-tab="guests" onclick="switchTab('guests')">
+                    <i class="fa-solid fa-users"></i> <span data-i18n="navGuests">Guest Directory</span>
+                </li>
+                <li class="nav-item role-admin" data-tab="services" onclick="switchTab('services')">
+                    <i class="fa-solid fa-utensils"></i> <span data-i18n="navServices">Food & Facilities</span>
+                </li>
+            </ul>
+
+            <!-- Role Switcher Quick Actions -->
+            <div class="role-switch-box">
+                <small data-i18n="activeRole">Active System Role:</small>
+                <select onchange="switchUserRole(this.value)" class="custom-select mt-5">
+                    <option value="admin">Administrator</option>
+                    <option value="frontdesk">Front Desk</option>
+                    <option value="housekeeping">Housekeeping</option>
+                    <option value="finance">Finance</option>
+                    <option value="guest">Guest View</option>
+                </select>
             </div>
         </aside>
 
-        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
-
-        <!-- Main Content Area -->
-        <main class="main-content">
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            <!-- Topbar Header -->
             <header class="topbar">
-                <div class="topbar-actions">
-                    <button class="btn-lang-toggle" onclick="toggleLanguage()">
-                        <i class="fa-solid fa-globe"></i> <span id="langText">English / বাংলা</span>
-                    </button>
-                    <div class="badge-status"><span class="pulse"></span> Live Sync</div>
-                    <div class="date-display" id="currentDateDisplay">Loading Live Clock...</div>
-                    <button class="pill-auth-btn" onclick="handleLogout()">
-                        <div class="pill-avatar-wrapper">
-                            <img id="topbarAvatar" src="https://ui-avatars.com/api/?name=User&background=d4af37&color=fff" alt="Avatar">
-                        </div>
-                        <span id="topbarAuthText">Logout</span>
-                    </button>
+                <div class="topbar-left">
+                    <button class="mobile-nav-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+                    <div id="currentDateDisplay" class="date-clock-badge">--:-- --</div>
+                </div>
+
+                <div class="topbar-right">
+                    <button id="mobileLangToggle" class="btn-secondary-sm" onclick="toggleLanguage()">🇧🇩 BN</button>
+                    <img id="topbarAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" class="avatar-img clickable" onclick="handleAuthButtonClick()" alt="Profile" onerror="this.src='https://ui-avatars.com/api/?name=Admin'">
                 </div>
             </header>
 
-            <!-- TAB 1: EXECUTIVE DASHBOARD -->
-            <section id="tab-dashboard" class="tab-page active">
-                <div class="page-header">
-                    <h1>Executive Dashboard</h1>
-                    <p>Live status of resort reservations, operational metrics, and guests.</p>
-                </div>
-                
-                <div class="resort-hero-banner">
-                    <div class="hero-content">
-                        <span class="hero-subtitle">WELCOME TO GRAND PALACE RESORT</span>
-                        <h2 class="hero-title">World-Class Hospitality & Luxury Stay Management</h2>
-                    </div>
-                </div>
+            <!-- Main Page Content Area -->
+            <main class="main-content">
 
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon gold"><i class="fa-solid fa-bed"></i></div>
-                        <div>
-                            <h3>48 / 60</h3>
-                            <p>Rooms Occupied</p>
-                        </div>
+                <!-- TAB 1: EXECUTIVE DASHBOARD -->
+                <section id="tab-dashboard" class="tab-page active">
+                    <div class="page-header">
+                        <h2 data-i18n="dashTitle">Executive Dashboard</h2>
+                        <p data-i18n="dashSub">Live status of resort reservations, guests, and services.</p>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon green"><i class="fa-solid fa-money-bill-wave"></i></div>
-                        <div>
-                            <h3>৳2,85,000</h3>
-                            <p>Today's Revenue</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon blue"><i class="fa-solid fa-user-check"></i></div>
-                        <div>
-                            <h3>14</h3>
-                            <p>Today Check-Ins</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon orange"><i class="fa-solid fa-broom"></i></div>
-                        <div>
-                            <h3>6</h3>
-                            <p>Rooms Pending Clean</p>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="data-card mt-20">
-                    <div class="card-header">
-                        <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Bookings & Status</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 data-i18n="statTotalBookings">Total Bookings</h3>
+                                <div id="statTotalBookings" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-bookmark"></i></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 data-i18n="statRevenue">Total Revenue</h3>
+                                <div id="statRevenue" class="stat-value">৳0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 data-i18n="statPoolPass">Pool Passes</h3>
+                                <div id="statPoolPass" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-person-swimming"></i></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 data-i18n="statDiningOrders">Dining Orders</h3>
+                                <div id="statDiningOrders" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-utensils"></i></div>
+                        </div>
                     </div>
-                    <div class="table-responsive">
-                        <table class="custom-table">
+
+                    <h3 class="section-title" data-i18n="recentCheckins">Recent Check-Ins</h3>
+                    <div class="table-responsive mt-15">
+                        <table>
                             <thead>
                                 <tr>
-                                    <th>Booking ID</th>
-                                    <th>Guest Name</th>
-                                    <th>Room No</th>
-                                    <th>Check-In Date</th>
-                                    <th>Payment</th>
-                                    <th>Status</th>
+                                    <th data-i18n="tblPhoto">Photo</th>
+                                    <th data-i18n="tblId">ID</th>
+                                    <th data-i18n="tblName">Guest Name</th>
+                                    <th data-i18n="tblRoom">Room Type</th>
+                                    <th data-i18n="tblDates">Dates</th>
+                                    <th data-i18n="tblBill">Bill</th>
+                                    <th data-i18n="tblStatus">Status</th>
+                                    <th data-i18n="tblAction">Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#GP-8821</td>
-                                    <td>Mr. Rahman Joy</td>
-                                    <td>Suite 401</td>
-                                    <td>2026-08-08</td>
-                                    <td><span class="badge paid">Paid</span></td>
-                                    <td><span class="badge confirmed">Checked-In</span></td>
-                                </tr>
-                                <tr>
-                                    <td>#GP-8822</td>
-                                    <td>Sarah Jenkins</td>
-                                    <td>Deluxe 204</td>
-                                    <td>2026-08-08</td>
-                                    <td><span class="badge pending">Pending</span></td>
-                                    <td><span class="badge reserved">Reserved</span></td>
-                                </tr>
-                            </tbody>
+                            <tbody id="dashboardTableBody"></tbody>
                         </table>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <!-- TAB 2: ROOMS & INVENTORY -->
-            <section id="tab-rooms" class="tab-page">
-                <div class="page-header">
-                    <h1>Rooms & Inventory Catalog</h1>
-                    <p>Browse available suites and book your stay.</p>
-                </div>
-                <div class="grid-3-col">
-                    <div class="room-card">
-                        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=600&q=80" alt="Presidential Suite">
-                        <div class="room-details">
-                            <span class="room-badge gold">Presidential Suite</span>
-                            <h3>Suite 501 - Royal Sea View</h3>
-                            <p>King Bed, Jacuzzi, Private Balcony, VIP Butler Service.</p>
-                            <div class="room-footer">
-                                <span class="price">৳25,000 / Night</span>
-                                <button class="btn-sm-gold" onclick="switchTab('booking')">Book Now</button>
+                <!-- TAB 2: ROOMS & INVENTORY -->
+                <section id="tab-rooms" class="tab-page">
+                    <div class="page-header">
+                        <h2 data-i18n="roomsTitle">Rooms & Custom Photos</h2>
+                        <p data-i18n="roomsSub">Manage resort inventory and custom room photography.</p>
+                    </div>
+                    <div id="roomsCardsGrid"></div>
+                </section>
+
+                <!-- TAB 3: NEW BOOKING -->
+                <section id="tab-booking" class="tab-page">
+                    <div class="page-header">
+                        <h2 data-i18n="newBookingTitle">New Guest Booking</h2>
+                        <p data-i18n="newBookingSub">Create room reservations, food orders, and activity slots.</p>
+                    </div>
+
+                    <div class="form-container">
+                        <form id="reservationForm" onsubmit="handleBookingSubmit(event)">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label data-i18n="lblCheckIn">Check-In *</label>
+                                    <input type="date" id="checkIn" required>
+                                </div>
+                                <div class="form-group">
+                                    <label data-i18n="lblCheckOut">Check-Out *</label>
+                                    <input type="date" id="checkOut" required>
+                                </div>
+                                <div class="form-group">
+                                    <label data-i18n="lblRoomType">Select Room *</label>
+                                    <select id="roomTypeSelect" class="custom-select" required></select>
+                                </div>
+                            </div>
+
+                            <div class="divider"></div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label data-i18n="cuisineOpt">Cuisine & Services</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" data-price="500"> Bengali Traditional Feast (+৳500)</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" data-price="750"> Authentic Thai Gourmet (+৳750)</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="foodMenu" data-price="1200"> Continental Buffet (+৳1200)</label>
+                                </div>
+                                <div class="form-group">
+                                    <label data-i18n="amenitiesOpt">Pool & Gym Access</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="amenities" data-price="500"> Swimming Pool Pass (+৳500)</label>
+                                    <label class="checkbox-label"><input type="checkbox" name="amenities" data-price="400"> VIP Gym Pass (+৳400)</label>
+                                </div>
+                                <div class="form-group">
+                                    <label data-i18n="lblGateway">Select Gateway *</label>
+                                    <select id="paymentMethodSelect" class="custom-select" onchange="togglePaymentDetails()" required>
+                                        <option value="cash">Cash on Arrival</option>
+                                        <option value="bkash">bKash Mobile Banking</option>
+                                        <option value="nagad">Nagad Mobile Banking</option>
+                                        <option value="sslcommerz">SSLCOMMERZ Online</option>
+                                        <option value="stripe">Card / Stripe</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="onlinePaymentDetails" class="alert-info mt-15" style="display:none;">
+                                <p id="paymentInstructions"></p>
+                            </div>
+
+                            <div class="calc-summary-card mt-20">
+                                <h4 data-i18n="calcSummary">Real-time Calculation</h4>
+                                <div class="summary-line"><span data-i18n="invNights">Stay Duration:</span> <strong id="billNights">1 Night(s)</strong></div>
+                                <div class="summary-line"><span data-i18n="invRoomCharge">Room Charge:</span> <strong id="billRoom">৳0</strong></div>
+                                <div class="summary-line"><span data-i18n="invAddons">Services Total:</span> <strong id="billAddons">৳0</strong></div>
+                                <div class="summary-line grand-total"><span data-i18n="invGrandTotal">Grand Total Amount:</span> <strong id="billTotal">৳0</strong></div>
+                            </div>
+
+                            <div class="form-actions mt-20">
+                                <button type="submit" class="btn-primary" data-i18n="btnCompleteBooking">Complete Reservation</button>
+                                <button type="button" class="btn-secondary-sm" onclick="resetForm()" data-i18n="btnReset">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- TAB 4: FRONT DESK STATUS -->
+                <section id="tab-frontdesk" class="tab-page">
+                    <div class="page-header">
+                        <h2 data-i18n="fdTitle">Front Desk & Real-time Room Status</h2>
+                        <p data-i18n="fdSub">Manage live Check-ins, Check-outs, and Room Conditions.</p>
+                    </div>
+                    <div id="frontDeskRoomGrid"></div>
+                </section>
+
+                <!-- TAB 5: HOUSEKEEPING -->
+                <section id="tab-housekeeping" class="tab-page">
+                    <div class="page-header">
+                        <h2 data-i18n="hkTitle">Housekeeping Dashboard</h2>
+                        <p data-i18n="hkSub">Cleanliness status updates and maintenance requests.</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 data-i18n="hkClean">Available & Clean</h3>
+                                <div id="statCleanRooms" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-sparkles"></i></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 data-i18n="hkDirty">Needs Cleaning (Dirty)</h3>
+                                <div id="statDirtyRooms" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-broom"></i></div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3 data-i18n="hkMaintenance">Under Maintenance</h3>
+                                <div id="statMaintRooms" class="stat-value">0</div>
+                            </div>
+                            <div class="stat-icon"><i class="fa-solid fa-wrench"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Room</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="housekeepingTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- TAB 6: FINANCE & REPORTS -->
+                <section id="tab-finance" class="tab-page">
+                    <div class="page-header">
+                        <h2 data-i18n="finTitle">Finance & Financial Summary</h2>
+                        <p data-i18n="finSub">Automatic revenue breakdown and printable invoice generation.</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3>Grand Revenue</h3>
+                                <div id="finTotalRev" class="stat-value">৳0</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h3>Total Invoices Issued</h3>
+                                <div id="finTotalInvoices" class="stat-value">0</div>
                             </div>
                         </div>
                     </div>
-                    <div class="room-card">
-                        <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=600&q=80" alt="Executive Deluxe">
-                        <div class="room-details">
-                            <span class="room-badge blue">Executive Deluxe</span>
-                            <h3>Room 302 - Garden View</h3>
-                            <p>Double Bed, Free Wi-Fi, Breakfast Included, Mini Bar.</p>
-                            <div class="room-footer">
-                                <span class="price">৳12,500 / Night</span>
-                                <button class="btn-sm-gold" onclick="switchTab('booking')">Book Now</button>
-                            </div>
-                        </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Invoice No</th>
+                                    <th>Guest Name</th>
+                                    <th>Room</th>
+                                    <th>Gateway</th>
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="financeTableBody"></tbody>
+                        </table>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <!-- TAB 3: NEW BOOKING FORM -->
-            <section id="tab-booking" class="tab-page">
-                <div class="page-header">
-                    <h1>New Reservation Form</h1>
-                    <p>Create a new guest room reservation in the system.</p>
-                </div>
-                <div class="data-card">
-                    <form id="reservationForm" onsubmit="event.preventDefault(); alert('Reservation Successfully Created!');">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Guest Full Name *</label>
-                                <input type="text" placeholder="Enter full name" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Contact Number *</label>
-                                <input type="tel" placeholder="+8801700000000" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Select Room Category *</label>
-                                <select required class="custom-select">
-                                    <option value="">-- Select Room --</option>
-                                    <option value="501">Suite 501 - Presidential (৳25,000)</option>
-                                    <option value="302">Room 302 - Executive Deluxe (৳12,500)</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Check-In Date *</label>
-                                <input type="date" required>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn-block-gold mt-10"><i class="fa-solid fa-check"></i> Confirm Reservation</button>
-                    </form>
-                </div>
-            </section>
-
-            <!-- OTHER RESTRICTED TABS (FrontDesk, Housekeeping, Finance, Guests, Services) -->
-            <section id="tab-frontdesk" class="tab-page"><div class="page-header"><h1>Front Desk Live Status</h1></div></section>
-            <section id="tab-housekeeping" class="tab-page"><div class="page-header"><h1>Housekeeping Control Panel</h1></div></section>
-            <section id="tab-finance" class="tab-page"><div class="page-header"><h1>Finance & Analytics</h1></div></section>
-            <section id="tab-guests" class="tab-page"><div class="page-header"><h1>Guest Directory</h1></div></section>
-            <section id="tab-services" class="tab-page"><div class="page-header"><h1>Food & Resort Amenities</h1></div></section>
-
-            <footer>
-                <p>Developed by <strong>MD. EMTIAZ HOSSAIN SAMI</strong> | Department of Software Engineering, DIU</p>
-            </footer>
-        </main>
-    </div>
-
-    <!-- STRICT MANDATORY AUTHENTICATION MODAL -->
-    <div class="modal-overlay active" id="loginModal">
-        <div class="modal-container login-modal-box">
-            <div class="login-modal-header">
-                <div class="login-avatar-wrapper">
-                    <img id="loginFormAvatar" src="https://ui-avatars.com/api/?name=Grand+Palace&background=d4af37&color=fff" alt="Resort Logo">
-                </div>
-                <h2>Grand Palace Access Portal</h2>
-                <p>Restricted System Access - Authentication Required</p>
-            </div>
-            
-            <!-- ADMIN LOGIN FORM FLOW -->
-            <form id="loginForm" onsubmit="handleAdminLogin(event)" class="login-form-body">
-                <h3><i class="fa-solid fa-user-shield"></i> Admin Access</h3>
-                <div class="form-group">
-                    <label for="loginEmail"><i class="fa-solid fa-envelope"></i> Admin Email</label>
-                    <input type="email" id="loginEmail" placeholder="admin@grandpalace.com" required value="admin@grandpalace.com">
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword"><i class="fa-solid fa-lock"></i> Password</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••" required value="12345678">
-                </div>
-                <button type="submit" class="btn-block-gold">
-                    <i class="fa-solid fa-right-to-bracket"></i> Admin Login & Enter
-                </button>
-            </form>
-
-            <div class="auth-separator">
-                <span>OR</span>
-            </div>
-
-            <!-- GUEST REGISTRATION FORM FLOW -->
-            <form id="guestLoginForm" onsubmit="handleGuestLogin(event)" class="login-form-body">
-                <h3><i class="fa-solid fa-user-tag"></i> Guest Entry Registration</h3>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="fName">First Name *</label>
-                        <input type="text" id="fName" placeholder="First Name" required>
+                <!-- TAB 7: GUEST DIRECTORY -->
+                <section id="tab-guests" class="tab-page">
+                    <div class="page-header">
+                        <h2 data-i18n="guestsTitle">Guest Directory</h2>
+                        <p data-i18n="guestsSub">All recorded guest check-ins and active stays.</p>
                     </div>
-                    <div class="form-group">
-                        <label for="lName">Last Name *</label>
-                        <input type="text" id="lName" placeholder="Last Name" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="guestEmail">Email *</label>
-                        <input type="email" id="guestEmail" placeholder="guest@example.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="guestPhone">Phone *</label>
-                        <input type="tel" id="guestPhone" placeholder="+8801700000000" required>
-                    </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="guestPhoto"><i class="fa-solid fa-camera"></i> Photo Upload (Optional)</label>
-                    <input type="file" id="guestPhoto" accept="image/*" onchange="previewGuestPhoto(event)">
-                    <div class="photo-preview-wrapper" id="photoPreviewContainer" style="display:none; margin-top: 8px;">
-                        <img id="guestPhotoPreview" src="" alt="Preview">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th data-i18n="tblPhoto">Photo</th>
+                                    <th data-i18n="tblId">ID</th>
+                                    <th data-i18n="tblName">Guest Name</th>
+                                    <th data-i18n="tblRoom">Room Type</th>
+                                    <th data-i18n="tblDates">Dates</th>
+                                    <th data-i18n="tblBill">Bill</th>
+                                    <th data-i18n="tblStatus">Status</th>
+                                    <th data-i18n="tblAction">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fullBookingsTableBody"></tbody>
+                        </table>
                     </div>
-                </div>
+                </section>
 
-                <button type="submit" class="btn-block-guest">
-                    <i class="fa-solid fa-user-check"></i> Fill Form & Enter as Guest
-                </button>
-            </form>
+                <!-- TAB 8: FOOD & FACILITIES -->
+                <section id="tab-services" class="tab-page">
+                    <div class="page-header">
+                        <h2 data-i18n="servicesTitle">Food, Pool & Gym</h2>
+                        <p data-i18n="servicesSub">Manage dining packages and facility access.</p>
+                    </div>
+                    <div id="servicesCardsGrid"></div>
+                </section>
+
+            </main>
         </div>
     </div>
 
+    <!-- PRINT / INVOICE MODAL -->
+    <div id="detailsModal" class="modal" onclick="closeModalOnOutsideClick(event)">
+        <div class="modal-content">
+            <span class="close-modal-btn" onclick="closeModal()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- AUTHENTICATION & LOGIN MODAL -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal-btn" onclick="closeLoginModal()">&times;</span>
+            <h3 class="modal-title">System Authentication</h3>
+            
+            <form onsubmit="handleLoginSubmit(event)" class="mt-15">
+                <h4>Staff Admin Login</h4>
+                <div class="form-group mt-10">
+                    <input type="email" id="loginEmail" placeholder="Enter Staff Email" required>
+                </div>
+                <button type="submit" class="btn-block-gold mt-10">Login as Admin</button>
+            </form>
+
+            <div class="divider"></div>
+
+            <div class="guest-register-box">
+                <h4>Guest Quick Access</h4>
+                <div class="form-grid mt-10">
+                    <input type="text" id="fName" placeholder="First Name">
+                    <input type="text" id="lName" placeholder="Last Name">
+                </div>
+                <input type="email" id="email" placeholder="Email Address" class="mt-10">
+                <input type="text" id="imgUrlInput" placeholder="Avatar Photo URL" onchange="updateGuestImageFromUrl()" class="mt-10">
+                
+                <div class="avatar-preview-box mt-10">
+                    <img id="previewImg" src="https://ui-avatars.com/api/?name=Guest" class="table-img" alt="Preview">
+                    <input type="file" accept="image/*" onchange="previewUploadImage(event)">
+                </div>
+
+                <button type="button" onclick="handleGuestLogin()" class="btn-secondary-sm btn-block-gold mt-15">Continue as Guest</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JavaScript File -->
     <script src="script.js"></script>
 </body>
 </html>
