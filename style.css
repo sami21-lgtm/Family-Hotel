@@ -722,3 +722,207 @@ body.role-guest .admin-status-select {
         grid-template-columns: 1fr;
     }
 }
+/* ==========================================
+   GRAND PALACE - ROOM ROLE CONTROLS
+   ADMIN / GUEST UI
+========================================== */
+
+/* Room card layout */
+#roomsCardsGrid {
+    width: 100%;
+}
+
+#roomsCardsGrid > div {
+    width: 100%;
+}
+
+/* Individual room card */
+.room-card {
+    position: relative;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    border-color: rgba(197, 168, 128, 0.35) !important;
+}
+
+/* Room image */
+.room-card-img-wrapper {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background: #111;
+}
+
+.room-card-img-wrapper img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.room-card:hover .room-card-img-wrapper img {
+    transform: scale(1.04);
+}
+
+/* Room information */
+.room-card h4,
+.room-card h5 {
+    font-family: var(--font-head);
+}
+
+.room-card h5 {
+    color: var(--text-main);
+    font-size: 1rem;
+}
+
+/* Room status */
+.room-card .badge {
+    white-space: nowrap;
+}
+
+/* ==========================================
+   ADMIN ROOM CONTROLS
+========================================== */
+
+.room-card .btn-secondary-sm {
+    white-space: nowrap;
+}
+
+.room-card .btn-secondary-sm:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+/* ==========================================
+   GUEST BOOKING BUTTON
+========================================== */
+
+.room-card .btn-primary {
+    width: 100%;
+    margin-top: 10px;
+    min-height: 42px;
+}
+
+.room-card .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Guest role:
+   Admin room controls stay completely hidden */
+body.role-guest .room-admin-controls,
+body.role-guest .admin-room-controls,
+body.role-guest .admin-edit-btn,
+body.role-guest .admin-status-select {
+    display: none !important;
+}
+
+/* ==========================================
+   ADD NEW ROOM BUTTON
+========================================== */
+
+#addNewRoomBtn,
+.add-new-room-btn {
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#addNewRoomBtn:hover,
+.add-new-room-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(197, 168, 128, 0.3);
+}
+
+/* Guest should never see Add New Room */
+body.role-guest #addNewRoomBtn,
+body.role-guest .add-new-room-btn {
+    display: none !important;
+}
+
+
+
+body.role-guest #reservationForm {
+    max-width: 900px;
+}
+
+/* ==========================================
+   ROOM GRID RESPONSIVE
+========================================== */
+
+@media (max-width: 1100px) {
+
+    #roomsCardsGrid > div {
+        grid-template-columns:
+            repeat(2, minmax(250px, 1fr)) !important;
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    #roomsCardsGrid > div {
+        grid-template-columns:
+            1fr !important;
+    }
+
+    .room-card-img-wrapper,
+    .room-card-img-wrapper img {
+        height: 200px;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .room-card-img-wrapper,
+    .room-card-img-wrapper img {
+        height: 180px;
+    }
+
+    .room-card > div:last-child {
+        padding: 12px !important;
+    }
+
+    .room-card .btn-secondary-sm {
+        padding: 7px 10px;
+        font-size: 0.75rem;
+    }
+
+}
+
+
+.form-group input::placeholder {
+    color: rgba(240, 237, 230, 0.4);
+}
+
+.form-group select option {
+    background: #1a1d24;
+    color: var(--text-main);
+}
+
+
+
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+
+
+button,
+.nav-item,
+.room-card,
+input,
+select {
+    -webkit-tap-highlight-color: transparent;
+}
