@@ -1,13 +1,15 @@
 /* ==========================================
-   GRAND PALACE RESORT & SPA - STYLESHEET
+   GRAND PALACE RESORT & SPA - MASTER STYLESHEET
    ========================================== */
 
 :root {
     --gold: #c5a880;
+    --gold-hover: #b3925f;
     --bg-dark: #0f1115;
     --bg-sidebar: #14171d;
     --bg-card: #1a1d24;
     --border-color: rgba(255, 255, 255, 0.08);
+    --border-gold: rgba(197, 168, 128, 0.3);
     --text-main: #f0ede6;
     --text-muted: #9aa0ac;
     --font-head: 'Playfair Display', serif;
@@ -21,7 +23,7 @@
 }
 
 /* ==========================================
-   GLOBAL BODY BACKGROUND
+   1. GLOBAL BODY & CONTAINER
    ========================================== */
 
 html {
@@ -33,8 +35,8 @@ body {
     background-color: var(--bg-dark);
     background-image:
         linear-gradient(
-            rgba(15, 17, 21, 0.72),
-            rgba(15, 17, 21, 0.72)
+            rgba(15, 17, 21, 0.75),
+            rgba(15, 17, 21, 0.75)
         ),
         url("premium_photo-1661964071015-d97428970584.jpg");
     background-size: cover;
@@ -45,43 +47,23 @@ body {
     min-height: 100vh;
 }
 
-/* Keep content above the background */
 .app-container {
     position: relative;
     z-index: 1;
     display: flex;
-    flex-wrap: nowrap; /* Prevent content drop */
+    flex-wrap: nowrap;
     width: 100%;
     min-height: 100vh;
 }
 
-.text-center {
-    text-align: center;
-}
-
-.mt-5 {
-    margin-top: 5px;
-}
-
-.mt-10 {
-    margin-top: 10px;
-}
-
-.mt-15 {
-    margin-top: 15px;
-}
-
-.mt-20 {
-    margin-top: 20px;
-}
-
-.mb-10 {
-    margin-bottom: 10px;
-}
-
-.mb-15 {
-    margin-bottom: 15px;
-}
+/* Utilities */
+.text-center { text-align: center; }
+.mt-5 { margin-top: 5px; }
+.mt-10 { margin-top: 10px; }
+.mt-15 { margin-top: 15px; }
+.mt-20 { margin-top: 20px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-15 { margin-bottom: 15px; }
 
 .sr-only {
     position: absolute;
@@ -95,31 +77,45 @@ body {
     border: 0;
 }
 
-/* ============ MODAL / AUTH ============ */
+/* Glassmorphism Reusable Card */
+.glass-card {
+    background: rgba(26, 29, 36, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+}
 
-.modal {
+/* ==========================================
+   2. AUTHENTICATION & MODALS
+   ========================================== */
+
+.modal,
+#loginModal {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.75);
-    z-index: 999;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 9999;
     align-items: center;
     justify-content: center;
     padding: 20px;
 }
 
-.modal.active {
-    display: flex;
+.modal.active,
+#loginModal.active {
+    display: flex !important;
 }
 
 .modal-content.auth-card {
     background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-gold);
     border-radius: 16px;
     padding: 30px;
     width: 100%;
     max-width: 420px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 }
 
 .brand-icon {
@@ -129,14 +125,11 @@ body {
 
 .modal-title {
     letter-spacing: 1px;
+    font-family: var(--font-head);
+    color: var(--gold);
 }
 
-.btn-secondary-sm.active {
-    background: var(--gold);
-    color: #14171d;
-    border-color: var(--gold);
-}
-
+/* Form Controls */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -158,12 +151,13 @@ body {
     font-family: var(--font-body);
     font-size: 0.9rem;
     outline: none;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, background 0.2s ease;
 }
 
 .form-group input:focus,
 .form-group select:focus {
     border-color: var(--gold);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .form-group input::placeholder {
@@ -197,12 +191,14 @@ body {
     margin: 20px 0;
 }
 
-/* ============ BUTTONS ============ */
+/* ==========================================
+   3. BUTTONS & CONTROLS
+   ========================================== */
 
 .btn-block-gold,
 .btn-primary,
 .btn-primary-sm {
-    background: linear-gradient(135deg, var(--gold), #b3925f);
+    background: linear-gradient(135deg, var(--gold), var(--gold-hover));
     color: #14171d;
     border: none;
     border-radius: 8px;
@@ -217,9 +213,7 @@ body {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.btn-block-gold {
-    width: 100%;
-}
+.btn-block-gold { width: 100%; }
 
 .btn-primary-sm {
     padding: 8px 14px;
@@ -249,6 +243,14 @@ body {
 
 .btn-secondary-sm:hover {
     background: rgba(255, 255, 255, 0.12);
+    border-color: var(--border-gold);
+}
+
+.btn-secondary-sm.active {
+    background: var(--gold);
+    color: #14171d;
+    border-color: var(--gold);
+    font-weight: 600;
 }
 
 .form-actions {
@@ -260,36 +262,36 @@ body {
 button:disabled {
     opacity: 0.55;
     cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
 }
 
-button,
-.nav-item,
-.room-card,
-input,
-select {
+button, .nav-item, .room-card, input, select {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* ============ SIDEBAR & OVERLAY ============ */
+/* ==========================================
+   4. SIDEBAR & OVERLAY
+   ========================================== */
 
 #sidebarOverlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 90;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 998;
 }
 
 #sidebarOverlay.active {
-    display: block;
+    display: block !important;
 }
 
 #sidebar {
     width: 270px;
-    flex-shrink: 0; /* Prevents sidebar from squishing or pushing layout */
-    background: rgba(20, 23, 29, 0.94);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    flex-shrink: 0;
+    background: rgba(20, 23, 29, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
@@ -298,6 +300,7 @@ select {
     top: 0;
     height: 100vh;
     overflow-y: auto;
+    z-index: 1000;
 }
 
 .brand-header {
@@ -371,7 +374,7 @@ select {
 }
 
 .nav-item.active {
-    background: rgba(197, 168, 128, 0.12);
+    background: rgba(197, 168, 128, 0.15);
     color: var(--gold);
     border-left-color: var(--gold);
 }
@@ -392,13 +395,15 @@ select {
     outline: none;
 }
 
-/* ============ MAIN WRAPPER ============ */
+/* ==========================================
+   5. MAIN WRAPPER & TOPBAR
+   ========================================== */
 
 .main-wrapper {
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-width: 0; /* Important for preventing grid overflow */
+    min-width: 0;
     width: calc(100% - 270px);
     max-width: calc(100% - 270px);
 }
@@ -442,9 +447,7 @@ select {
     border: 1px solid rgba(197, 168, 128, 0.2);
 }
 
-.clickable {
-    cursor: pointer;
-}
+.clickable { cursor: pointer; }
 
 .main-content {
     padding: 25px;
@@ -475,7 +478,9 @@ select {
     color: var(--text-main);
 }
 
-/* ============ TAB PAGES ============ */
+/* ==========================================
+   6. TAB PAGES & VISIBILITY
+   ========================================== */
 
 .tab-page {
     display: none;
@@ -485,7 +490,9 @@ select {
     display: block;
 }
 
-/* ============ STATS GRID ============ */
+/* ==========================================
+   7. STATS CARDS
+   ========================================== */
 
 .stats-grid {
     display: grid;
@@ -504,11 +511,12 @@ select {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .stat-card:hover {
     box-shadow: 0 8px 20px rgba(197, 168, 128, 0.15);
+    border-color: var(--border-gold);
 }
 
 .stat-info h3 {
@@ -537,7 +545,9 @@ select {
     justify-content: center;
 }
 
-/* ============ TABLES ============ */
+/* ==========================================
+   8. TABLES & BADGES
+   ========================================== */
 
 .table-responsive {
     overflow-x: auto;
@@ -582,8 +592,7 @@ tbody tr:hover {
     object-fit: cover;
 }
 
-/* ============ BADGES ============ */
-
+/* Badges */
 .badge {
     display: inline-block;
     padding: 4px 10px;
@@ -591,24 +600,30 @@ tbody tr:hover {
     font-size: 0.72rem;
     font-weight: 600;
     white-space: nowrap;
+    text-transform: uppercase;
 }
 
 .badge-success {
     background: rgba(72, 187, 120, 0.15);
     color: #48bb78;
+    border: 1px solid rgba(72, 187, 120, 0.3);
 }
 
 .badge-danger {
     background: rgba(245, 101, 101, 0.15);
     color: #f56565;
+    border: 1px solid rgba(245, 101, 101, 0.3);
 }
 
 .badge-gold {
     background: rgba(197, 168, 128, 0.15);
     color: var(--gold);
+    border: 1px solid var(--border-gold);
 }
 
-/* ============ SERVICES GRID ============ */
+/* ==========================================
+   9. SERVICES & BOOKING FORM
+   ========================================== */
 
 .services-grid {
     display: grid;
@@ -643,9 +658,7 @@ tbody tr:hover {
     margin-bottom: 12px;
 }
 
-.service-list {
-    list-style: none;
-}
+.service-list { list-style: none; }
 
 .service-list li {
     font-size: 0.85rem;
@@ -653,8 +666,7 @@ tbody tr:hover {
     border-top: 1px dashed var(--border-color);
 }
 
-/* ============ FORM CONTAINER ============ */
-
+/* Form Container & Calculations */
 .form-container {
     background: rgba(26, 29, 36, 0.92);
     backdrop-filter: blur(6px);
@@ -707,13 +719,11 @@ tbody tr:hover {
     color: var(--gold);
 }
 
-/* ============ ROOM CARDS ============ */
+/* ==========================================
+   10. BROWSE ROOM CARDS GRID
+   ========================================== */
 
 #roomsCardsGrid {
-    width: 100%;
-}
-
-#roomsCardsGrid > div {
     width: 100%;
 }
 
@@ -724,8 +734,8 @@ tbody tr:hover {
 
 .room-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    border-color: rgba(197, 168, 128, 0.35) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border-color: var(--border-gold) !important;
 }
 
 .room-card-img-wrapper {
@@ -735,16 +745,17 @@ tbody tr:hover {
     background: #111;
 }
 
-.room-card-img-wrapper img {
+.vibrant-img {
     width: 100%;
     height: 180px;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s ease;
+    transition: transform 0.4s ease, filter 0.4s ease;
 }
 
-.room-card:hover .room-card-img-wrapper img {
-    transform: scale(1.04);
+.room-card:hover .vibrant-img {
+    transform: scale(1.05);
+    filter: brightness(1.05);
 }
 
 .room-card h4,
@@ -772,13 +783,6 @@ tbody tr:hover {
     min-height: 42px;
 }
 
-.room-card .btn-primary:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
 #addNewRoomBtn,
 .add-new-room-btn {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -790,7 +794,9 @@ tbody tr:hover {
     box-shadow: 0 6px 18px rgba(197, 168, 128, 0.3);
 }
 
-/* ============ ROLE VISIBILITY ============ */
+/* ==========================================
+   11. ROLE PERMISSIONS (CSS DISPLAY CONTROL)
+   ========================================== */
 
 body.role-guest .role-admin-only,
 body.role-guest .admin-edit-btn,
@@ -806,7 +812,9 @@ body.role-guest #reservationForm {
     max-width: 900px;
 }
 
-/* ============ RESPONSIVE DESIGN ============ */
+/* ==========================================
+   12. RESPONSIVE DESIGN (MEDIA QUERIES)
+   ========================================== */
 
 @media (max-width: 1100px) {
     #roomsCardsGrid > div {
@@ -823,7 +831,7 @@ body.role-guest #reservationForm {
     #sidebar {
         position: fixed;
         left: -270px;
-        z-index: 100;
+        z-index: 1000;
         transition: left 0.3s ease;
     }
 
@@ -842,7 +850,7 @@ body.role-guest #reservationForm {
     }
 
     .room-card-img-wrapper,
-    .room-card-img-wrapper img {
+    .vibrant-img {
         height: 200px;
     }
 }
@@ -855,11 +863,20 @@ body.role-guest #reservationForm {
     .stats-grid {
         grid-template-columns: 1fr;
     }
+
+    .topbar {
+        padding: 12px 15px;
+    }
+
+    .date-clock-badge {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+    }
 }
 
 @media (max-width: 480px) {
     .room-card-img-wrapper,
-    .room-card-img-wrapper img {
+    .vibrant-img {
         height: 180px;
     }
 
@@ -870,5 +887,9 @@ body.role-guest #reservationForm {
     .room-card .btn-secondary-sm {
         padding: 7px 10px;
         font-size: 0.75rem;
+    }
+
+    .modal-content.auth-card {
+        padding: 20px;
     }
 }
