@@ -3,7 +3,7 @@ let currentLang = 'en'; // 'en' or 'bn'
 let currentRole = 'admin'; // 'admin', 'frontdesk', 'housekeeping', 'finance', 'guest'
 
 let currentUser = {
-    role: 'Administrator',
+    role: 'ADMINISTRATOR',
     name: 'MD. EMTIAZ HOSSAIN SAMI',
     email: 'admin@grandpalace.com',
     photo: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
@@ -31,7 +31,7 @@ let bookings = [
         checkIn: "2026-08-01",
         checkOut: "2026-08-05",
         totalBill: 80000,
-        paymentMethod: "bKash",
+        paymentMethod: "BKASH",
         status: "Checked-In"
     },
     {
@@ -43,7 +43,7 @@ let bookings = [
         checkIn: "2026-08-06",
         checkOut: "2026-08-08",
         totalBill: 2000,
-        paymentMethod: "SSLCommerz",
+        paymentMethod: "SSLCOMMERZ",
         status: "Confirmed"
     }
 ];
@@ -143,9 +143,9 @@ const i18nData = {
         dashSub: "রিসোর্ট বুকিং, গেস্ট এবং সার্ভিসসমূহের লাইভ অবস্থা।",
         heroSub: "গ্র্যান্ড প্যালেসে স্বাগতম",
         heroTitle: "আন্তর্জাতিক মানের আতিথেয়তা ও লাক্সারি স্টে",
-        heroDesc: "রিয়েল-টাইম গেস্ট বুকিং, লাক্সারি স্যুট, রেস্টুরেন্ট এবং ওয়েলনেস সুবিধা পরিচালনা করুন।",
+        heroDesc: "রিয়েল-টাইম গেস্ট বুকিং, লাক্সারি স্যুট, রেস্টুরেন্ট এবং ওয়েলনেস সুবিধা পরিচালনা করুন।",
         statTotalBookings: "মোট বুকিং",
-        statRevenue: "মোট আয়",
+        statRevenue: "মোট আয়",
         statPoolPass: "পুল পাস",
         statDiningOrders: "ডাইনিং অর্ডার",
         recentCheckins: "সাম্প্রতিক চেক-ইন সমূহ",
@@ -181,7 +181,7 @@ const i18nData = {
         hkTitle: "হাউসকেপিং ড্যাশবোর্ড",
         hkSub: "রুম পরিচ্ছন্নতার আপডেট এবং মেইনটেন্যান্স রিকোয়েস্ট।",
         hkClean: "পরিষ্কার ও খালি রুম",
-        hkDirty: "পরিষ্কার করা প্রয়োজন (Dirty)",
+        hkDirty: "পরিষ্কার করা প্রয়োজন (Dirty)",
         hkMaintenance: "রক্ষণাবেক্ষণে আছে (Maintenance)",
         finTitle: "ফাইন্যান্স ও রিপোর্টস",
         finSub: "স্বয়ংক্রিয় রেভিনিউ রিপোর্ট ও ইনভয়েস প্রিন্ট সুবিধা।",
@@ -195,6 +195,7 @@ const i18nData = {
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
     initLiveClock();
+    populateRoomDropdown();
     renderRooms();
     renderServices();
     renderFrontDesk();
@@ -202,20 +203,42 @@ document.addEventListener('DOMContentLoaded', () => {
     renderFinance();
     refreshDashboard();
     calculateBilling();
+    
+    // Attach Dynamic Billing Change Listeners
+    const formInputs = document.querySelectorAll('#reservationForm input, #reservationForm select');
+    formInputs.forEach(input => {
+        input.addEventListener('change', calculateBilling);
+    });
 });
+
+// Populate Room Options Dynamically for Booking
+function populateRoomDropdown() {
+    const select = document.getElementById('roomTypeSelect');
+    if (!select) return;
+
+    select.innerHTML = roomList.map(r => 
+        `<option value="${r.id}|${r.title}|${r.price}">Room ${r.id} - ${r.title} (৳${r.price.toLocaleString()}/night)</option>`
+    ).join('');
+}
 
 // --- BILINGUAL TOGGLE SYSTEM ---
 function toggleLanguage() {
     currentLang = currentLang === 'en' ? 'bn' : 'en';
-    document.getElementById('mobileLangToggle').textContent = currentLang === 'en' ? '🇧🇩 BN' : '🇬🇧 EN';
-    document.getElementById('langText').textContent = currentLang === 'en' ? 'English / বাংলা' : 'বাংলা / English';
+    
+    const langBtn = document.getElementById('mobileLangToggle');
+    if (langBtn) langBtn.textContent = currentLang === 'en' ? '🇧🇩 BN' : '🇬🇧 EN';
+    
+    const langTxt = document.getElementById('langText');
+    if (langTxt) langTxt.textContent = currentLang === 'en' ? 'English / বাংলা' : 'বাংলা / English';
 
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (i18nData[currentLang][key]) {
+        if (i18nData[currentLang] && i18nData[currentLang][key]) {
             el.textContent = i18nData[currentLang][key];
         }
     });
+
+    initLiveClock();
 }
 
 // --- ROLE BASED ACCESS CONTROL (RBAC) ---
@@ -236,9 +259,10 @@ function switchUserRole(role) {
     });
 
     currentUser.role = role.toUpperCase();
-    document.getElementById('sidebarUserRole').textContent = `Role: ${role.toUpperCase()}`;
+    const roleTxt = document.getElementById('sidebarUserRole');
+    if (roleTxt) roleTxt.textContent = `Role: ${currentUser.role}`;
     
-    // Switch to first visible tab
+    // Switch to appropriate tab
     if (role === 'housekeeping') switchTab('housekeeping');
     else if (role === 'finance') switchTab('finance');
     else switchTab('dashboard');
@@ -247,19 +271,21 @@ function switchUserRole(role) {
 // --- CLOCK & NAVIGATION ---
 function initLiveClock() {
     const dateEl = document.getElementById('currentDateDisplay');
-    setInterval(() => {
-        const now = new Date();
-        dateEl.textContent = now.toLocaleString(currentLang === 'bn' ? 'bn-BD' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' });
-    }, 1000);
+    if (!dateEl) return;
+
+    const now = new Date();
+    dateEl.textContent = now.toLocaleString(currentLang === 'bn' ? 'bn-BD' : 'en-US', { dateStyle: 'medium', timeStyle: 'short' });
 }
 
 function toggleSidebar(forceState) {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
+    if (!sidebar) return;
+
     const isOpen = forceState !== undefined ? forceState : !sidebar.classList.contains('open');
     
     sidebar.classList.toggle('open', isOpen);
-    overlay.classList.toggle('active', isOpen);
+    if (overlay) overlay.classList.toggle('active', isOpen);
 }
 
 function switchTab(tabId) {
@@ -275,14 +301,20 @@ function switchTab(tabId) {
 
 // --- BILLING CALCULATOR & PAYMENTS ---
 function calculateBilling() {
-    const roomVal = document.getElementById('roomTypeSelect').value.split('|');
+    const roomSelect = document.getElementById('roomTypeSelect');
+    if (!roomSelect || !roomSelect.value) return;
+
+    const roomVal = roomSelect.value.split('|');
     const roomPrice = parseInt(roomVal[2]) || 800;
 
-    const checkIn = new Date(document.getElementById('checkIn').value);
-    const checkOut = new Date(document.getElementById('checkOut').value);
+    const checkInInput = document.getElementById('checkIn') ? document.getElementById('checkIn').value : '';
+    const checkOutInput = document.getElementById('checkOut') ? document.getElementById('checkOut').value : '';
+
+    const checkIn = new Date(checkInInput);
+    const checkOut = new Date(checkOutInput);
     
     let nights = 1;
-    if (!isNaN(checkIn) && !isNaN(checkOut) && checkOut > checkIn) {
+    if (!isNaN(checkIn.getTime()) && !isNaN(checkOut.getTime()) && checkOut > checkIn) {
         nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
     }
 
@@ -294,16 +326,26 @@ function calculateBilling() {
     const roomCharge = roomPrice * nights;
     const grandTotal = roomCharge + (addonsTotal * nights);
 
-    document.getElementById('billNights').textContent = `${nights} Night(s)`;
-    document.getElementById('billRoom').textContent = `৳${roomCharge.toLocaleString()}`;
-    document.getElementById('billAddons').textContent = `৳${(addonsTotal * nights).toLocaleString()}`;
-    document.getElementById('billTotal').textContent = `৳${grandTotal.toLocaleString()}`;
+    const billNights = document.getElementById('billNights');
+    const billRoom = document.getElementById('billRoom');
+    const billAddons = document.getElementById('billAddons');
+    const billTotal = document.getElementById('billTotal');
+
+    if (billNights) billNights.textContent = `${nights} Night(s)`;
+    if (billRoom) billRoom.textContent = `৳${roomCharge.toLocaleString()}`;
+    if (billAddons) billAddons.textContent = `৳${(addonsTotal * nights).toLocaleString()}`;
+    if (billTotal) billTotal.textContent = `৳${grandTotal.toLocaleString()}`;
 }
 
 function togglePaymentDetails() {
-    const method = document.getElementById('paymentMethodSelect').value;
+    const select = document.getElementById('paymentMethodSelect');
+    if (!select) return;
+
+    const method = select.value;
     const onlineBox = document.getElementById('onlinePaymentDetails');
     const instructions = document.getElementById('paymentInstructions');
+
+    if (!onlineBox || !instructions) return;
 
     if (method === 'bkash' || method === 'nagad') {
         onlineBox.style.display = 'block';
@@ -319,13 +361,20 @@ function togglePaymentDetails() {
 // --- BOOKING SUBMISSION & ROOM STATUS UPDATES ---
 function handleBookingSubmit(event) {
     event.preventDefault();
-    const roomVal = document.getElementById('roomTypeSelect').value.split('|');
+
+    const roomSelect = document.getElementById('roomTypeSelect');
+    if (!roomSelect) return;
+
+    const roomVal = roomSelect.value.split('|');
     const roomNo = roomVal[0];
     const roomName = roomVal[1];
     
-    const checkIn = document.getElementById('checkIn').value || new Date().toISOString().split('T')[0];
-    const checkOut = document.getElementById('checkOut').value || checkIn;
-    const payMethod = document.getElementById('paymentMethodSelect').value;
+    const checkIn = (document.getElementById('checkIn') && document.getElementById('checkIn').value) || new Date().toISOString().split('T')[0];
+    const checkOut = (document.getElementById('checkOut') && document.getElementById('checkOut').value) || checkIn;
+    const payMethod = document.getElementById('paymentMethodSelect') ? document.getElementById('paymentMethodSelect').value : 'CASH';
+
+    const totalBillElem = document.getElementById('billTotal');
+    const totalBill = totalBillElem ? parseInt(totalBillElem.textContent.replace(/[^\d]/g, '')) || 0 : 0;
 
     const newBooking = {
         id: `GP-${Math.floor(1000 + Math.random() * 9000)}`,
@@ -335,7 +384,7 @@ function handleBookingSubmit(event) {
         roomType: roomName,
         checkIn: checkIn,
         checkOut: checkOut,
-        totalBill: parseInt(document.getElementById('billTotal').textContent.replace(/[^\d]/g, '')),
+        totalBill: totalBill,
         paymentMethod: payMethod.toUpperCase(),
         status: 'Checked-In'
     };
@@ -357,7 +406,8 @@ function handleBookingSubmit(event) {
 }
 
 function resetForm() {
-    document.getElementById('reservationForm').reset();
+    const form = document.getElementById('reservationForm');
+    if (form) form.reset();
     calculateBilling();
 }
 
@@ -366,10 +416,15 @@ function refreshDashboard() {
     let totalRev = 0;
     bookings.forEach(b => totalRev += b.totalBill);
 
-    document.getElementById('statTotalBookings').textContent = bookings.length;
-    document.getElementById('statRevenue').textContent = `৳${totalRev.toLocaleString()}`;
-    document.getElementById('statPoolPass').textContent = "12";
-    document.getElementById('statDiningOrders').textContent = "28";
+    const bCount = document.getElementById('statTotalBookings');
+    const revCount = document.getElementById('statRevenue');
+    const poolCount = document.getElementById('statPoolPass');
+    const diningCount = document.getElementById('statDiningOrders');
+
+    if (bCount) bCount.textContent = bookings.length;
+    if (revCount) revCount.textContent = `৳${totalRev.toLocaleString()}`;
+    if (poolCount) poolCount.textContent = "12";
+    if (diningCount) diningCount.textContent = "28";
 
     renderTables();
 }
@@ -377,11 +432,12 @@ function refreshDashboard() {
 function renderTables() {
     const dashBody = document.getElementById('dashboardTableBody');
     const fullBody = document.getElementById('fullBookingsTableBody');
-    dashBody.innerHTML = '';
-    fullBody.innerHTML = '';
 
+    if (!dashBody && !fullBody) return;
+
+    let rowsHTML = '';
     bookings.forEach(b => {
-        const row = `
+        rowsHTML += `
             <tr>
                 <td><img src="${b.guestPhoto}" class="table-img" alt="Guest" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(b.guestName)}'"></td>
                 <td><strong>${b.id}</strong></td>
@@ -393,13 +449,16 @@ function renderTables() {
                 <td><button class="btn-secondary-sm" onclick="printInvoice('${b.id}')"><i class="fa-solid fa-print"></i></button></td>
             </tr>
         `;
-        dashBody.innerHTML += row;
-        fullBody.innerHTML += row;
     });
+
+    if (dashBody) dashBody.innerHTML = rowsHTML;
+    if (fullBody) fullBody.innerHTML = rowsHTML;
 }
 
 function renderFrontDesk() {
     const grid = document.getElementById('frontDeskRoomGrid');
+    if (!grid) return;
+
     grid.innerHTML = roomList.map(r => `
         <div class="room-status-card ${r.status}">
             <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -431,8 +490,9 @@ function updateRoomStatus(roomId, newStatus) {
 
 function renderHousekeeping() {
     const body = document.getElementById('housekeepingTableBody');
-    body.innerHTML = '';
+    if (!body) return;
 
+    body.innerHTML = '';
     let clean = 0, dirty = 0, maint = 0;
 
     roomList.forEach(r => {
@@ -452,13 +512,19 @@ function renderHousekeeping() {
         `;
     });
 
-    document.getElementById('statCleanRooms').textContent = clean;
-    document.getElementById('statDirtyRooms').textContent = dirty;
-    document.getElementById('statMaintRooms').textContent = maint;
+    const cElem = document.getElementById('statCleanRooms');
+    const dElem = document.getElementById('statDirtyRooms');
+    const mElem = document.getElementById('statMaintRooms');
+
+    if (cElem) cElem.textContent = clean;
+    if (dElem) dElem.textContent = dirty;
+    if (mElem) mElem.textContent = maint;
 }
 
 function renderFinance() {
     const body = document.getElementById('financeTableBody');
+    if (!body) return;
+
     body.innerHTML = '';
     let grandRev = 0;
 
@@ -476,8 +542,11 @@ function renderFinance() {
         `;
     });
 
-    document.getElementById('finTotalRev').textContent = `৳${grandRev.toLocaleString()}`;
-    document.getElementById('finTotalInvoices').textContent = bookings.length;
+    const finRev = document.getElementById('finTotalRev');
+    const finInv = document.getElementById('finTotalInvoices');
+
+    if (finRev) finRev.textContent = `৳${grandRev.toLocaleString()}`;
+    if (finInv) finInv.textContent = bookings.length;
 }
 
 function printInvoice(bookingId) {
@@ -485,6 +554,10 @@ function printInvoice(bookingId) {
     if (!b) return;
 
     const modalContent = document.getElementById('modalContent');
+    const detailsModal = document.getElementById('detailsModal');
+
+    if (!modalContent || !detailsModal) return;
+
     modalContent.innerHTML = `
         <div style="text-align:center; padding:10px;">
             <i class="fa-solid fa-crown" style="font-size:2rem; color:var(--gold);"></i>
@@ -507,11 +580,13 @@ function printInvoice(bookingId) {
             <button class="btn-block-gold mt-20" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Document</button>
         </div>
     `;
-    document.getElementById('detailsModal').classList.add('active');
+    detailsModal.classList.add('active');
 }
 
 function renderRooms() {
     const grid = document.getElementById('roomsCardsGrid');
+    if (!grid) return;
+
     grid.innerHTML = roomList.map(r => `
         <div class="custom-card">
             <img src="${r.img}" alt="${r.title}">
@@ -526,6 +601,8 @@ function renderRooms() {
 
 function renderServices() {
     const grid = document.getElementById('servicesCardsGrid');
+    if (!grid) return;
+
     grid.innerHTML = serviceItems.map(s => `
         <div class="custom-card">
             <div class="card-body">
@@ -541,10 +618,12 @@ function renderServices() {
 // --- AUTHENTICATION MODALS ---
 function handleLoginSubmit(e) {
     e.preventDefault();
+    const emailElem = document.getElementById('loginEmail');
+    
     currentUser = {
         role: 'ADMINISTRATOR',
         name: 'MD. EMTIAZ HOSSAIN SAMI',
-        email: document.getElementById('loginEmail').value,
+        email: emailElem ? emailElem.value : 'admin@grandpalace.com',
         photo: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
     };
     updateUserUI();
@@ -552,31 +631,41 @@ function handleLoginSubmit(e) {
 }
 
 function handleGuestLogin() {
-    const fName = document.getElementById('fName').value || 'Guest';
-    const lName = document.getElementById('lName').value || 'User';
+    const fName = document.getElementById('fName') ? document.getElementById('fName').value : 'Guest';
+    const lName = document.getElementById('lName') ? document.getElementById('lName').value : 'User';
+    const email = document.getElementById('email') ? document.getElementById('email').value : 'guest@resort.com';
+    const previewImg = document.getElementById('previewImg') ? document.getElementById('previewImg').src : '';
+
     currentUser = {
         role: 'GUEST',
-        name: `${fName} ${lName}`,
-        email: document.getElementById('email').value || 'guest@resort.com',
-        photo: document.getElementById('previewImg').src
+        name: `${fName} ${lName}`.trim(),
+        email: email,
+        photo: previewImg
     };
     updateUserUI();
     closeLoginModal();
 }
 
 function updateUserUI() {
-    document.getElementById('sidebarUserName').textContent = currentUser.name;
-    document.getElementById('sidebarUserRole').textContent = `Role: ${currentUser.role}`;
-    document.getElementById('sidebarAvatar').src = currentUser.photo;
-    document.getElementById('topbarAvatar').src = currentUser.photo;
+    const nameElem = document.getElementById('sidebarUserName');
+    const roleElem = document.getElementById('sidebarUserRole');
+    const sideAvatar = document.getElementById('sidebarAvatar');
+    const topAvatar = document.getElementById('topbarAvatar');
+
+    if (nameElem) nameElem.textContent = currentUser.name;
+    if (roleElem) roleElem.textContent = `Role: ${currentUser.role}`;
+    if (sideAvatar) sideAvatar.src = currentUser.photo;
+    if (topAvatar) topAvatar.src = currentUser.photo;
 }
 
 function closeLoginModal() {
-    document.getElementById('loginModal').classList.remove('active');
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal) loginModal.classList.remove('active');
 }
 
 function handleAuthButtonClick() {
-    document.getElementById('loginModal').classList.add('active');
+    const loginModal = document.getElementById('loginModal');
+    if (loginModal) loginModal.classList.add('active');
 }
 
 function previewUploadImage(e) {
@@ -584,19 +673,24 @@ function previewUploadImage(e) {
     if (file) {
         const reader = new FileReader();
         reader.onload = (event) => {
-            document.getElementById('previewImg').src = event.target.result;
+            const img = document.getElementById('previewImg');
+            if (img) img.src = event.target.result;
         };
         reader.readAsDataURL(file);
     }
 }
 
 function updateGuestImageFromUrl() {
-    const url = document.getElementById('imgUrlInput').value;
-    if (url) document.getElementById('previewImg').src = url;
+    const urlElem = document.getElementById('imgUrlInput');
+    const previewImg = document.getElementById('previewImg');
+    if (urlElem && previewImg && urlElem.value) {
+        previewImg.src = urlElem.value;
+    }
 }
 
 function closeModal() {
-    document.getElementById('detailsModal').classList.remove('active');
+    const detailsModal = document.getElementById('detailsModal');
+    if (detailsModal) detailsModal.classList.remove('active');
 }
 
 function closeModalOnOutsideClick(e) {
