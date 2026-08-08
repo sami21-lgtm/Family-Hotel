@@ -2,7 +2,7 @@
 // GRAND PALACE RESORT & SPA - SCRIPT
 // ==========================================
 
-let currentRole = 'admin'; // admin, guest, frontdesk, etc.
+let currentRole = 'admin'; // admin, guest, frontdesk, housekeeping, etc.
 let isStaffAuthenticated = true;
 
 let currentUser = {
@@ -12,6 +12,7 @@ let currentUser = {
     avatar: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
 };
 
+// ROOM DATA matching Image 1
 let roomList = [
     {
         id: "101",
@@ -60,22 +61,6 @@ let roomList = [
         status: "occupied",
         img: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=500",
         desc: "Multi-bedroom suite for families."
-    },
-    {
-        id: "501",
-        title: "Presidential VIP Suite",
-        price: 35000,
-        status: "available",
-        img: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=500",
-        desc: "VIP suite with private lounge."
-    },
-    {
-        id: "601",
-        title: "Royal Palace Villa",
-        price: 50000,
-        status: "available",
-        img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500",
-        desc: "Private villa with infinity pool."
     }
 ];
 
@@ -93,20 +78,6 @@ let bookings = [
         paymentMethod: "BKASH",
         status: "Checked-In",
         avatar: "https://ui-avatars.com/api/?name=Arif+Chowdhury&background=c5a880&color=fff"
-    },
-    {
-        id: "GP-8802",
-        guestName: "Sultana Rahman",
-        guestEmail: "sultana@example.com",
-        guestPhone: "+8801822223344",
-        roomNumber: "102",
-        roomType: "Single Executive Room",
-        checkIn: "2026-08-06",
-        checkOut: "2026-08-08",
-        totalBill: 2000,
-        paymentMethod: "SSLCOMMERZ",
-        status: "Confirmed",
-        avatar: "https://ui-avatars.com/api/?name=Sultana+Rahman&background=c5a880&color=fff"
     }
 ];
 
@@ -117,13 +88,6 @@ let guests = [
         email: "arif@example.com",
         phone: "+8801711112233",
         avatar: "https://ui-avatars.com/api/?name=Arif+Chowdhury&background=c5a880&color=fff"
-    },
-    {
-        id: "G-102",
-        name: "Sultana Rahman",
-        email: "sultana@example.com",
-        phone: "+8801822223344",
-        avatar: "https://ui-avatars.com/api/?name=Sultana+Rahman&background=c5a880&color=fff"
     }
 ];
 
@@ -204,7 +168,7 @@ function renderAll() {
 }
 
 // ==========================================
-// BROWSE ROOMS (GUEST vs ADMIN DYNAMIC VIEW)
+// BROWSE ROOMS (ADMIN vs GUEST LOGIC)
 // ==========================================
 
 function renderRooms() {
@@ -227,27 +191,51 @@ function renderRooms() {
             statusClass = 'badge-gold';
         }
 
-        // ADMIN ONLY CONTROLS (Price Edit & Status Toggle Buttons)
-        const adminControls = isAdmin ? `
-            <div class="admin-room-controls" style="display: flex; gap: 6px;">
-                <button type="button" class="btn-secondary-sm" onclick="editRoomPrice('${escapeHTML(room.id)}')">
-                    <i class="fa-solid fa-pen"></i> Price
-                </button>
-                <button type="button" class="btn-secondary-sm" onclick="toggleRoomStatus('${escapeHTML(room.id)}')">
-                    <i class="fa-solid fa-rotate"></i> Status
-                </button>
-            </div>
-        ` : '';
+        let footerControls = '';
 
-        // GUEST ONLY BOOKING BUTTON (No Price or Status edit allowed for Guest)
-        const guestBookingButton = !isAdmin ? `
-            <div class="guest-room-controls" style="width:100%; margin-top:12px;">
-                <button type="button" class="btn-primary" style="width:100%;" onclick="bookRoomFromBrowse('${escapeHTML(room.id)}')" ${room.status !== 'available' ? 'disabled' : ''}>
-                    <i class="fa-solid fa-calendar-check"></i>
-                    ${room.status === 'available' ? 'Book This Room (৳' + room.price.toLocaleString() + ')' : 'Not Available'}
-                </button>
-            </div>
-        ` : '';
+        if (isAdmin) {
+            // ADMIN VIEW: Displays Status Badge, Price, Price Button, Status Button (Exact like Image 1)
+            footerControls = `
+                <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:10px; margin-top:10px;">
+                    <strong style="font-size:1.1rem; color:var(--gold);">
+                        ৳${room.price.toLocaleString()}<small style="font-size:0.75rem; color:var(--text-muted);">/night</small>
+                    </strong>
+                    <div class="admin-room-controls" style="display:flex; gap:6px;">
+                        <button type="button" class="btn-secondary-sm" onclick="editRoomPrice('${escapeHTML(room.id)}')">
+                            <i class="fa-solid fa-pen"></i> Price
+                        </button>
+                        <button type="button" class="btn-secondary-sm" onclick="toggleRoomStatus('${escapeHTML(room.id)}')">
+                            <i class="fa-solid fa-rotate"></i> Status
+                        </button>
+                    </div>
+                </div>
+            `;
+        } else {
+            // GUEST VIEW: Same photo & details, displays Price, but NO Price/Status Edit buttons.
+            // Shows "Book This Room" if available, else "Not Available"
+            const isAvailable = (room.status === 'available');
+
+            footerControls = `
+                <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:10px; margin-top:10px;">
+                    <strong style="font-size:1.1rem; color:var(--gold);">
+                        ৳${room.price.toLocaleString()}<small style="font-size:0.75rem; color:var(--text-muted);">/night</small>
+                    </strong>
+                </div>
+                <div style="margin-top:10px;">
+                    ${isAvailable ? `
+                        <button type="button" class="btn-primary" style="width:100%;" onclick="bookRoomFromBrowse('${escapeHTML(room.id)}')">
+                            <i class="fa-solid fa-calendar-check"></i> Book This Room
+                        </button>
+                    ` : `
+                        <button type="button" class="btn-disabled" style="width:100%;" disabled>
+                            <i class="fa-solid fa-ban"></i> Not Available
+                        </button>
+                    `}
+                </div>
+            `;
+        }
+
+        const statusBadgeHTML = isAdmin ? `<span class="badge ${statusClass}">${escapeHTML(room.status.toUpperCase())}</span>` : '';
 
         return `
             <div class="room-card">
@@ -258,21 +246,13 @@ function renderRooms() {
                 <div style="padding:15px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; gap:8px;">
                         <h4 style="color:var(--gold);margin:0;">Room ${escapeHTML(room.id)}</h4>
-                        <span class="badge ${statusClass}">${escapeHTML(room.status.toUpperCase())}</span>
+                        ${statusBadgeHTML}
                     </div>
 
                     <h5 style="margin:0 0 8px 0; font-size:1rem; color:var(--text-main);">${escapeHTML(room.title)}</h5>
-                    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:12px; min-height:36px;">${escapeHTML(room.desc)}</p>
+                    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:10px; min-height:36px;">${escapeHTML(room.desc)}</p>
 
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:10px; gap:10px; flex-wrap:wrap;">
-                        <strong style="font-size:1.1rem; color:var(--gold);">
-                            ৳${room.price.toLocaleString()}
-                            <small style="font-size:0.75rem;">/night</small>
-                        </strong>
-                        ${adminControls}
-                    </div>
-
-                    ${guestBookingButton}
+                    ${footerControls}
                 </div>
             </div>
         `;
@@ -323,7 +303,6 @@ function handleStaffLogin(event) {
         };
 
         switchUserRole('admin');
-        alert('Welcome Back, Admin!');
         return true;
     } else {
         alert('❌ Invalid Credentials!\nUse admin@grandpalace.com / admin123');
@@ -352,7 +331,6 @@ function handleGuestLoginSubmit(event) {
     if (loginModal) loginModal.classList.remove('active');
 
     switchUserRole('guest');
-    alert('🎉 Welcome ' + name + '!');
     return true;
 }
 
@@ -381,8 +359,6 @@ function switchUserRole(role) {
 
     if (role === 'guest') {
         switchTab('tabRooms');
-    } else {
-        switchTab('tabDashboard');
     }
 }
 
@@ -520,11 +496,7 @@ function handleBookingSubmit(event) {
     alert('🎉 Booking Confirmed Successfully!\nInvoice ID: ' + bookings[0].id);
     resetForm();
 
-    if (currentRole === 'guest') {
-        switchTab('tabRooms');
-    } else {
-        switchTab('tabDashboard');
-    }
+    switchTab('tabRooms');
     return true;
 }
 
@@ -535,7 +507,7 @@ function handleBookingSubmit(event) {
 function promptAddNewRoom() {
     if (currentRole !== 'admin') return;
 
-    const id = prompt('Enter Room ID (e.g. 701):');
+    const id = prompt('Enter Room ID (e.g. 302):');
     if (!id) return;
     const title = prompt('Enter Room Title:');
     if (!title) return;
