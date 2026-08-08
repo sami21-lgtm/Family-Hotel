@@ -60,17 +60,40 @@ let serviceItems = [
     { id: "s6", name: "VIP Fitness & Gym Pass", price: 400, category: "Gym", icon: "fa-dumbbell", image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500" }
 ];
 
-// Helper: Text Escaping
+// Helper: Text Escaping (Prevents XSS Injection)
 function escapeHTML(str) {
     if (!str) return '';
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Helper: Set Default Dates to Input Fields
+function setupDefaultDates() {
+    const today = new Date().toISOString().split('T')[0];
+    const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+
+    ['checkIn', 'guestCheckIn'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = today;
+    });
+
+    ['checkOut', 'guestCheckOut'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = tomorrow;
+    });
+}
+
+// Helper: Calculate Night Count Accurately
+function getNightsBetween(checkInStr, checkOutStr) {
+    if (!checkInStr || !checkOutStr) return 1;
+    const diffTime = new Date(checkOutStr) - new Date(checkInStr);
+    const diffDays = Math.round(diffTime / (1000 * 3600 * 24));
+    return diffDays > 0 ? diffDays : 1;
 }
 
 // ==========================================
 // 2. PORTAL SWITCHER & PASSWORD SECURITY
 // ==========================================
 function setAppMode(mode) {
-    // Staff Portal Requires Password Verification (Diagram Matching)
     if (mode === 'staff' && !isStaffAuthenticated) {
         const inputPass = prompt("🔒 STAFF PORTAL LOGIN\nPlease enter Admin/Staff Password:");
         if (inputPass === STAFF_DEFAULT_PASS) {
@@ -78,7 +101,7 @@ function setAppMode(mode) {
             alert("✅ Login Successful! Accessing Staff/Admin Portal.");
         } else {
             alert("❌ Access Denied! Incorrect Password.");
-            return; // Block Switching
+            return;
         }
     }
 
@@ -106,8 +129,13 @@ function setAppMode(mode) {
 
 function staffLogout() {
     isStaffAuthenticated = false;
-    alert("🔒 Staff Logged Out.");
+    alert("🔒 Staff Logged Out Successfully.");
     setAppMode('guest');
+}
+
+function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'bn' : 'en';
+    alert(`🌐 Language switched to: ${currentLang.toUpperCase()}`);
 }
 
 // ==========================================
@@ -117,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
     populateRoomDropdown();
     populateGuestRoomDropdown();
     renderGuestServicesOptions();
+    renderStaffServicesOptions();
     renderRooms();
     renderServices();
     renderFrontDesk();
@@ -124,15 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderFinance();
     refreshDashboard();
 
-    // Default Dates Setup
-    const today = new Date().toISOString().split('T')[0];
-    const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
-
-    if (document.getElementById('checkIn')) document.getElementById('checkIn').value = today;
-    if (document.getElementById('checkOut')) document.getElementById('checkOut').value = tomorrow;
-    if (document.getElementById('guestCheckIn')) document.getElementById('guestCheckIn').value = today;
-    if (document.getElementById('guestCheckOut')) document.getElementById('guestCheckOut').value = tomorrow;
-
+    setupDefaultDates();
     calculateBilling();
     calculateGuestBilling();
 
@@ -153,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// 4. GUEST PORTAL: ROOMS, MENUS & BOOKING
+// 4. GUEST & SERVICES RENDERING
 // ==========================================
 function renderRooms() {
     const container = document.getElementById('roomsContainer');
@@ -235,18 +256,28 @@ function renderGuestServicesOptions() {
     `).join('');
 }
 
+function renderStaffServicesOptions() {
+    const container = document.getElementById('staffServicesContainer');
+    if (!container) return;
+
+    container.innerHTML = serviceItems.map(s => `
+        <label style="display:flex; align-items:center; justify-content:space-between; padding:8px 12px; border:1px solid #eee; border-radius:6px; margin-bottom:6px; cursor:pointer; background:#fafafa;">
+            <div>
+                <input type="checkbox" class="staff-addon-checkbox" value="${s.price}" data-name="${escapeHTML(s.name)}" onchange="calculateBilling()">
+                <span style="font-weight:600; margin-left:8px;">${escapeHTML(s.name)}</span>
+            </div>
+            <span style="color:#27ae60; font-weight:bold;">৳${s.price.toLocaleString()}</span>
+        </label>
+    `).join('');
+}
+
 // Live Fee Breakdown Calculator (Guest Portal)
 function calculateGuestBilling() {
     const checkIn = document.getElementById('guestCheckIn')?.value;
     const checkOut = document.getElementById('guestCheckOut')?.value;
     const roomSelect = document.getElementById('guestRoomSelect')?.value;
 
-    let nights = 1;
-    if (checkIn && checkOut) {
-        const diff = (new Date(checkOut) - new Date(checkIn)) / (1000 * 3600 * 24);
-        nights = diff > 0 ? diff : 1;
-    }
-
+    const nights = getNightsBetween(checkIn, checkOut);
     let roomPrice = roomSelect ? parseFloat(roomSelect.split('|')[2]) || 0 : 0;
     let roomTotal = roomPrice * nights;
     let addonsTotal = 0;
@@ -261,6 +292,8 @@ function calculateGuestBilling() {
     if (document.getElementById('guestCalcRoomCharge')) document.getElementById('guestCalcRoomCharge').textContent = `৳${roomTotal.toLocaleString()}`;
     if (document.getElementById('guestCalcAddons')) document.getElementById('guestCalcAddons').textContent = `৳${addonsTotal.toLocaleString()}`;
     if (document.getElementById('guestCalcGrandTotal')) document.getElementById('guestCalcGrandTotal').textContent = `৳${grandTotal.toLocaleString()}`;
+
+    return grandTotal;
 }
 
 // Direct Guest Booking Confirmation
@@ -272,12 +305,12 @@ function handleGuestBookingSubmit(e) {
     const checkOut = document.getElementById('guestCheckOut')?.value;
 
     if (!roomSelect) {
-        alert("Please select a room!");
+        alert("⚠️ Please select a room before booking!");
         return;
     }
 
     const [roomId, roomTitle] = roomSelect.split('|');
-    const grandTotalText = document.getElementById('guestCalcGrandTotal')?.textContent.replace(/[^0-9]/g, '') || 0;
+    const totalBillCalculated = calculateGuestBilling();
 
     const newBooking = {
         id: `GP-${Math.floor(1000 + Math.random() * 9000)}`,
@@ -286,7 +319,7 @@ function handleGuestBookingSubmit(e) {
         roomType: roomTitle,
         checkIn: checkIn,
         checkOut: checkOut,
-        totalBill: parseInt(grandTotalText),
+        totalBill: totalBillCalculated,
         paymentMethod: "ONLINE_CONFIRMED",
         status: "Confirmed"
     };
@@ -297,6 +330,7 @@ function handleGuestBookingSubmit(e) {
     const room = roomList.find(r => r.id === roomId);
     if (room) room.status = "occupied";
 
+    // Refresh UI & Controls
     populateRoomDropdown();
     populateGuestRoomDropdown();
     renderRooms();
@@ -305,7 +339,10 @@ function handleGuestBookingSubmit(e) {
     refreshDashboard();
 
     alert(`🎉 Direct Booking Confirmed!\nBooking ID: ${newBooking.id}\nGuest: ${guestName}\nTotal Bill: ৳${newBooking.totalBill.toLocaleString()}`);
+
+    // Reset Form & Dates
     document.getElementById('guestBookingForm')?.reset();
+    setupDefaultDates();
     calculateGuestBilling();
 }
 
@@ -341,7 +378,7 @@ function renderHousekeeping() {
 
     container.innerHTML = dirtyRooms.map(r => `
         <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:#fff; border:1px solid #ddd; border-radius:6px; margin-bottom:8px;">
-            <span><b>Room ${r.id}</b> - Clean Needed</span>
+            <span><b>Room ${r.id}</b> - Needs Cleaning</span>
             <button onclick="toggleRoomStatus('${r.id}')" style="background:#27ae60; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Mark Cleaned</button>
         </div>
     `).join('');
@@ -414,7 +451,7 @@ function toggleRoomStatus(roomId) {
     if (!room) return;
     const statuses = ['available', 'occupied', 'dirty', 'maintenance'];
     room.status = statuses[(statuses.indexOf(room.status) + 1) % statuses.length];
-    
+
     populateRoomDropdown();
     populateGuestRoomDropdown();
     renderRooms();
@@ -425,7 +462,7 @@ function toggleRoomStatus(roomId) {
 }
 
 // ==========================================
-// 6. ADMIN INVENTORY MANAGEMENT FUNCTIONS
+// 6. ADMIN INVENTORY MANAGEMENT
 // ==========================================
 function promptAddNewRoom() {
     const id = prompt("Enter Room Number / ID (e.g. 701):");
@@ -439,10 +476,10 @@ function promptAddNewRoom() {
 
     const desc = prompt("Enter Room Description:") || "Standard luxury room.";
 
-    if (id && title && !isNaN(price)) {
+    if (id && title && !isNaN(price) && price >= 0) {
         roomList.push({
-            id: id,
-            title: title,
+            id: id.trim(),
+            title: title.trim(),
             price: price,
             status: "available",
             img: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=500",
@@ -455,7 +492,7 @@ function promptAddNewRoom() {
         renderFrontDesk();
         alert(`✅ Room ${id} added successfully!`);
     } else {
-        alert("❌ Invalid input! Please provide valid details.");
+        alert("❌ Invalid input! Please provide valid room details.");
     }
 }
 
@@ -479,19 +516,14 @@ function editRoomPrice(roomId) {
 }
 
 // ==========================================
-// 7. STAFF REAL-TIME CALCULATOR & BOOKING HANDLERS
+// 7. STAFF CALCULATOR & BOOKING HANDLERS
 // ==========================================
 function calculateBilling() {
     const checkIn = document.getElementById('checkIn')?.value;
     const checkOut = document.getElementById('checkOut')?.value;
     const roomSelect = document.getElementById('roomTypeSelect')?.value;
 
-    let nights = 1;
-    if (checkIn && checkOut) {
-        const diff = (new Date(checkOut) - new Date(checkIn)) / (1000 * 3600 * 24);
-        nights = diff > 0 ? diff : 1;
-    }
-
+    const nights = getNightsBetween(checkIn, checkOut);
     let roomPrice = roomSelect ? parseFloat(roomSelect.split('|')[2]) || 0 : 0;
     let roomTotal = roomPrice * nights;
     let addonsTotal = 0;
@@ -506,6 +538,8 @@ function calculateBilling() {
     if (document.getElementById('calcRoomCharge')) document.getElementById('calcRoomCharge').textContent = `৳${roomTotal.toLocaleString()}`;
     if (document.getElementById('calcAddons')) document.getElementById('calcAddons').textContent = `৳${addonsTotal.toLocaleString()}`;
     if (document.getElementById('calcGrandTotal')) document.getElementById('calcGrandTotal').textContent = `৳${grandTotal.toLocaleString()}`;
+
+    return grandTotal;
 }
 
 function handleBookingSubmit(e) {
@@ -517,12 +551,12 @@ function handleBookingSubmit(e) {
     const gateway = document.getElementById('paymentGateway')?.value || "CASH";
 
     if (!roomSelect) {
-        alert("Please select a room!");
+        alert("⚠️ Please select a room!");
         return;
     }
 
     const [roomId, roomTitle] = roomSelect.split('|');
-    const grandTotalText = document.getElementById('calcGrandTotal')?.textContent.replace(/[^0-9]/g, '') || 0;
+    const totalBillCalculated = calculateBilling();
 
     const newBooking = {
         id: `GP-${Math.floor(1000 + Math.random() * 9000)}`,
@@ -531,7 +565,7 @@ function handleBookingSubmit(e) {
         roomType: roomTitle,
         checkIn: checkIn,
         checkOut: checkOut,
-        totalBill: parseInt(grandTotalText),
+        totalBill: totalBillCalculated,
         paymentMethod: gateway,
         status: "Confirmed"
     };
@@ -542,6 +576,7 @@ function handleBookingSubmit(e) {
     const room = roomList.find(r => r.id === roomId);
     if (room) room.status = "occupied";
 
+    // Refresh UI & Controls
     populateRoomDropdown();
     populateGuestRoomDropdown();
     renderRooms();
@@ -550,6 +585,9 @@ function handleBookingSubmit(e) {
     refreshDashboard();
 
     alert(`✅ Staff Reservation Confirmed!\nBooking ID: ${newBooking.id}\nGuest Name: ${guestName}\nTotal Bill: ৳${newBooking.totalBill.toLocaleString()}`);
+
+    // Reset Form & Restore Default Dates
     document.getElementById('reservationForm')?.reset();
+    setupDefaultDates();
     calculateBilling();
 }
