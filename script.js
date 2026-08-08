@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initClock();
     setupDefaultDates();
     populateRoomDropdown();
-    
+
     // Initial Render
     renderAll();
     calculateTotal();
@@ -92,6 +92,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (resForm) {
         resForm.addEventListener('change', calculateTotal);
         resForm.addEventListener('input', calculateTotal);
+    }
+
+    // --- STAFF LOGIN: robust wiring (form submit + button click fallback) ---
+    const staffForm = document.getElementById('staffLoginForm');
+    if (staffForm) {
+        staffForm.addEventListener('submit', handleStaffLogin);
+    }
+    const staffLoginBtn = document.getElementById('staffLoginSubmitBtn');
+    if (staffLoginBtn) {
+        staffLoginBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            handleStaffLogin(e);
+        });
+    }
+    // Allow pressing Enter inside password field to submit even if focus issues occur
+    const staffPassField = document.getElementById('loginPasswordInput');
+    if (staffPassField) {
+        staffPassField.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleStaffLogin(e);
+            }
+        });
     }
 });
 
@@ -151,12 +174,15 @@ function switchAuthForm(type) {
     }
 }
 
-// ২. Admin (Staff) Login হ্যান্ডেল করার ফাংশন
+// ২. Admin (Staff) Login হ্যান্ডেল করার ফাংশন (FIXED: correctly checks email + password)
 function handleStaffLogin(event) {
     if (event) event.preventDefault();
 
-    const email = document.getElementById('loginEmail')?.value.trim();
-    const password = document.getElementById('loginPasswordInput')?.value.trim();
+    const emailField = document.getElementById('loginEmail');
+    const passField = document.getElementById('loginPasswordInput');
+
+    const email = emailField ? emailField.value.trim() : '';
+    const password = passField ? passField.value.trim() : '';
 
     const ADMIN_EMAIL = "admin@grandpalace.com";
     const ADMIN_PASS = "admin123";
@@ -166,7 +192,8 @@ function handleStaffLogin(event) {
         return;
     }
 
-    if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
+    // Case-insensitive email check, exact password check
+    if (email.toLowerCase() === ADMIN_EMAIL.toLowerCase() && password === ADMIN_PASS) {
         isStaffAuthenticated = true;
         document.body.classList.remove('logged-out');
 
@@ -181,23 +208,8 @@ function handleStaffLogin(event) {
         if (roleEl) roleEl.innerText = "Role: ADMINISTRATOR";
 
         alert("Welcome Back, Admin!");
-    } else if (email !== "" && password !== "") {
-        isStaffAuthenticated = true;
-        document.body.classList.remove('logged-out');
-
-        const loginModal = document.getElementById('loginModal');
-        if (loginModal) loginModal.classList.remove('active');
-
-        switchUserRole('admin');
-
-        const nameEl = document.getElementById('sidebarUserName');
-        const roleEl = document.getElementById('sidebarUserRole');
-        if (nameEl) nameEl.innerText = email;
-        if (roleEl) roleEl.innerText = "Role: ADMINISTRATOR";
-
-        alert("Welcome Back, Staff Admin!");
     } else {
-        alert("Invalid credentials! Please enter valid email and password.");
+        alert("❌ Invalid credentials! Please use:\nEmail: admin@grandpalace.com\nPassword: admin123");
     }
 }
 
