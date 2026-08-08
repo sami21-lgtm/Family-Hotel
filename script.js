@@ -3,7 +3,6 @@
 // ==========================================
 let currentRole = 'admin'; // 'admin', 'frontdesk', 'housekeeping', 'finance', 'guest'
 let isStaffAuthenticated = false;
-const STAFF_DEFAULT_PASS = "admin123";
 
 let currentUser = {
     role: 'ADMINISTRATOR',
@@ -131,66 +130,84 @@ function renderAll() {
 // ==========================================
 // 3. AUTHENTICATION & ROLE MANAGEMENT
 // ==========================================
+
+// ১. Guest এবং Staff Login ফর্মের মধ্যে সুইচ করার ফাংশন
 function switchAuthForm(type) {
     const guestForm = document.getElementById('guestLoginForm');
     const staffForm = document.getElementById('staffLoginForm');
     const btnGuest = document.getElementById('btnGuestAuth');
     const btnStaff = document.getElementById('btnStaffAuth');
 
-    if (type === 'guest') {
+    if (type === 'staff') {
+        if (guestForm) guestForm.style.display = 'none';
+        if (staffForm) staffForm.style.display = 'block';
+        if (btnGuest) btnGuest.classList.remove('active');
+        if (btnStaff) btnStaff.classList.add('active');
+    } else {
         if (guestForm) guestForm.style.display = 'block';
         if (staffForm) staffForm.style.display = 'none';
         if (btnGuest) btnGuest.classList.add('active');
         if (btnStaff) btnStaff.classList.remove('active');
-    } else {
-        if (guestForm) guestForm.style.display = 'none';
-        if (staffForm) staffForm.style.display = 'block';
-        if (btnStaff) btnStaff.classList.add('active');
-        if (btnGuest) btnGuest.classList.remove('active');
     }
 }
 
-// UPDATED STAFF LOGIN FUNCTION WITH EMAIL & PASSWORD VALIDATION
+// ২. Admin (Staff) Login হ্যান্ডেল করার ফাংশন
 function handleStaffLogin(event) {
     if (event) event.preventDefault();
 
-    const emailInput = document.getElementById('staffEmailInput')?.value || document.getElementById('loginEmailInput')?.value || '';
-    const passInput = document.getElementById('loginPasswordInput')?.value;
-    const roleSelect = document.getElementById('staffRoleSelect')?.value || 'admin';
+    const email = document.getElementById('loginEmail')?.value.trim();
+    const password = document.getElementById('loginPasswordInput')?.value.trim();
 
-    // Validate Email Entry
-    if (!emailInput.trim()) {
-        alert("⚠️ Please enter your Staff Email!");
+    const ADMIN_EMAIL = "admin@grandpalace.com";
+    const ADMIN_PASS = "admin123";
+
+    if (!email || !password) {
+        alert("Please enter both Email and Password!");
         return;
     }
 
-    // Validate Password Entry
-    if (passInput === STAFF_DEFAULT_PASS) {
+    if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
         isStaffAuthenticated = true;
         document.body.classList.remove('logged-out');
-
-        currentUser = {
-            role: roleSelect.toUpperCase(),
-            name: "MD. EMTIAZ HOSSAIN SAMI",
-            email: emailInput.trim(),
-            avatar: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
-        };
 
         const loginModal = document.getElementById('loginModal');
         if (loginModal) loginModal.classList.remove('active');
 
-        switchUserRole(roleSelect);
-        alert(`✅ Welcome Staff! Logged in as ${currentUser.email} (${roleSelect.toUpperCase()}).`);
+        switchUserRole('admin');
+
+        const nameEl = document.getElementById('sidebarUserName');
+        const roleEl = document.getElementById('sidebarUserRole');
+        if (nameEl) nameEl.innerText = "MD. EMTIAZ HOSSAIN SAMI";
+        if (roleEl) roleEl.innerText = "Role: ADMINISTRATOR";
+
+        alert("Welcome Back, Admin!");
+    } else if (email !== "" && password !== "") {
+        isStaffAuthenticated = true;
+        document.body.classList.remove('logged-out');
+
+        const loginModal = document.getElementById('loginModal');
+        if (loginModal) loginModal.classList.remove('active');
+
+        switchUserRole('admin');
+
+        const nameEl = document.getElementById('sidebarUserName');
+        const roleEl = document.getElementById('sidebarUserRole');
+        if (nameEl) nameEl.innerText = email;
+        if (roleEl) roleEl.innerText = "Role: ADMINISTRATOR";
+
+        alert("Welcome Back, Staff Admin!");
     } else {
-        alert("❌ Incorrect Password! (Default Password: admin123)");
+        alert("Invalid credentials! Please enter valid email and password.");
     }
 }
 
+// ৩. Guest Login হ্যান্ডেল করার ফাংশন
 function handleGuestLoginSubmit(event) {
     if (event) event.preventDefault();
-    const name = document.getElementById('guestAuthName')?.value || "Valued Guest";
-    const email = document.getElementById('guestAuthEmail')?.value || "";
-    const phone = document.getElementById('guestAuthPhone')?.value || "";
+
+    const name = document.getElementById('guestAuthName')?.value.trim() || "Valued Guest";
+    const email = document.getElementById('guestAuthEmail')?.value.trim() || "";
+    const phone = document.getElementById('guestAuthPhone')?.value.trim() || "";
     const previewImg = document.getElementById('guestAuthPreviewImg')?.src;
 
     currentUser = {
@@ -205,30 +222,42 @@ function handleGuestLoginSubmit(event) {
     if (loginModal) loginModal.classList.remove('active');
 
     switchUserRole('guest');
+
+    const nameEl = document.getElementById('sidebarUserName');
+    const roleEl = document.getElementById('sidebarUserRole');
+    if (nameEl) nameEl.innerText = name;
+    if (roleEl) roleEl.innerText = "Role: GUEST";
+
     alert(`🎉 Welcome ${name} to Grand Palace Resort & Spa!`);
 }
 
+// ৪. রোল অনুযায়ী সাইডবার ও ড্যাশবোর্ড ফিল্টার করার ফাংশন
 function switchUserRole(role) {
     currentRole = role;
 
-    // Update Profile UI
-    const nameEl = document.getElementById('sidebarUserName');
-    const roleEl = document.getElementById('sidebarUserRole');
-    const roleSelector = document.getElementById('roleSelector');
+    const selector = document.getElementById('roleSelector');
+    if (selector) selector.value = role;
 
-    if (roleSelector) roleSelector.value = role;
+    // নেভিগেশন আইটেম ফিল্টারিং
+    document.querySelectorAll('.nav-item').forEach(item => {
+        if (role === 'admin') {
+            item.style.display = 'flex';
+        } else if (item.classList.contains(`role-${role}`)) {
+            item.style.display = 'flex';
+        } else {
+            item.style.display = 'none';
+        }
+    });
 
+    // রোল অনুযায়ী ট্যাব সুইচ
     if (role === 'guest') {
-        if (nameEl) nameEl.textContent = currentUser.name || "GUEST USER";
-        if (roleEl) roleEl.textContent = "Role: PUBLIC GUEST";
         switchTab('tabRooms');
     } else {
-        if (nameEl) nameEl.textContent = currentUser.name || "MD. EMTIAZ HOSSAIN SAMI";
-        if (roleEl) roleEl.textContent = `Role: ${role.toUpperCase()}`;
         switchTab('tabDashboard');
     }
 }
 
+// ৫. লগআউট করার ফাংশন
 function logoutUser() {
     isStaffAuthenticated = false;
     document.body.classList.add('logged-out');
