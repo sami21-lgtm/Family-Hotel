@@ -11,11 +11,8 @@
 
     <title>Grand Palace Resort & Spa</title>
 
-
     <!-- Google Fonts -->
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link
         rel="preconnect"
         href="https://fonts.gstatic.com"
@@ -25,16 +22,12 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
-
     <!-- Font Awesome -->
-
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-
     <!-- External CSS -->
-
     <link
         rel="stylesheet"
         href="style.css">
@@ -42,7 +35,7 @@
 </head>
 
 
-<body>
+<body class="role-admin">
 
 
 <!-- =========================================================
@@ -58,9 +51,7 @@
 
     <div class="modal-content auth-card">
 
-
         <!-- Brand -->
-
         <div class="brand-header text-center mb-10">
 
             <i class="fa-solid fa-crown brand-icon"></i>
@@ -81,10 +72,13 @@
         </div>
 
 
-        <!-- Auth Portal Switcher -->
+        <!-- =====================================================
+             AUTH PORTAL SWITCHER
+        ====================================================== -->
 
         <div class="auth-tabs-toggle mt-15 mb-15">
 
+            <!-- Guest -->
             <button
                 type="button"
                 id="btnGuestAuth"
@@ -100,6 +94,7 @@
             </button>
 
 
+            <!-- Staff -->
             <button
                 type="button"
                 id="btnStaffAuth"
@@ -126,7 +121,6 @@
             onsubmit="handleGuestLoginSubmit(event)"
             class="mt-10">
 
-
             <h4
                 data-i18n="guestLoginHead"
                 class="text-center">
@@ -140,13 +134,12 @@
 
                 <i class="fa-solid fa-circle-check"></i>
 
-                Public Access - Browse Rooms & Direct Booking
+                Public Access - Direct Booking & Menu View
 
             </p>
 
 
-            <!-- Guest Name -->
-
+            <!-- Name -->
             <div class="form-group mt-10">
 
                 <label
@@ -167,8 +160,7 @@
             </div>
 
 
-            <!-- Guest Email -->
-
+            <!-- Email -->
             <div class="form-group mt-10">
 
                 <label
@@ -189,8 +181,7 @@
             </div>
 
 
-            <!-- Guest Phone -->
-
+            <!-- Phone -->
             <div class="form-group mt-10">
 
                 <label
@@ -211,8 +202,7 @@
             </div>
 
 
-            <!-- Guest Photo URL -->
-
+            <!-- Photo URL -->
             <div class="form-group mt-10">
 
                 <label
@@ -232,8 +222,7 @@
             </div>
 
 
-            <!-- Guest Photo Upload -->
-
+            <!-- Photo Upload -->
             <div class="form-group mt-10">
 
                 <label
@@ -267,8 +256,7 @@
             </div>
 
 
-            <!-- Guest Continue -->
-
+            <!-- Guest Submit -->
             <button
                 type="submit"
                 class="btn-block-gold mt-15">
@@ -276,9 +264,7 @@
                 <i class="fa-solid fa-right-to-bracket"></i>
 
                 <span data-i18n="btnContinueGuest">
-
                     Continue to Guest Portal
-
                 </span>
 
             </button>
@@ -287,15 +273,14 @@
 
 
         <!-- =====================================================
-             STAFF ADMIN LOGIN
+             STAFF / ADMIN LOGIN
         ====================================================== -->
 
         <form
             id="staffLoginForm"
             onsubmit="handleStaffLogin(event)"
             class="mt-10"
-            style="display: none;">
-
+            style="display:none;">
 
             <h4
                 data-i18n="staffLoginHead"
@@ -315,8 +300,7 @@
             </p>
 
 
-            <!-- Staff Email -->
-
+            <!-- ADMIN EMAIL -->
             <div class="form-group mt-10">
 
                 <label
@@ -338,8 +322,7 @@
             </div>
 
 
-            <!-- Staff Password -->
-
+            <!-- ADMIN PASSWORD -->
             <div class="form-group mt-10">
 
                 <label
@@ -361,21 +344,22 @@
             </div>
 
 
+            <!-- DEFAULT ADMIN INFO -->
             <div class="text-center mt-5">
 
                 <small>
 
                     Default Admin:
-                    admin@grandpalace.com |
-                    admin123
+                    <strong>admin@grandpalace.com</strong>
+                    |
+                    <strong>admin123</strong>
 
                 </small>
 
             </div>
 
 
-            <!-- Login -->
-
+            <!-- ADMIN LOGIN BUTTON -->
             <button
                 type="submit"
                 id="staffLoginSubmitBtn"
@@ -394,16 +378,14 @@
 </div>
 
 
-
 <!-- =========================================================
-     MAIN APPLICATION
+     MAIN APP
 ========================================================= -->
 
 <div class="app-container">
 
 
-    <!-- Sidebar Overlay -->
-
+    <!-- Mobile Overlay -->
     <div
         id="sidebarOverlay"
         onclick="toggleSidebar(false)">
@@ -417,34 +399,23 @@
     <aside id="sidebar">
 
 
-        <!-- =================================================
-             BRAND
-        ================================================== -->
-
+        <!-- Brand -->
         <div class="brand-header">
 
             <i class="fa-solid fa-crown brand-icon"></i>
 
             <h1 data-i18n="brand">
-
                 GRAND PALACE
-
             </h1>
 
             <p data-i18n="subbrand">
-
                 RESORT & SPA
-
             </p>
 
         </div>
 
 
-
-        <!-- =================================================
-             USER PROFILE
-        ================================================== -->
-
+        <!-- User Profile -->
         <div class="user-profile-card">
 
             <img
@@ -454,19 +425,14 @@
                 class="avatar-img vibrant-img"
                 onerror="this.src='https://ui-avatars.com/api/?name=Admin&background=c5a880&color=fff'">
 
-
             <div class="user-info">
 
                 <h4 id="sidebarUserName">
-
                     MD. EMTIAZ HOSSAIN SAMI
-
                 </h4>
 
                 <span id="sidebarUserRole">
-
                     Role: ADMINISTRATOR
-
                 </span>
 
             </div>
@@ -474,17 +440,14 @@
         </div>
 
 
-
         <!-- =================================================
-             NAVIGATION
+             SIDEBAR MENU
         ================================================== -->
 
         <ul class="nav-menu">
 
 
-            <!-- =================================================
-                 GUEST / PUBLIC PORTAL
-            ================================================== -->
+            <!-- ================= GUEST PORTAL ================= -->
 
             <li class="nav-section-label guest-section">
 
@@ -495,11 +458,7 @@
             </li>
 
 
-            <!-- =================================================
-                 BROWSE ROOMS
-                 ADMIN + GUEST
-            ================================================== -->
-
+            <!-- Browse Rooms -->
             <li
                 class="nav-item role-admin role-guest"
                 onclick="switchTab('tabRooms')">
@@ -507,19 +466,27 @@
                 <i class="fa-solid fa-images"></i>
 
                 <span data-i18n="navRooms">
-
                     Browse Rooms & Photos
-
                 </span>
 
             </li>
 
 
-            <!-- =================================================
-                 BOOKING
-                 ADMIN + GUEST
-            ================================================== -->
+            <!-- Services -->
+            <li
+                class="nav-item role-admin role-guest"
+                onclick="switchTab('tabServices')">
 
+                <i class="fa-solid fa-utensils"></i>
+
+                <span data-i18n="navServices">
+                    Food, Gym & Pool Menu
+                </span>
+
+            </li>
+
+
+            <!-- Booking -->
             <li
                 class="nav-item role-admin role-guest"
                 onclick="switchTab('tabBooking')">
@@ -527,19 +494,13 @@
                 <i class="fa-solid fa-calendar-days"></i>
 
                 <span data-i18n="navBooking">
-
                     Custom Booking Form
-
                 </span>
 
             </li>
 
 
-
-            <!-- =================================================
-                 STAFF PORTAL
-                 ADMIN ONLY
-            ================================================== -->
+            <!-- ================= STAFF PORTAL ================= -->
 
             <li class="nav-section-label role-admin-only staff-section">
 
@@ -551,85 +512,70 @@
 
 
             <!-- Dashboard -->
-
             <li
-                class="nav-item role-admin-only active"
+                class="nav-item active role-admin role-frontdesk role-admin-only"
                 onclick="switchTab('tabDashboard')">
 
                 <i class="fa-solid fa-chart-line"></i>
 
                 <span data-i18n="navDashboard">
-
                     Live Executive Dashboard
-
                 </span>
 
             </li>
 
 
             <!-- Front Desk -->
-
             <li
-                class="nav-item role-admin-only"
+                class="nav-item role-admin role-frontdesk role-admin-only"
                 onclick="switchTab('tabFrontDesk')">
 
                 <i class="fa-solid fa-desktop"></i>
 
                 <span data-i18n="navFrontDesk">
-
                     Front Desk
-
                 </span>
 
             </li>
 
 
             <!-- Housekeeping -->
-
             <li
-                class="nav-item role-admin-only"
+                class="nav-item role-admin role-housekeeping role-admin-only"
                 onclick="switchTab('tabHousekeeping')">
 
                 <i class="fa-solid fa-broom"></i>
 
                 <span data-i18n="navHousekeeping">
-
                     Housekeeping
-
                 </span>
 
             </li>
 
 
             <!-- Finance -->
-
             <li
-                class="nav-item role-admin-only"
+                class="nav-item role-admin role-finance role-admin-only"
                 onclick="switchTab('tabFinance')">
 
                 <i class="fa-solid fa-chart-line"></i>
 
                 <span data-i18n="navFinance">
-
                     Financials
-
                 </span>
 
             </li>
 
 
             <!-- Guest Directory -->
-
             <li
-                class="nav-item role-admin-only"
+                class="nav-item role-admin role-frontdesk role-admin-only"
                 onclick="switchTab('tabGuests')">
 
                 <i class="fa-solid fa-users"></i>
 
                 <span data-i18n="navGuests">
-
                     Guest Directory
-
                 </span>
 
             </li>
@@ -637,13 +583,11 @@
         </ul>
 
 
-
         <!-- =================================================
-             ADMIN ROLE SWITCHER
-             ADMIN ONLY
+             ROLE SWITCHER
         ================================================== -->
 
-        <div class="role-switch-box role-admin-only">
+        <div class="role-switch-box">
 
             <label
                 for="roleSelector"
@@ -660,32 +604,29 @@
                 class="custom-select mt-5">
 
                 <option value="admin">
-
                     Administrator (Full Access)
-
                 </option>
 
                 <option value="frontdesk">
-
                     Front Desk
-
                 </option>
 
                 <option value="housekeeping">
-
                     Housekeeping
-
                 </option>
 
                 <option value="finance">
-
                     Finance
+                </option>
 
+                <option value="guest">
+                    Guest View (Public)
                 </option>
 
             </select>
 
 
+            <!-- Logout -->
             <button
                 type="button"
                 class="btn-secondary-sm mt-10"
@@ -694,18 +635,14 @@
                 <i class="fa-solid fa-right-from-bracket"></i>
 
                 <span data-i18n="btnLogout">
-
                     Logout
-
                 </span>
 
             </button>
 
         </div>
 
-
     </aside>
-
 
 
     <!-- =====================================================
@@ -715,18 +652,12 @@
     <div class="main-wrapper">
 
 
-        <!-- =================================================
-             TOPBAR
-        ================================================== -->
-
+        <!-- TOPBAR -->
         <header class="topbar">
-
 
             <div class="topbar-left">
 
-
                 <!-- Mobile Menu -->
-
                 <button
                     type="button"
                     class="mobile-nav-toggle"
@@ -739,7 +670,6 @@
 
 
                 <!-- Date / Clock -->
-
                 <div
                     id="currentDateDisplay"
                     class="date-clock-badge">
@@ -751,12 +681,9 @@
             </div>
 
 
-
             <div class="topbar-right">
 
-
                 <!-- Language -->
-
                 <button
                     type="button"
                     id="mobileLangToggle"
@@ -768,8 +695,7 @@
                 </button>
 
 
-                <!-- Profile -->
-
+                <!-- Avatar -->
                 <img
                     id="topbarAvatar"
                     src="Md. EmTIAZ hOSSAIN sAMI LOGO.png"
@@ -784,23 +710,20 @@
         </header>
 
 
-
-        <!-- =================================================
+        <!-- =====================================================
              MAIN CONTENT
-        ================================================== -->
+        ====================================================== -->
 
         <main class="main-content">
 
 
-
             <!-- =================================================
-                 TAB 1 - ADMIN DASHBOARD
+                 TAB 1 - DASHBOARD
             ================================================== -->
 
             <section
                 id="tabDashboard"
                 class="tab-page active role-admin-only">
-
 
                 <div class="page-header">
 
@@ -812,7 +735,6 @@
 
                     </h2>
 
-
                     <p data-i18n="dashSub">
 
                         Live status of resort reservations,
@@ -823,22 +745,16 @@
                 </div>
 
 
-
-                <!-- Statistics -->
-
                 <div class="stats-grid">
 
 
                     <!-- Total Bookings -->
-
                     <div class="stat-card">
 
                         <div class="stat-info">
 
                             <h3 data-i18n="statTotalBookings">
-
                                 Total Bookings
-
                             </h3>
 
                             <div
@@ -851,27 +767,20 @@
 
                         </div>
 
-
                         <div class="stat-icon">
-
                             <i class="fa-solid fa-bookmark"></i>
-
                         </div>
 
                     </div>
 
 
-
                     <!-- Revenue -->
-
                     <div class="stat-card">
 
                         <div class="stat-info">
 
                             <h3 data-i18n="statRevenue">
-
                                 Total Revenue
-
                             </h3>
 
                             <div
@@ -884,27 +793,20 @@
 
                         </div>
 
-
                         <div class="stat-icon">
-
                             <i class="fa-solid fa-sack-dollar"></i>
-
                         </div>
 
                     </div>
 
 
-
                     <!-- Pool -->
-
                     <div class="stat-card">
 
                         <div class="stat-info">
 
                             <h3 data-i18n="statPoolPass">
-
                                 Pool Passes Issued
-
                             </h3>
 
                             <div
@@ -917,27 +819,20 @@
 
                         </div>
 
-
                         <div class="stat-icon">
-
                             <i class="fa-solid fa-person-swimming"></i>
-
                         </div>
 
                     </div>
 
 
-
                     <!-- Dining -->
-
                     <div class="stat-card">
 
                         <div class="stat-info">
 
                             <h3 data-i18n="statDiningOrders">
-
                                 Dining Orders
-
                             </h3>
 
                             <div
@@ -950,20 +845,14 @@
 
                         </div>
 
-
                         <div class="stat-icon">
-
                             <i class="fa-solid fa-utensils"></i>
-
                         </div>
 
                     </div>
 
                 </div>
 
-
-
-                <!-- Recent Check-ins -->
 
                 <h3
                     class="section-title mt-20"
@@ -1018,7 +907,6 @@
 
                         </thead>
 
-
                         <tbody id="dashboardTableBody"></tbody>
 
                     </table>
@@ -1028,19 +916,15 @@
             </section>
 
 
-
             <!-- =================================================
                  TAB 2 - ROOMS
-                 ADMIN + GUEST
             ================================================== -->
 
             <section
                 id="tabRooms"
                 class="tab-page">
 
-
                 <div class="page-header rooms-page-header">
-
 
                     <div>
 
@@ -1052,7 +936,6 @@
 
                         </h2>
 
-
                         <p data-i18n="roomsSub">
 
                             Explore room categories, pricing,
@@ -1063,12 +946,7 @@
                     </div>
 
 
-
-                    <!-- =================================================
-                         ADD NEW ROOM
-                         ADMIN ONLY
-                    ================================================== -->
-
+                    <!-- ADMIN ONLY -->
                     <button
                         type="button"
                         class="btn-primary-sm role-admin-only"
@@ -1077,9 +955,7 @@
                         <i class="fa-solid fa-plus"></i>
 
                         <span data-i18n="btnAddRoom">
-
                             Add New Room
-
                         </span>
 
                     </button>
@@ -1087,24 +963,19 @@
                 </div>
 
 
-
-                <!-- Room Cards -->
-
+                <!-- JS Room Cards -->
                 <div id="roomsCardsGrid"></div>
 
             </section>
 
 
-
             <!-- =================================================
                  TAB 3 - SERVICES
-                 ADMIN ONLY
             ================================================== -->
 
             <section
                 id="tabServices"
-                class="tab-page role-admin-only">
-
+                class="tab-page">
 
                 <div class="page-header">
 
@@ -1115,7 +986,6 @@
                         Food, Gym & Pool Menu
 
                     </h2>
-
 
                     <p data-i18n="servicesSub">
 
@@ -1128,16 +998,13 @@
                 </div>
 
 
-
                 <div
                     class="services-grid"
                     id="servicesGrid">
 
 
                     <!-- Dining -->
-
                     <div class="service-card">
-
 
                         <div class="service-image-box">
 
@@ -1148,62 +1015,41 @@
 
                         </div>
 
-
                         <div class="service-icon">
-
                             <i class="fa-solid fa-utensils"></i>
-
                         </div>
 
-
                         <h3>
-
                             Dining & Cuisine Addons
-
                         </h3>
 
-
                         <p>
-
                             Experience world-class culinary
                             delights right at your room or
                             dining room.
-
                         </p>
-
 
                         <ul class="service-list">
 
                             <li>
-
                                 <strong>
                                     Bengali Traditional Feast:
                                 </strong>
-
                                 ৳500
-
                             </li>
 
-
                             <li>
-
                                 <strong>
                                     Authentic Thai Gourmet:
                                 </strong>
-
                                 ৳750
-
                             </li>
 
-
                             <li>
-
                                 <strong>
                                     Continental Buffet:
                                 </strong>
-
                                 ৳1200
-
                             </li>
 
                         </ul>
@@ -1211,11 +1057,8 @@
                     </div>
 
 
-
                     <!-- Gym -->
-
                     <div class="service-card">
-
 
                         <div class="service-image-box">
 
@@ -1226,29 +1069,19 @@
 
                         </div>
 
-
                         <div class="service-icon">
-
                             <i class="fa-solid fa-dumbbell"></i>
-
                         </div>
 
-
                         <h3>
-
                             Fitness Center & Gym
-
                         </h3>
 
-
                         <p>
-
                             State-of-the-art health club
                             equipment and personal training
                             assistance.
-
                         </p>
-
 
                         <ul class="service-list">
 
@@ -1267,11 +1100,8 @@
                     </div>
 
 
-
                     <!-- Pool -->
-
                     <div class="service-card">
-
 
                         <div class="service-image-box">
 
@@ -1282,29 +1112,19 @@
 
                         </div>
 
-
                         <div class="service-icon">
-
                             <i class="fa-solid fa-person-swimming"></i>
-
                         </div>
 
-
                         <h3>
-
                             Pool & Wellness Spa
-
                         </h3>
 
-
                         <p>
-
                             Temperature-controlled infinity
                             pool access and relaxing spa
                             treatments.
-
                         </p>
-
 
                         <ul class="service-list">
 
@@ -1327,16 +1147,13 @@
             </section>
 
 
-
             <!-- =================================================
                  TAB 4 - BOOKING
-                 ADMIN + GUEST
             ================================================== -->
 
             <section
                 id="tabBooking"
                 class="tab-page">
-
 
                 <div class="page-header">
 
@@ -1348,7 +1165,6 @@
 
                     </h2>
 
-
                     <p data-i18n="newBookingSub">
 
                         Instant booking with live invoice
@@ -1359,19 +1175,14 @@
                 </div>
 
 
-
                 <div class="form-container">
-
 
                     <form
                         id="reservationForm"
                         onsubmit="handleBookingSubmit(event)">
 
 
-                        <!-- =================================================
-                             GUEST INFORMATION
-                        ================================================== -->
-
+                        <!-- Guest Information -->
                         <h4
                             class="mb-10"
                             data-i18n="guestInfoHead">
@@ -1383,8 +1194,6 @@
 
                         <div class="form-grid mb-15">
 
-
-                            <!-- Name -->
 
                             <div class="form-group">
 
@@ -1405,8 +1214,6 @@
                             </div>
 
 
-                            <!-- Email -->
-
                             <div class="form-group">
 
                                 <label
@@ -1426,8 +1233,6 @@
                             </div>
 
 
-                            <!-- Phone -->
-
                             <div class="form-group">
 
                                 <label
@@ -1446,8 +1251,6 @@
 
                             </div>
 
-
-                            <!-- Avatar -->
 
                             <div class="form-group">
 
@@ -1470,9 +1273,7 @@
                         </div>
 
 
-
                         <!-- Guest Photo -->
-
                         <div class="form-group mb-15">
 
                             <label
@@ -1505,15 +1306,10 @@
                         </div>
 
 
-
                         <div class="divider"></div>
 
 
-
-                        <!-- =================================================
-                             STAY DETAILS
-                        ================================================== -->
-
+                        <!-- Stay Details -->
                         <h4
                             class="mb-10"
                             data-i18n="stayDetailsHead">
@@ -1525,8 +1321,6 @@
 
                         <div class="form-grid">
 
-
-                            <!-- Check In -->
 
                             <div class="form-group">
 
@@ -1547,8 +1341,6 @@
                             </div>
 
 
-                            <!-- Check Out -->
-
                             <div class="form-group">
 
                                 <label
@@ -1567,8 +1359,6 @@
 
                             </div>
 
-
-                            <!-- Room -->
 
                             <div class="form-group">
 
@@ -1592,26 +1382,18 @@
                         </div>
 
 
-
                         <div class="divider"></div>
 
 
-
-                        <!-- =================================================
-                             ADDONS
-                        ================================================== -->
-
+                        <!-- Addons -->
                         <div class="form-grid">
 
 
                             <!-- Food -->
-
                             <div class="form-group">
 
                                 <label data-i18n="cuisineOpt">
-
                                     Cuisine & Dining Addons
-
                                 </label>
 
 
@@ -1662,15 +1444,11 @@
                             </div>
 
 
-
                             <!-- Amenities -->
-
                             <div class="form-group">
 
                                 <label data-i18n="amenitiesOpt">
-
                                     Pool & Gym Access
-
                                 </label>
 
 
@@ -1706,9 +1484,7 @@
                             </div>
 
 
-
                             <!-- Payment -->
-
                             <div class="form-group">
 
                                 <label
@@ -1727,33 +1503,23 @@
                                     required>
 
                                     <option value="cash">
-
                                         Cash on Arrival
-
                                     </option>
 
                                     <option value="bkash">
-
                                         bKash Mobile Banking
-
                                     </option>
 
                                     <option value="nagad">
-
                                         Nagad Mobile Banking
-
                                     </option>
 
                                     <option value="sslcommerz">
-
                                         SSLCOMMERZ Online
-
                                     </option>
 
                                     <option value="stripe">
-
                                         Card / Stripe
-
                                     </option>
 
                                 </select>
@@ -1763,26 +1529,19 @@
                         </div>
 
 
-
                         <!-- Online Payment -->
-
                         <div
                             id="onlinePaymentDetails"
                             class="alert-info mt-15"
-                            style="display: none;">
+                            style="display:none;">
 
                             <p id="paymentInstructions"></p>
 
                         </div>
 
 
-
-                        <!-- =================================================
-                             INVOICE
-                        ================================================== -->
-
+                        <!-- Invoice -->
                         <div class="calc-summary-card mt-20">
-
 
                             <h4 data-i18n="calcSummary">
 
@@ -1796,15 +1555,11 @@
                             <div class="summary-line">
 
                                 <span data-i18n="invNights">
-
                                     Stay Duration:
-
                                 </span>
 
                                 <strong id="billNights">
-
                                     1 Night(s)
-
                                 </strong>
 
                             </div>
@@ -1813,15 +1568,11 @@
                             <div class="summary-line">
 
                                 <span data-i18n="invRoomCharge">
-
                                     Room Charge:
-
                                 </span>
 
                                 <strong id="billRoom">
-
                                     ৳0
-
                                 </strong>
 
                             </div>
@@ -1830,15 +1581,11 @@
                             <div class="summary-line">
 
                                 <span data-i18n="invAddons">
-
                                     Services Total:
-
                                 </span>
 
                                 <strong id="billAddons">
-
                                     ৳0
-
                                 </strong>
 
                             </div>
@@ -1847,15 +1594,11 @@
                             <div class="summary-line grand-total">
 
                                 <span data-i18n="invGrandTotal">
-
                                     Grand Total Amount:
-
                                 </span>
 
                                 <strong id="billTotal">
-
                                     ৳0
-
                                 </strong>
 
                             </div>
@@ -1863,13 +1606,8 @@
                         </div>
 
 
-
-                        <!-- =================================================
-                             FORM ACTIONS
-                        ================================================== -->
-
+                        <!-- Actions -->
                         <div class="form-actions mt-20">
-
 
                             <button
                                 type="submit"
@@ -1902,16 +1640,13 @@
             </section>
 
 
-
             <!-- =================================================
                  TAB 5 - FRONT DESK
-                 ADMIN ONLY
             ================================================== -->
 
             <section
                 id="tabFrontDesk"
                 class="tab-page role-admin-only">
-
 
                 <div class="page-header">
 
@@ -1922,7 +1657,6 @@
                         Front Desk Room Tracker
 
                     </h2>
-
 
                     <p data-i18n="fdSub">
 
@@ -1939,16 +1673,13 @@
             </section>
 
 
-
             <!-- =================================================
                  TAB 6 - HOUSEKEEPING
-                 ADMIN ONLY
             ================================================== -->
 
             <section
                 id="tabHousekeeping"
                 class="tab-page role-admin-only">
-
 
                 <div class="page-header">
 
@@ -1960,7 +1691,6 @@
 
                     </h2>
 
-
                     <p data-i18n="hkSub">
 
                         Cleanliness tracking, room preparation,
@@ -1971,20 +1701,15 @@
                 </div>
 
 
-
                 <div class="stats-grid">
 
-
-                    <!-- Clean -->
 
                     <div class="stat-card">
 
                         <div class="stat-info">
 
                             <h3 data-i18n="hkClean">
-
                                 Available & Clean
-
                             </h3>
 
                             <div
@@ -1997,7 +1722,6 @@
 
                         </div>
 
-
                         <div class="stat-icon">
 
                             <i class="fa-solid fa-wand-magic-sparkles"></i>
@@ -2007,17 +1731,12 @@
                     </div>
 
 
-
-                    <!-- Dirty -->
-
                     <div class="stat-card">
 
                         <div class="stat-info">
 
                             <h3 data-i18n="hkDirty">
-
                                 Needs Cleaning (Dirty)
-
                             </h3>
 
                             <div
@@ -2030,7 +1749,6 @@
 
                         </div>
 
-
                         <div class="stat-icon">
 
                             <i class="fa-solid fa-broom"></i>
@@ -2040,17 +1758,12 @@
                     </div>
 
 
-
-                    <!-- Maintenance -->
-
                     <div class="stat-card">
 
                         <div class="stat-info">
 
                             <h3 data-i18n="hkMaintenance">
-
                                 Under Maintenance
-
                             </h3>
 
                             <div
@@ -2063,7 +1776,6 @@
 
                         </div>
 
-
                         <div class="stat-icon">
 
                             <i class="fa-solid fa-wrench"></i>
@@ -2075,9 +1787,6 @@
                 </div>
 
 
-
-                <!-- Housekeeping Table -->
-
                 <div class="table-responsive mt-15">
 
                     <table>
@@ -2087,33 +1796,24 @@
                             <tr>
 
                                 <th data-i18n="tblRoom">
-
                                     Room
-
                                 </th>
 
                                 <th data-i18n="tblCategory">
-
                                     Category
-
                                 </th>
 
                                 <th data-i18n="tblStatus">
-
                                     Status
-
                                 </th>
 
                                 <th data-i18n="tblAction">
-
                                     Action
-
                                 </th>
 
                             </tr>
 
                         </thead>
-
 
                         <tbody id="housekeepingTableBody"></tbody>
 
@@ -2124,16 +1824,13 @@
             </section>
 
 
-
             <!-- =================================================
                  TAB 7 - FINANCE
-                 ADMIN ONLY
             ================================================== -->
 
             <section
                 id="tabFinance"
                 class="tab-page role-admin-only">
-
 
                 <div class="page-header">
 
@@ -2145,7 +1842,6 @@
 
                     </h2>
 
-
                     <p data-i18n="finSub">
 
                         Overview of financial transactions,
@@ -2156,22 +1852,16 @@
                 </div>
 
 
-
                 <div class="stats-grid">
 
-
-                    <!-- Total Earnings -->
 
                     <div class="stat-card">
 
                         <div class="stat-info">
 
                             <h3>
-
                                 Total Earnings
-
                             </h3>
-
 
                             <div
                                 id="finTotalEarnings"
@@ -2183,7 +1873,6 @@
 
                         </div>
 
-
                         <div class="stat-icon">
 
                             <i class="fa-solid fa-wallet"></i>
@@ -2193,19 +1882,13 @@
                     </div>
 
 
-
-                    <!-- Pending -->
-
                     <div class="stat-card">
 
                         <div class="stat-info">
 
                             <h3>
-
                                 Pending Payments
-
                             </h3>
-
 
                             <div
                                 id="finPending"
@@ -2216,7 +1899,6 @@
                             </div>
 
                         </div>
-
 
                         <div class="stat-icon">
 
@@ -2231,19 +1913,15 @@
             </section>
 
 
-
             <!-- =================================================
                  TAB 8 - GUEST DIRECTORY
-                 ADMIN ONLY
             ================================================== -->
 
             <section
                 id="tabGuests"
                 class="tab-page role-admin-only">
 
-
                 <div class="page-header">
-
 
                     <h2 data-i18n="navGuests">
 
@@ -2253,7 +1931,6 @@
 
                     </h2>
 
-
                     <p>
 
                         Manage and review registered guest
@@ -2262,7 +1939,6 @@
                     </p>
 
                 </div>
-
 
 
                 <div class="table-responsive mt-15">
@@ -2314,7 +1990,6 @@
 
             </section>
 
-
         </main>
 
     </div>
@@ -2322,10 +1997,11 @@
 </div>
 
 
-
+<!-- =========================================================
+     EXTERNAL JAVASCRIPT
+========================================================= -->
 
 <script src="script.js"></script>
-
 
 </body>
 
