@@ -1,19 +1,21 @@
 /* ==========================================
-   GRAND PALACE RESORT & SPA - COMPACT & FIXED
+   GRAND PALACE RESORT & SPA - STYLESHEET
    ========================================== */
 
 :root {
-    --gold: #c5a880;
-    --gold-hover: #b3925f;
-    --bg-dark: #0f1115;
+    --gold: #d4af37;
+    --gold-hover: #f39c12;
+    --bg-dark: #0a0e17;
     --bg-sidebar: #14171d;
-    --bg-card: #1a1d24;
+    --bg-card: rgba(30, 41, 59, 0.7);
     --border-color: rgba(255, 255, 255, 0.08);
-    --border-gold: rgba(197, 168, 128, 0.25);
-    --text-main: #f0ede6;
-    --text-muted: #9aa0ac;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
     --font-head: 'Playfair Display', serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;
+    --accent-cyan: #38bdf8;
+    --danger-red: #ef4444;
+    --success-green: #10b981;
 }
 
 * {
@@ -23,14 +25,14 @@
 }
 
 /* ==========================================
-   1. GLOBAL LAYOUT
+   GLOBAL TYPOGRAPHY & LAYOUT
    ========================================== */
 
 html {
-    min-height: 100%;
-    font-size: 14px; /* Compact base size */
+    font-size: 14px;
 }
 
+/* UPDATED BODY STYLES */
 body {
     font-family: var(--font-body);
     background-color: var(--bg-dark);
@@ -43,18 +45,25 @@ body {
     background-attachment: fixed;
     color: var(--text-main);
     min-height: 100vh;
+    margin: 0;
+    line-height: 1.5;
 }
+
+h1 { font-size: 1.4rem; font-family: var(--font-head); }
+h2 { font-size: 1.25rem; font-family: var(--font-head); }
+h3 { font-size: 1.1rem; }
+h4 { font-size: 0.95rem; }
+p, label, span { font-size: 0.9rem; }
+small { font-size: 0.8rem; color: var(--text-muted); }
 
 .app-container {
     position: relative;
     z-index: 1;
     display: flex;
-    flex-wrap: nowrap;
     width: 100%;
     min-height: 100vh;
 }
 
-/* Helpers */
 .text-center { text-align: center; }
 .mt-5 { margin-top: 5px; }
 .mt-10 { margin-top: 10px; }
@@ -63,97 +72,77 @@ body {
 .mb-10 { margin-bottom: 10px; }
 .mb-15 { margin-bottom: 15px; }
 
-.glass-card {
-    background: rgba(26, 29, 36, 0.90);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid var(--border-color);
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
 }
 
-/* ==========================================
-   2. LOGIN & MODAL (FIXED SPECIFICITY)
-   ========================================== */
+/* ============ MODAL / AUTH ============ */
 
-.modal,
-#loginModal {
+.modal {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.82);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    z-index: 99999;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 999;
     align-items: center;
     justify-content: center;
-    padding: 15px;
+    padding: 20px;
+    backdrop-filter: blur(8px);
 }
 
-/* Specificity override for login modal active state */
-.modal.active,
-#loginModal.active {
-    display: flex !important;
-}
+.modal.active { display: flex; }
 
 .modal-content.auth-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-gold);
-    border-radius: 12px;
-    padding: 24px;
+    background: rgba(21, 30, 47, 0.85);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 25px;
     width: 100%;
-    max-width: 360px; /* Compact width */
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    max-width: 400px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
 }
 
 .brand-icon {
     display: block;
-    margin: 0 auto 6px;
-}
-
-.modal-title {
-    letter-spacing: 0.5px;
-    font-family: var(--font-head);
+    margin: 0 auto 8px;
     color: var(--gold);
-    font-size: 1.2rem;
+    font-size: 1.8rem;
 }
 
-/* Form Controls */
+.auth-tabs-toggle {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-}
-
-.form-group label {
-    font-size: 0.78rem;
-    color: var(--text-muted);
+    gap: 5px;
 }
 
 .form-group input,
 .form-group select {
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 8px 10px;
+    border-radius: 8px;
+    padding: 8px 12px;
     color: var(--text-main);
     font-family: var(--font-body);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     outline: none;
-    transition: border-color 0.2s ease;
 }
 
 .form-group input:focus,
 .form-group select:focus {
     border-color: var(--gold);
-    background: rgba(255, 255, 255, 0.07);
-}
-
-.form-group input::placeholder {
-    color: rgba(240, 237, 230, 0.35);
-}
-
-.form-group select option {
-    background: #1a1d24;
-    color: var(--text-main);
 }
 
 .form-grid {
@@ -165,11 +154,10 @@ body {
 .checkbox-label {
     display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 0.8rem;
-    color: var(--text-main);
-    margin-top: 6px;
+    gap: 8px;
+    font-size: 0.85rem;
     cursor: pointer;
+    margin-top: 6px;
 }
 
 .divider {
@@ -178,66 +166,50 @@ body {
     margin: 15px 0;
 }
 
-/* ==========================================
-   3. BUTTONS
-   ========================================== */
+/* ============ BUTTONS ============ */
 
 .btn-block-gold,
-.btn-primary,
-.btn-primary-sm {
-    background: linear-gradient(135deg, var(--gold), var(--gold-hover));
-    color: #14171d;
+.btn-primary {
+    background: linear-gradient(135deg, var(--gold), #b8860b) !important;
+    color: #000 !important;
     border: none;
-    border-radius: 6px;
-    padding: 9px 14px;
+    border-radius: 8px;
+    padding: 10px 16px;
     font-weight: 600;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    font-size: 0.85rem;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    gap: 8px;
+    font-size: 0.9rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-block-gold { width: 100%; }
 
-.btn-primary-sm {
-    padding: 6px 10px;
-    font-size: 0.78rem;
-}
-
 .btn-block-gold:hover,
-.btn-primary:hover,
-.btn-primary-sm:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(197, 168, 128, 0.3);
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
 }
 
 .btn-secondary-sm {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.06);
     color: var(--text-main);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 6px 10px;
-    font-size: 0.78rem;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.82rem;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    transition: all 0.2s ease;
-}
-
-.btn-secondary-sm:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: var(--border-gold);
+    gap: 6px;
 }
 
 .btn-secondary-sm.active {
     background: var(--gold);
-    color: #14171d;
+    color: #000;
     border-color: var(--gold);
-    font-weight: 600;
 }
 
 .form-actions {
@@ -249,165 +221,136 @@ body {
 button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    transform: none !important;
-    box-shadow: none !important;
 }
 
-/* ==========================================
-   4. SIDEBAR & OVERLAY
-   ========================================== */
+/* ============ SIDEBAR ============ */
 
 #sidebarOverlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.65);
-    z-index: 998;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 90;
 }
 
-#sidebarOverlay.active {
-    display: block !important;
-}
+#sidebarOverlay.active { display: block; }
 
-#sidebar {
-    width: 250px;
+.sidebar {
+    width: 260px;
     flex-shrink: 0;
-    background: rgba(20, 23, 29, 0.95);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
-    padding: 15px 0;
+    padding: 20px 0;
     position: sticky;
     top: 0;
     height: 100vh;
     overflow-y: auto;
-    z-index: 1000;
 }
 
 .brand-header {
     text-align: center;
-    padding: 0 12px 15px;
+    padding: 0 15px 15px;
 }
 
-.brand-header h1 {
-    font-family: var(--font-head);
-    color: var(--gold);
-    font-size: 1.15rem;
-    letter-spacing: 1.5px;
-    margin-top: 4px;
-}
-
-.brand-header p {
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    letter-spacing: 2px;
-}
+.brand-header h1 { color: var(--gold); letter-spacing: 1px; }
 
 .user-profile-card {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 10px 12px;
-    margin: 0 12px 12px;
+    padding: 10px 15px;
+    margin: 0 15px 15px;
     background: rgba(255, 255, 255, 0.03);
-    border-radius: 8px;
+    border-radius: 10px;
     border: 1px solid var(--border-color);
 }
 
 .avatar-img {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--gold);
 }
 
-.user-info h4 {
-    font-size: 0.8rem;
-    margin-bottom: 1px;
-}
+.user-info h4 { font-size: 0.82rem; }
+.user-info span { font-size: 0.72rem; color: var(--gold); }
 
-.user-info span {
-    font-size: 0.68rem;
+.nav-menu { list-style: none; flex: 1; }
+
+.nav-section-label {
+    padding: 10px 20px 4px;
+    font-size: 0.75rem;
     color: var(--gold);
-}
-
-.nav-menu {
-    list-style: none;
-    flex: 1;
+    text-transform: uppercase;
+    font-weight: 700;
 }
 
 .nav-item {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 9px 16px;
+    padding: 10px 20px;
     color: var(--text-muted);
     cursor: pointer;
-    font-size: 0.82rem;
-    transition: background 0.15s ease, color 0.15s ease;
+    font-size: 0.88rem;
+    transition: background 0.2s, color 0.2s;
     border-left: 3px solid transparent;
 }
 
-.nav-item:hover {
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--text-main);
-}
-
-.nav-item.active {
-    background: rgba(197, 168, 128, 0.12);
+.nav-item:hover, .nav-item.active {
+    background: rgba(212, 175, 55, 0.1);
     color: var(--gold);
     border-left-color: var(--gold);
 }
 
 .role-switch-box {
-    padding: 12px;
+    padding: 15px;
     border-top: 1px solid var(--border-color);
 }
 
 .custom-select {
     width: 100%;
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 6px 8px;
+    border-radius: 8px;
+    padding: 6px 10px;
     color: var(--text-main);
-    font-family: var(--font-body);
-    font-size: 0.8rem;
     outline: none;
 }
 
-/* ==========================================
-   5. MAIN WRAPPER & TOPBAR
-   ========================================== */
+.custom-select option {
+    background: #0f172a;
+    color: #fff;
+}
+
+/* ============ MAIN WRAPPER ============ */
 
 .main-wrapper {
     flex: 1;
     display: flex;
     flex-direction: column;
     min-width: 0;
-    width: calc(100% - 250px);
-    max-width: calc(100% - 250px);
+    width: calc(100% - 260px);
 }
 
 .topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
-    background: rgba(20, 23, 29, 0.92);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    padding: 12px 20px;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border-color);
     position: sticky;
     top: 0;
     z-index: 50;
 }
 
-.topbar-left,
-.topbar-right {
+.topbar-left, .topbar-right {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -418,101 +361,67 @@ button:disabled {
     background: none;
     border: none;
     color: var(--text-main);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     cursor: pointer;
 }
 
 .date-clock-badge {
-    background: rgba(197, 168, 128, 0.08);
+    background: rgba(212, 175, 55, 0.1);
     color: var(--gold);
     padding: 4px 10px;
-    border-radius: 15px;
-    font-size: 0.78rem;
-    border: 1px solid rgba(197, 168, 128, 0.2);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
 .main-content {
-    padding: 18px 20px;
+    padding: 20px;
     flex: 1;
 }
 
-.page-header {
-    margin-bottom: 15px;
-}
+.page-header { margin-bottom: 15px; }
+.page-header h2 { color: var(--gold); display: flex; align-items: center; gap: 8px; }
 
-.page-header h2 {
-    font-family: var(--font-head);
-    color: var(--gold);
-    font-size: 1.35rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
+/* ============ TAB PAGES ============ */
 
-.page-header p {
-    color: var(--text-muted);
-    font-size: 0.8rem;
-    margin-top: 2px;
-}
+.tab-page { display: none; }
+.tab-page.active { display: block; }
 
-/* ==========================================
-   6. TAB PAGES VISIBILITY
-   ========================================== */
-
-.tab-page {
-    display: none;
-}
-
-.tab-page.active {
-    display: block;
-}
-
-/* ==========================================
-   7. STATS GRID & CARDS
-   ========================================== */
+/* ============ STATS & CARDS ============ */
 
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 14px;
-    margin-bottom: 18px;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
 .stat-card {
-    background: rgba(26, 29, 36, 0.90);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: var(--bg-card);
     border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 14px 16px;
+    border-radius: 12px;
+    padding: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: border-color 0.2s ease;
-}
-
-.stat-card:hover {
-    border-color: var(--border-gold);
+    backdrop-filter: blur(6px);
 }
 
 .stat-info h3 {
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     color: var(--text-muted);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
 }
 
 .stat-value {
-    font-size: 1.35rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    color: var(--text-main);
 }
 
 .stat-icon {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     color: var(--gold);
-    background: rgba(197, 168, 128, 0.1);
+    background: rgba(212, 175, 55, 0.1);
     width: 42px;
     height: 42px;
     border-radius: 50%;
@@ -521,17 +430,50 @@ button:disabled {
     justify-content: center;
 }
 
-/* ==========================================
-   8. TABLES & BADGES
-   ========================================== */
+/* ============ ROOMS GRID ============ */
+
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.room-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+    backdrop-filter: blur(6px);
+}
+
+.room-card:hover { transform: translateY(-3px); }
+
+.room-card-img-wrapper img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.admin-room-controls {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border-color);
+}
+
+/* ============ TABLES ============ */
 
 .table-responsive {
     overflow-x: auto;
-    background: rgba(26, 29, 36, 0.90);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border-radius: 10px;
+    background: var(--bg-card);
+    border-radius: 12px;
     border: 1px solid var(--border-color);
+    backdrop-filter: blur(6px);
 }
 
 table {
@@ -542,159 +484,116 @@ table {
 thead th {
     text-align: left;
     padding: 10px 12px;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
     color: var(--gold);
     border-bottom: 1px solid var(--border-color);
 }
 
 tbody td {
     padding: 10px 12px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     border-bottom: 1px solid var(--border-color);
 }
 
-tbody tr:last-child td {
-    border-bottom: none;
-}
-
-tbody tr:hover {
-    background: rgba(255, 255, 255, 0.02);
-}
-
 .badge {
-    display: inline-block;
     padding: 3px 8px;
     border-radius: 12px;
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     font-weight: 600;
-    white-space: nowrap;
-    text-transform: uppercase;
 }
 
-.badge-success {
-    background: rgba(72, 187, 120, 0.12);
-    color: #48bb78;
-    border: 1px solid rgba(72, 187, 120, 0.25);
+.badge-success { background: rgba(16, 185, 129, 0.2); color: var(--success-green); }
+.badge-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger-red); }
+.badge-gold { background: rgba(212, 175, 55, 0.2); color: var(--gold); }
+
+/* ============ SERVICES & FORM ============ */
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
 }
 
-.badge-danger {
-    background: rgba(245, 101, 101, 0.12);
-    color: #f56565;
-    border: 1px solid rgba(245, 101, 101, 0.25);
-}
-
-.badge-gold {
-    background: rgba(197, 168, 128, 0.12);
-    color: var(--gold);
-    border: 1px solid var(--border-gold);
-}
-
-/* ==========================================
-   9. ROOM CARDS & BROWSE GRID
-   ========================================== */
-
-#roomsCardsGrid {
-    width: 100%;
-}
-
-.room-card {
-    position: relative;
-    border-radius: 10px;
-    overflow: hidden;
-    background: rgba(26, 29, 36, 0.90);
+.service-card {
+    background: var(--bg-card);
     border: 1px solid var(--border-color);
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    border-radius: 12px;
+    padding: 15px;
+    backdrop-filter: blur(6px);
 }
 
-.room-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--border-gold) !important;
-}
-
-.room-card-img-wrapper {
+.service-card img {
     width: 100%;
-    height: 150px; /* Reduced compact image height */
-    overflow: hidden;
-    background: #111;
-}
-
-.vibrant-img {
-    width: 100%;
-    height: 150px;
+    height: 140px;
     object-fit: cover;
-    display: block;
-    transition: transform 0.3s ease;
+    border-radius: 8px;
+    margin-bottom: 10px;
 }
 
-.room-card:hover .vibrant-img {
-    transform: scale(1.03);
+.form-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 20px;
+    max-width: 850px;
+    backdrop-filter: blur(6px);
 }
 
-.room-card h5 {
-    color: var(--text-main);
-    font-size: 0.95rem;
-    font-family: var(--font-head);
+.calc-summary-card {
+    background: rgba(212, 175, 55, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 10px;
+    padding: 15px;
 }
 
-.room-card .btn-primary {
-    width: 100%;
-    margin-top: 8px;
-    padding: 8px;
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
 }
 
-/* ==========================================
-   10. ROLE PERMISSIONS
-   ========================================== */
+.summary-line.grand-total {
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+    margin-top: 6px;
+    padding-top: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gold);
+}
+
+.avatar-preview-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar-preview-box img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* ============ ROLE CONTROL ============ */
 
 body.role-guest .role-admin-only,
-body.role-guest .admin-edit-btn,
-body.role-guest .admin-status-select,
-body.role-guest .room-admin-controls,
 body.role-guest .admin-room-controls,
-body.role-guest #addNewRoomBtn,
-body.role-guest .add-new-room-btn {
+body.role-guest .add-new-room-btn,
+body.role-guest #addNewRoomBtn {
     display: none !important;
 }
 
-/* ==========================================
-   11. RESPONSIVE DESIGN
-   ========================================== */
+/* ============ RESPONSIVE ============ */
 
 @media (max-width: 900px) {
-    .main-wrapper {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    #sidebar {
+    .main-wrapper { width: 100%; }
+    .sidebar {
         position: fixed;
-        left: -250px;
-        z-index: 1000;
-        transition: left 0.25s ease;
+        left: -260px;
+        z-index: 100;
+        transition: left 0.3s ease;
     }
-
-    #sidebar.open {
-        left: 0;
-    }
-
-    .mobile-nav-toggle {
-        display: block;
-    }
-}
-
-@media (max-width: 600px) {
-    .main-content {
-        padding: 12px;
-    }
-
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .room-card-img-wrapper,
-    .vibrant-img {
-        height: 160px;
-    }
+    .sidebar.open { left: 0; }
+    .mobile-nav-toggle { display: block; }
 }
