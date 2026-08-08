@@ -9,9 +9,8 @@ let currentUser = {
     role: 'ADMINISTRATOR',
     name: 'MD. EMTIAZ HOSSAIN SAMI',
     email: 'admin@grandpalace.com',
-    avatar: 'Md. EmTIAZ hOSSAIN sAMI LOGO.png'
+    avatar: 'https://ui-avatars.com/api/?name=Md+Emtiaz+Hossain+Sami&background=d4af37&color=000'
 };
-
 
 const initialRooms = [
     {
@@ -38,7 +37,6 @@ const initialRooms = [
         img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500",
         desc: "Serene garden view villa with private pool access."
     },
-    /* ---- নতুন যুক্ত করা রুম ২টি নিচে ---- */
     {
         id: "501",
         title: "Presidential VIP Suite",
@@ -57,6 +55,9 @@ const initialRooms = [
     }
 ];
 
+// FIX: Dynamic Room Array Reference
+let roomList = [...initialRooms];
+
 let bookings = [
     { id: "GP-8801", guestName: "Arif Chowdhury", guestEmail: "arif@example.com", guestPhone: "+8801711112233", roomNumber: "401", roomType: "Royal Family Suite", checkIn: "2026-08-01", checkOut: "2026-08-05", totalBill: 80000, paymentMethod: "BKASH", status: "Checked-In", avatar: "https://ui-avatars.com/api/?name=Arif+Chowdhury&background=c5a880&color=fff" }
 ];
@@ -66,7 +67,7 @@ let guests = [
 ];
 
 // ==========================================
-// 3. HELPERS
+// 2. HELPERS
 // ==========================================
 
 function escapeHTML(str) {
@@ -84,7 +85,7 @@ function getNightsBetween(checkInStr, checkOutStr) {
 }
 
 // ==========================================
-// 4. INITIALIZATION
+// 3. INITIALIZATION
 // ==========================================
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -93,12 +94,19 @@ document.addEventListener('DOMContentLoaded', function () {
     populateRoomDropdown();
     renderAll();
     calculateTotal();
+    updateUserProfileDisplay();
+
+    // Event Listener for Role Selector Dropdown
+    const selector = document.getElementById('roleSelector') || document.getElementById('roleSelect');
+    if (selector) {
+        selector.addEventListener('change', (e) => switchUserRole(e.target.value));
+    }
 
     switchUserRole(currentRole);
 });
 
 // ==========================================
-// 5. CLOCK & DATES
+// 4. CLOCK & DATES
 // ==========================================
 
 function initClock() {
@@ -123,8 +131,18 @@ function setupDefaultDates() {
 }
 
 // ==========================================
-// 6. AUTHENTICATION & ROLES
+// 5. AUTHENTICATION & MODAL LOGIC
 // ==========================================
+
+function openLoginModal() {
+    const modal = document.getElementById('loginModal') || document.getElementById('authModal');
+    if (modal) modal.classList.add('active');
+}
+
+function closeLoginModal() {
+    const modal = document.getElementById('loginModal') || document.getElementById('authModal');
+    if (modal) modal.classList.remove('active');
+}
 
 function switchAuthForm(type) {
     const guestForm = document.getElementById('guestLoginForm');
@@ -157,10 +175,10 @@ function handleStaffLogin(event) {
             role: 'ADMINISTRATOR',
             name: 'MD. EMTIAZ HOSSAIN SAMI',
             email: email,
-            avatar: 'https://ui-avatars.com/api/?name=Admin&background=c5a880&color=fff'
+            avatar: 'https://ui-avatars.com/api/?name=Admin+Sami&background=d4af37&color=000'
         };
 
-        document.getElementById('loginModal')?.classList.remove('active');
+        closeLoginModal();
         switchUserRole('admin');
         updateUserProfileDisplay();
         alert('Welcome Back, Admin!');
@@ -186,7 +204,7 @@ function handleGuestLoginSubmit(event) {
         avatar: previewImg || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=c5a880&color=fff')
     };
 
-    document.getElementById('loginModal')?.classList.remove('active');
+    closeLoginModal();
     switchUserRole('guest');
     updateUserProfileDisplay();
     alert('🎉 Welcome ' + name + ' to Grand Palace Resort & Spa!');
@@ -207,10 +225,11 @@ function updateUserProfileDisplay() {
 
 function switchUserRole(role) {
     currentRole = role;
-    const selector = document.getElementById('roleSelector');
+    const selector = document.getElementById('roleSelector') || document.getElementById('roleSelect');
     if (selector) selector.value = role;
 
-    document.body.className = 'role-' + role;
+    document.body.classList.remove('role-admin', 'role-guest');
+    document.body.classList.add('role-' + role);
 
     // Show/Hide admin sections
     document.querySelectorAll('.role-admin-only').forEach(el => {
@@ -229,12 +248,12 @@ function switchUserRole(role) {
 function logoutUser() {
     isStaffAuthenticated = false;
     currentRole = 'guest';
-    document.getElementById('loginModal')?.classList.add('active');
+    openLoginModal();
     switchAuthForm('guest');
 }
 
 // ==========================================
-// 7. NAVIGATION & TAB SYSTEM
+// 6. NAVIGATION & TAB SYSTEM
 // ==========================================
 
 function switchTab(tabId) {
@@ -261,7 +280,7 @@ function toggleSidebar(forceState) {
 }
 
 // ==========================================
-// 8. ROOM MANAGEMENT & BOOKING
+// 7. ROOM MANAGEMENT & BOOKING
 // ==========================================
 
 function renderAll() {
@@ -395,7 +414,7 @@ function resetForm() {
 }
 
 // ==========================================
-// 9. RENDER HELPERS
+// 8. RENDER HELPERS
 // ==========================================
 
 function renderDashboard() {
@@ -517,7 +536,7 @@ function renderGuests() {
 }
 
 // ==========================================
-// 10. ADMIN ACTIONS
+// 9. ADMIN ACTIONS
 // ==========================================
 
 function promptAddNewRoom() {
@@ -566,7 +585,7 @@ function toggleRoomStatus(roomId) {
 }
 
 // ==========================================
-// 11. IMAGE PREVIEW HANDLERS
+// 10. IMAGE PREVIEW HANDLERS
 // ==========================================
 
 function updateGuestImageFromUrl() {
