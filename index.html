@@ -48,21 +48,40 @@
                 </button>
             </form>
 
-            <!-- Guest Portal Access Form -->
+            <!-- Guest Portal Access Form (Updated with Picture Option) -->
             <form id="guestLoginForm" onsubmit="handleGuestLoginSubmit(event)" class="mt-10" style="display: none;">
                 <h4 style="color: var(--text-main); text-align: center;">Guest Portal Access</h4>
+                
                 <div class="form-group mt-10">
                     <label for="guestAuthName" class="sr-only">Full Name</label>
                     <input type="text" id="guestAuthName" placeholder="Enter Your Full Name *" required autocomplete="name">
                 </div>
+                
                 <div class="form-group mt-10">
                     <label for="guestAuthEmail" class="sr-only">Email Address</label>
                     <input type="email" id="guestAuthEmail" placeholder="Enter Your Email Address *" required autocomplete="email">
                 </div>
+                
                 <div class="form-group mt-10">
                     <label for="guestAuthPhone" class="sr-only">Phone Number</label>
                     <input type="tel" id="guestAuthPhone" placeholder="Enter Your Phone Number *" required autocomplete="tel">
                 </div>
+
+                <!-- Guest Photo URL Input -->
+                <div class="form-group mt-10">
+                    <label for="guestAuthPhotoUrl" class="sr-only">Profile Picture URL</label>
+                    <input type="url" id="guestAuthPhotoUrl" placeholder="Profile Picture URL (Optional)" onchange="updateGuestAuthImageFromUrl()">
+                </div>
+
+                <!-- Guest Photo File Upload & Preview -->
+                <div class="form-group mt-10">
+                    <label style="color: var(--text-muted); font-size: 0.82rem; display: block; margin-bottom: 5px;">Or Upload Profile Picture:</label>
+                    <div class="avatar-preview-box" style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; border: 1px dashed var(--gold);">
+                        <img id="guestAuthPreviewImg" src="https://ui-avatars.com/api/?name=Guest" class="table-img" alt="Guest Avatar Preview" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover;">
+                        <input type="file" id="guestAuthPhotoUpload" accept="image/*" onchange="previewGuestAuthImage(event)" style="font-size: 0.8rem; color: var(--text-main); width: 100%;">
+                    </div>
+                </div>
+
                 <button type="submit" class="btn-block-gold mt-15">
                     <i class="fa-solid fa-right-to-bracket"></i> Continue as Guest
                 </button>
