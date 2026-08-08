@@ -26,7 +26,7 @@
                 <small style="color: var(--text-muted);">Access Management Portal</small>
             </div>
             
-            <!-- Auth Portal Switcher Tabs (Aligned with Architecture Diagram) -->
+            <!-- Auth Portal Switcher Tabs -->
             <div class="auth-tabs-toggle mt-15 mb-15" style="display: flex; gap: 10px; justify-content: center;">
                 <button type="button" id="btnGuestAuth" class="btn-secondary-sm active" onclick="switchAuthForm('guest')">
                     <i class="fa-solid fa-globe"></i> <span data-i18n="btnGuestPortal">Guest Portal (Public)</span>
@@ -76,22 +76,20 @@
                 </button>
             </form>
 
-            <!-- Staff Admin Login Form (Requires Password Login) -->
-            <form id="staffLoginForm" onsubmit="handleLoginSubmit(event)" class="mt-10" style="display: none;">
+            <!-- UPDATE 2: STAFF ADMIN LOGIN FORM (আপনার রিকোয়ারমেন্ট অনুযায়ী নিখুঁত করা হয়েছে) -->
+            <form id="staffLoginForm" onsubmit="handleStaffLogin(event)" class="mt-10" style="display: none;">
                 <h4 style="color: var(--text-main); text-align: center;" data-i18n="staffLoginHead">Staff Admin Login</h4>
                 <p style="text-align: center; color: #4299e1; font-size: 0.8rem;" class="mb-10"><i class="fa-solid fa-lock"></i> Requires Password Login</p>
                 
                 <div class="form-group mt-10">
                     <label for="loginEmail" class="sr-only">Staff Email</label>
-                    <input type="email" id="loginEmail" placeholder="Enter Staff Email" required autocomplete="username">
+                    <input type="email" id="loginEmail" placeholder="Enter Staff Email" autocomplete="username">
                 </div>
                 <div class="form-group mt-10">
-                    <label for="loginPassword" class="sr-only">Staff Password</label>
-                    <input type="password" id="loginPassword" placeholder="Enter Staff Password" required autocomplete="current-password">
+                    <label for="loginPasswordInput" class="sr-only">Staff Password</label>
+                    <input type="password" id="loginPasswordInput" placeholder="Enter Admin Password" required autocomplete="current-password">
                 </div>
-                <button type="submit" class="btn-block-gold mt-15">
-                    <i class="fa-solid fa-user-shield"></i> <span data-i18n="btnLoginAdmin">Login as Staff Admin</span>
-                </button>
+                <button type="submit" class="btn-block-gold mt-15">Login to Dashboard</button>
             </form>
 
         </div>
@@ -102,7 +100,7 @@
         <!-- Sidebar Mobile Overlay -->
         <div id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
 
-        <!-- Sidebar Navigation (Structured based on System Flow Diagram) -->
+        <!-- Sidebar Navigation -->
         <aside id="sidebar">
             <div class="brand-header">
                 <i class="fa-solid fa-crown brand-icon"></i>
@@ -119,7 +117,7 @@
                 </div>
             </div>
 
-            <!-- Categorized Navigation Links (According to Picture) -->
+            <!-- UPDATE 1: SIDEBAR MENU ITEMS (আপনার রিকোয়ারমেন্ট অনুযায়ী switchTab('tabID') আপডেট করা হয়েছে) -->
             <ul class="nav-menu">
                 
                 <!-- SECTION 1: GUEST PORTAL (PUBLIC) -->
@@ -127,15 +125,15 @@
                     <i class="fa-solid fa-globe"></i> Guest Portal (Public)
                 </li>
                 
-                <li class="nav-item role-admin role-guest" data-tab="rooms" onclick="switchTab('rooms')">
+                <li class="nav-item role-admin role-guest" onclick="switchTab('tabRooms')">
                     <i class="fa-solid fa-images"></i> <span data-i18n="navRooms">Browse Rooms & Photos</span>
                 </li>
                 
-                <li class="nav-item role-admin role-guest" data-tab="services" onclick="switchTab('services')">
+                <li class="nav-item role-admin role-guest" onclick="switchTab('tabServices')">
                     <i class="fa-solid fa-utensils"></i> <span data-i18n="navServices">Food, Gym & Pool Menu</span>
                 </li>
                 
-                <li class="nav-item role-admin role-frontdesk role-guest" data-tab="booking" onclick="switchTab('booking')">
+                <li class="nav-item role-admin role-frontdesk role-guest" onclick="switchTab('tabBooking')">
                     <i class="fa-solid fa-calendar-days"></i> <span data-i18n="navBooking">Custom Booking Form</span>
                 </li>
 
@@ -144,23 +142,23 @@
                     <i class="fa-solid fa-shield-halved"></i> Staff Portal (Admin)
                 </li>
 
-                <li class="nav-item active role-admin role-frontdesk" data-tab="dashboard" onclick="switchTab('dashboard')">
+                <li class="nav-item active role-admin role-frontdesk" onclick="switchTab('tabDashboard')">
                     <i class="fa-solid fa-chart-line"></i> <span data-i18n="navDashboard">Live Executive Dashboard</span>
                 </li>
                 
-                <li class="nav-item role-admin role-frontdesk" data-tab="frontdesk" onclick="switchTab('frontdesk')">
-                    <i class="fa-solid fa-bed"></i> <span data-i18n="navFrontDesk">Front Desk Room Tracker</span>
+                <li class="nav-item role-admin role-frontdesk" onclick="switchTab('tabFrontDesk')">
+                    <i class="fa-solid fa-desktop"></i> <span data-i18n="navFrontDesk">Front Desk</span>
                 </li>
                 
-                <li class="nav-item role-admin role-housekeeping" data-tab="housekeeping" onclick="switchTab('housekeeping')">
-                    <i class="fa-solid fa-broom"></i> <span data-i18n="navHousekeeping">Housekeeping & Clean Status</span>
+                <li class="nav-item role-admin role-housekeeping" onclick="switchTab('tabHousekeeping')">
+                    <i class="fa-solid fa-broom"></i> <span data-i18n="navHousekeeping">Housekeeping</span>
                 </li>
                 
-                <li class="nav-item role-admin role-finance" data-tab="finance" onclick="switchTab('finance')">
-                    <i class="fa-solid fa-file-invoice-dollar"></i> <span data-i18n="navFinance">Financial Revenue Reports</span>
+                <li class="nav-item role-admin role-finance" onclick="switchTab('tabFinance')">
+                    <i class="fa-solid fa-chart-line"></i> <span data-i18n="navFinance">Financials</span>
                 </li>
                 
-                <li class="nav-item role-admin role-frontdesk" data-tab="guests" onclick="switchTab('guests')">
+                <li class="nav-item role-admin role-frontdesk" onclick="switchTab('tabGuests')">
                     <i class="fa-solid fa-users"></i> <span data-i18n="navGuests">Guest Directory</span>
                 </li>
             </ul>
@@ -198,11 +196,11 @@
                 </div>
             </header>
 
-            <!-- Main Page Content Area -->
+            <!-- Main Page Content Area (IDs Updated to Match tabID Format) -->
             <main class="main-content">
 
-                <!-- TAB 1: EXECUTIVE DASHBOARD (STAFF) -->
-                <section id="tab-dashboard" class="tab-page active">
+                <!-- TAB 1: EXECUTIVE DASHBOARD -->
+                <section id="tabDashboard" class="tab-page active">
                     <div class="page-header">
                         <h2 data-i18n="dashTitle"><i class="fa-solid fa-chart-line"></i> Live Executive Dashboard</h2>
                         <p data-i18n="dashSub">Live status of resort reservations, revenue metrics, and operational performance.</p>
@@ -259,8 +257,8 @@
                     </div>
                 </section>
 
-                <!-- TAB 2: ROOMS & PHOTOS (GUEST / STAFF) -->
-                <section id="tab-rooms" class="tab-page">
+                <!-- TAB 2: ROOM MANAGEMENT -->
+                <section id="tabRooms" class="tab-page">
                     <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                         <div>
                             <h2 data-i18n="roomsTitle"><i class="fa-solid fa-images"></i> Browse Rooms & Custom Photos</h2>
@@ -273,8 +271,44 @@
                     <div id="roomsCardsGrid"></div>
                 </section>
 
-                <!-- TAB 3: CUSTOM BOOKING FORM (GUEST / STAFF) -->
-                <section id="tab-booking" class="tab-page">
+                <!-- TAB 3: SERVICES & MENUS -->
+                <section id="tabServices" class="tab-page">
+                    <div class="page-header">
+                        <h2 data-i18n="servicesTitle"><i class="fa-solid fa-utensils"></i> Food, Gym & Pool Menu</h2>
+                        <p data-i18n="servicesSub">Explore gourmet dining options, luxury spa services, gym access, and pool passes.</p>
+                    </div>
+                    <div class="services-grid" id="servicesGrid">
+                        <div class="service-card">
+                            <div class="service-icon"><i class="fa-solid fa-utensils"></i></div>
+                            <h3>Dining & Cuisine Addons</h3>
+                            <p>Experience world-class culinary delights right at your room or dining room.</p>
+                            <ul class="service-list">
+                                <li><strong>Bengali Traditional Feast:</strong> ৳500</li>
+                                <li><strong>Authentic Thai Gourmet:</strong> ৳750</li>
+                                <li><strong>Continental Buffet:</strong> ৳1200</li>
+                            </ul>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon"><i class="fa-solid fa-dumbbell"></i></div>
+                            <h3>Fitness Center & Gym</h3>
+                            <p>State-of-the-art health club equipment and personal training assistance.</p>
+                            <ul class="service-list">
+                                <li><strong>VIP Gym Pass (Daily):</strong> ৳400</li>
+                            </ul>
+                        </div>
+                        <div class="service-card">
+                            <div class="service-icon"><i class="fa-solid fa-person-swimming"></i></div>
+                            <h3>Pool & Wellness Spa</h3>
+                            <p>Temperature-controlled infinity pool access and relaxing spa treatments.</p>
+                            <ul class="service-list">
+                                <li><strong>Swimming Pool Pass (Daily):</strong> ৳500</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 4: CUSTOM BOOKING FORM -->
+                <section id="tabBooking" class="tab-page">
                     <div class="page-header">
                         <h2 data-i18n="newBookingTitle"><i class="fa-solid fa-calendar-days"></i> Custom Booking Form</h2>
                         <p data-i18n="newBookingSub">Instant booking with live invoice calculation and direct confirmation.</p>
@@ -282,8 +316,6 @@
 
                     <div class="form-container">
                         <form id="reservationForm" onsubmit="handleBookingSubmit(event)">
-                            
-                            <!-- Guest Details -->
                             <h4 style="color: var(--gold);" class="mb-10" data-i18n="guestInfoHead">Guest Information</h4>
                             <div class="form-grid mb-15">
                                 <div class="form-group">
@@ -304,7 +336,6 @@
                                 </div>
                             </div>
 
-                            <!-- Guest Photo Upload & Preview Box -->
                             <div class="form-group mb-15">
                                 <label for="guestPhotoUpload" data-i18n="lblPhotoAttach">Guest Photo Attachment</label>
                                 <div class="avatar-preview-box mt-5" style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; border: 1px dashed var(--gold);">
@@ -315,7 +346,6 @@
 
                             <div class="divider"></div>
 
-                            <!-- Room & Stay Details -->
                             <h4 style="color: var(--gold);" class="mb-10" data-i18n="stayDetailsHead">Stay & Room Details</h4>
                             <div class="form-grid">
                                 <div class="form-group">
@@ -334,7 +364,6 @@
 
                             <div class="divider"></div>
 
-                            <!-- Cuisine, Amenities & Payment Gateway -->
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label data-i18n="cuisineOpt">Cuisine & Dining Addons</label>
@@ -363,7 +392,6 @@
                                 <p id="paymentInstructions"></p>
                             </div>
 
-                            <!-- Live Invoice & Fee Breakdown (From Image Diagram) -->
                             <div class="calc-summary-card mt-20">
                                 <h4 data-i18n="calcSummary"><i class="fa-solid fa-file-invoice-dollar"></i> Live Invoice & Fee Breakdown</h4>
                                 <div class="summary-line"><span data-i18n="invNights">Stay Duration:</span> <strong id="billNights">1 Night(s)</strong></div>
@@ -382,19 +410,19 @@
                     </div>
                 </section>
 
-                <!-- TAB 4: FRONT DESK ROOM TRACKER (STAFF) -->
-                <section id="tab-frontdesk" class="tab-page">
+                <!-- TAB 5: FRONT DESK -->
+                <section id="tabFrontDesk" class="tab-page">
                     <div class="page-header">
-                        <h2 data-i18n="fdTitle"><i class="fa-solid fa-bed"></i> Front Desk Room Tracker</h2>
+                        <h2 data-i18n="fdTitle"><i class="fa-solid fa-desktop"></i> Front Desk Room Tracker</h2>
                         <p data-i18n="fdSub">Monitor live room statuses, active check-ins, and departures.</p>
                     </div>
                     <div id="frontDeskRoomGrid"></div>
                 </section>
 
-                <!-- TAB 5: HOUSEKEEPING & CLEAN STATUS (STAFF) -->
-                <section id="tab-housekeeping" class="tab-page">
+                <!-- TAB 6: HOUSEKEEPING -->
+                <section id="tabHousekeeping" class="tab-page">
                     <div class="page-header">
-                        <h2 data-i18n="hkTitle"><i class="fa-solid fa-broom"></i> Housekeeping & Clean Status</h2>
+                        <h2 data-i18n="hkTitle"><i class="fa-solid fa-broom"></i> Housekeeping Status</h2>
                         <p data-i18n="hkSub">Cleanliness tracking, room preparation, and maintenance status.</p>
                     </div>
 
@@ -437,10 +465,10 @@
                     </div>
                 </section>
 
-                <!-- TAB 6: FINANCIAL REVENUE REPORTS (STAFF) -->
-                <section id="tab-finance" class="tab-page">
+                <!-- TAB 7: FINANCIALS -->
+                <section id="tabFinance" class="tab-page">
                     <div class="page-header">
-                        <h2 data-i18n="finTitle"><i class="fa-solid fa-file-invoice-dollar"></i> Financial Revenue Reports</h2>
+                        <h2 data-i18n="finTitle"><i class="fa-solid fa-chart-line"></i> Financial Revenue Reports</h2>
                         <p data-i18n="finSub">Automatic revenue breakdown, transaction logs, and printable receipts.</p>
                     </div>
 
@@ -478,8 +506,8 @@
                     </div>
                 </section>
 
-                <!-- TAB 7: GUEST DIRECTORY (STAFF) -->
-                <section id="tab-guests" class="tab-page">
+                <!-- TAB 8: GUEST DIRECTORY -->
+                <section id="tabGuests" class="tab-page">
                     <div class="page-header">
                         <h2 data-i18n="guestsTitle"><i class="fa-solid fa-users"></i> Guest Directory</h2>
                         <p data-i18n="guestsSub">Complete records of guest profiles and active stays.</p>
@@ -493,39 +521,39 @@
                                     <th data-i18n="tblId">ID</th>
                                     <th data-i18n="tblName">Guest Name</th>
                                     <th data-i18n="tblRoom">Room Type</th>
+                                    <th data-i18n="tblContact">Contact Info</th>
                                     <th data-i18n="tblDates">Dates</th>
-                                    <th data-i18n="tblBill">Bill</th>
                                     <th data-i18n="tblStatus">Status</th>
                                     <th data-i18n="tblAction">Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="fullBookingsTableBody"></tbody>
+                            <tbody id="guestsTableBody"></tbody>
                         </table>
                     </div>
-                </section>
-
-                <!-- TAB 8: FOOD, GYM & POOL MENU (GUEST / STAFF) -->
-                <section id="tab-services" class="tab-page">
-                    <div class="page-header">
-                        <h2 data-i18n="servicesTitle"><i class="fa-solid fa-utensils"></i> View Food, Gym & Pool Menu</h2>
-                        <p data-i18n="servicesSub">Dining menus, swimming pool passes, and fitness center packages.</p>
-                    </div>
-                    <div id="servicesCardsGrid"></div>
                 </section>
 
             </main>
         </div>
     </div>
 
-    <!-- PRINT / INVOICE MODAL -->
-    <div id="detailsModal" class="modal" onclick="closeModalOnOutsideClick(event)" role="dialog" aria-modal="true">
-        <div class="modal-content">
-            <span class="close-modal-btn" onclick="closeModal()">&times;</span>
-            <div id="modalContent"></div>
+    <!-- INVOICE / RECEIPT MODAL -->
+    <div id="invoiceModal" class="modal" role="dialog" aria-hidden="true">
+        <div class="modal-content invoice-card">
+            <div class="invoice-header text-center">
+                <h2>Grand Palace Resort & Spa</h2>
+                <p>Official Payment Receipt</p>
+            </div>
+            <div id="invoiceDetails" class="mt-15"></div>
+            <div class="modal-actions mt-20" style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button type="button" class="btn-primary-sm" onclick="window.print()">
+                    <i class="fa-solid fa-print"></i> Print Invoice
+                </button>
+                <button type="button" class="btn-secondary-sm" onclick="closeModal('invoiceModal')">Close</button>
+            </div>
         </div>
     </div>
 
-    <!-- External JavaScript File -->
+    <!-- External JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
