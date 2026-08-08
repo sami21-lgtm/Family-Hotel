@@ -10,8 +10,48 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="logged-out">
 
+    <!-- MANDATORY AUTHENTICATION & LOGIN MODAL (No Close Button) -->
+    <div id="loginModal" class="modal active">
+        <div class="modal-content auth-card">
+            <h3 class="modal-title">System Authentication</h3>
+            
+            <!-- Staff Admin Login Form -->
+            <form onsubmit="handleLoginSubmit(event)" class="mt-15">
+                <h4>Staff Admin Login</h4>
+                <div class="form-group mt-10">
+                    <input type="email" id="loginEmail" placeholder="Enter Staff Email" required>
+                </div>
+                <div class="form-group mt-10">
+                    <input type="password" id="loginPassword" placeholder="Enter Staff Password" required>
+                </div>
+                <button type="submit" class="btn-block-gold mt-15">Login as Admin</button>
+            </form>
+
+            <div class="divider"></div>
+
+            <!-- Guest Quick Access Form -->
+            <div class="guest-register-box">
+                <h4>Guest Quick Access</h4>
+                <div class="form-grid mt-10">
+                    <input type="text" id="fName" placeholder="First Name">
+                    <input type="text" id="lName" placeholder="Last Name">
+                </div>
+                <input type="email" id="email" placeholder="Email Address" class="mt-10">
+                <input type="text" id="imgUrlInput" placeholder="Avatar Photo URL" onchange="updateGuestImageFromUrl()" class="mt-10">
+                
+                <div class="avatar-preview-box mt-10">
+                    <img id="previewImg" src="https://ui-avatars.com/api/?name=Guest" class="table-img" alt="Preview">
+                    <input type="file" accept="image/*" onchange="previewUploadImage(event)">
+                </div>
+
+                <button type="button" onclick="handleGuestLogin()" class="btn-secondary-sm btn-block-gold mt-15">Continue as Guest</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
     <div class="app-container">
         <!-- Sidebar Mobile Overlay -->
         <div id="sidebarOverlay" onclick="toggleSidebar(false)"></div>
@@ -61,7 +101,7 @@
                 </li>
             </ul>
 
-            <!-- Role Switcher Quick Actions -->
+            <!-- Role Switcher & Logout Quick Actions -->
             <div class="role-switch-box">
                 <small data-i18n="activeRole">Active System Role:</small>
                 <select onchange="switchUserRole(this.value)" class="custom-select mt-5">
@@ -71,6 +111,9 @@
                     <option value="finance">Finance</option>
                     <option value="guest">Guest View</option>
                 </select>
+                <button class="btn-secondary-sm mt-10" style="width:100%" onclick="logoutUser()">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
             </div>
         </aside>
 
@@ -85,7 +128,7 @@
 
                 <div class="topbar-right">
                     <button id="mobileLangToggle" class="btn-secondary-sm" onclick="toggleLanguage()">🇧🇩 BN</button>
-                    <img id="topbarAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" class="avatar-img clickable" onclick="handleAuthButtonClick()" alt="Profile" onerror="this.src='https://ui-avatars.com/api/?name=Admin'">
+                    <img id="topbarAvatar" src="Md. EmTIAZ hOSSAIN sAMI LOGO.png" class="avatar-img clickable" onclick="logoutUser()" title="Click to Logout" alt="Profile" onerror="this.src='https://ui-avatars.com/api/?name=Admin'">
                 </div>
             </header>
 
@@ -367,41 +410,6 @@
         <div class="modal-content">
             <span class="close-modal-btn" onclick="closeModal()">&times;</span>
             <div id="modalContent"></div>
-        </div>
-    </div>
-
-    <!-- AUTHENTICATION & LOGIN MODAL -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal-btn" onclick="closeLoginModal()">&times;</span>
-            <h3 class="modal-title">System Authentication</h3>
-            
-            <form onsubmit="handleLoginSubmit(event)" class="mt-15">
-                <h4>Staff Admin Login</h4>
-                <div class="form-group mt-10">
-                    <input type="email" id="loginEmail" placeholder="Enter Staff Email" required>
-                </div>
-                <button type="submit" class="btn-block-gold mt-10">Login as Admin</button>
-            </form>
-
-            <div class="divider"></div>
-
-            <div class="guest-register-box">
-                <h4>Guest Quick Access</h4>
-                <div class="form-grid mt-10">
-                    <input type="text" id="fName" placeholder="First Name">
-                    <input type="text" id="lName" placeholder="Last Name">
-                </div>
-                <input type="email" id="email" placeholder="Email Address" class="mt-10">
-                <input type="text" id="imgUrlInput" placeholder="Avatar Photo URL" onchange="updateGuestImageFromUrl()" class="mt-10">
-                
-                <div class="avatar-preview-box mt-10">
-                    <img id="previewImg" src="https://ui-avatars.com/api/?name=Guest" class="table-img" alt="Preview">
-                    <input type="file" accept="image/*" onchange="previewUploadImage(event)">
-                </div>
-
-                <button type="button" onclick="handleGuestLogin()" class="btn-secondary-sm btn-block-gold mt-15">Continue as Guest</button>
-            </div>
         </div>
     </div>
 
