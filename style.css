@@ -33,7 +33,9 @@
 
 body { 
     font-family: var(--font-body); 
-    background: url('premium_photo-1661964071015-d97428970584.jpg') no-repeat center center fixed;
+    /* Keeping original image file path with an enhanced readable overlay */
+    background: linear-gradient(rgba(11, 15, 25, 0.82), rgba(11, 15, 25, 0.90)), 
+                url('premium_photo-1661964071015-d97428970584.jpg') no-repeat center center fixed;
     background-size: cover;
     background-color: var(--bg-main);
     color: var(--text-main); 
@@ -246,12 +248,15 @@ body.logged-out #loginModal,
     border-bottom: 1px solid var(--border-color); 
 }
 
+/* Optimized Avatar Image proportions */
 .avatar-img { 
     width: 42px; 
     height: 42px; 
+    aspect-ratio: 1 / 1;
     border-radius: 50%; 
     border: 2px solid var(--gold); 
     object-fit: cover; 
+    flex-shrink: 0;
 }
 
 .avatar-img.clickable { 
@@ -430,7 +435,7 @@ body.logged-out #loginModal,
 .room-status-card.dirty { border-left: 4px solid var(--status-dirty); }
 .room-status-card.maintenance { border-left: 4px solid var(--status-maint); }
 
-/* Custom Cards for Rooms & Services */
+/* Custom Cards Image Optimizations */
 .custom-card { 
     overflow: hidden; 
     padding: 0; 
@@ -439,12 +444,14 @@ body.logged-out #loginModal,
 .custom-card img { 
     width: 100%; 
     height: 180px; 
+    aspect-ratio: 16 / 9;
     object-fit: cover; 
+    display: block;
     transition: var(--trans);
 }
 
 .custom-card:hover img {
-    transform: scale(1.04);
+    transform: scale(1.05);
 }
 
 .custom-card .card-body { 
@@ -510,12 +517,15 @@ tr:last-child td {
     border-bottom: none;
 }
 
+/* Table Thumbnail Images Fix */
 .table-img { 
     width: 38px; 
     height: 38px; 
+    aspect-ratio: 1 / 1;
     border-radius: 50%; 
     object-fit: cover; 
     border: 1px solid var(--gold); 
+    flex-shrink: 0;
 }
 
 /* Dynamic Status Badges */
@@ -829,6 +839,7 @@ select option:disabled {
 .avatar-preview-box img {
     width: 55px;
     height: 55px;
+    aspect-ratio: 1 / 1;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--gold);
