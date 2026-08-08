@@ -216,7 +216,7 @@
 
             <main class="main-content">
 
-                <!-- TAB 1: GUEST BROWSE ROOMS (PUBLIC VIEW - NO EDIT/DELETE) -->
+                <!-- TAB 1: GUEST BROWSE ROOMS (PUBLIC VIEW) -->
                 <section id="tabRooms" class="tab-page active">
                     <div class="page-header">
                         <h2><i class="fa-solid fa-images"></i> Browse Rooms & Photos</h2>
@@ -227,41 +227,97 @@
                     <div id="guestRoomsCardsGrid" class="rooms-grid"></div>
                 </section>
 
-                <!-- TAB 2: FOOD, GYM & POOL MENU -->
+                <!-- TAB 2: FOOD, GYM & POOL MENU (WITH LUXURY BACKGROUND & DIRECT BOOKING) -->
                 <section id="tabServices" class="tab-page">
-                    <div class="page-header">
-                        <h2><i class="fa-solid fa-utensils"></i> Food, Gym & Pool Menu</h2>
-                        <p>Explore gourmet dining options, luxury spa services, gym access, and pool passes.</p>
-                    </div>
-
-                    <div class="services-grid">
-                        <div class="service-card">
-                            <div class="service-icon"><i class="fa-solid fa-utensils"></i></div>
-                            <h3>Dining & Cuisine Addons</h3>
-                            <p>Experience world-class culinary delights right at your room.</p>
-                            <ul class="service-list">
-                                <li><strong>Bengali Traditional Feast:</strong> ৳500</li>
-                                <li><strong>Authentic Thai Gourmet:</strong> ৳750</li>
-                                <li><strong>Continental Buffet:</strong> ৳1200</li>
-                            </ul>
+                    <div class="services-hero-wrapper">
+                        <div class="page-header">
+                            <h2><i class="fa-solid fa-utensils"></i> Food, Gym & Pool Menu</h2>
+                            <p>Explore gourmet dining options, luxury spa services, gym access, and pool passes.</p>
                         </div>
 
-                        <div class="service-card">
-                            <div class="service-icon"><i class="fa-solid fa-dumbbell"></i></div>
-                            <h3>Fitness Center & Gym</h3>
-                            <p>State-of-the-art health club equipment and training assistance.</p>
-                            <ul class="service-list">
-                                <li><strong>VIP Gym Pass (Daily):</strong> ৳400</li>
-                            </ul>
-                        </div>
+                        <div class="services-grid">
+                            <!-- DINING CARD -->
+                            <div class="service-card">
+                                <div class="service-card-header">
+                                    <div class="service-icon"><i class="fa-solid fa-utensils"></i></div>
+                                    <h3>Dining & Cuisine Addons</h3>
+                                </div>
+                                <p class="service-desc">Experience world-class culinary delights right at your room.</p>
+                                
+                                <div class="service-item-list">
+                                    <div class="service-item-row">
+                                        <div class="item-info">
+                                            <strong>Bengali Traditional Feast</strong>
+                                            <span class="item-price">৳500</span>
+                                        </div>
+                                        <button type="button" class="btn-gold-sm" onclick="orderAddonService('Bengali Traditional Feast')">
+                                            <i class="fa-solid fa-plus"></i> Book Now
+                                        </button>
+                                    </div>
 
-                        <div class="service-card">
-                            <div class="service-icon"><i class="fa-solid fa-person-swimming"></i></div>
-                            <h3>Pool & Wellness Spa</h3>
-                            <p>Temperature-controlled infinity pool access and spa treatments.</p>
-                            <ul class="service-list">
-                                <li><strong>Swimming Pool Pass (Daily):</strong> ৳500</li>
-                            </ul>
+                                    <div class="service-item-row">
+                                        <div class="item-info">
+                                            <strong>Authentic Thai Gourmet</strong>
+                                            <span class="item-price">৳750</span>
+                                        </div>
+                                        <button type="button" class="btn-gold-sm" onclick="orderAddonService('Authentic Thai Gourmet')">
+                                            <i class="fa-solid fa-plus"></i> Book Now
+                                        </button>
+                                    </div>
+
+                                    <div class="service-item-row">
+                                        <div class="item-info">
+                                            <strong>Continental Buffet</strong>
+                                            <span class="item-price">৳1200</span>
+                                        </div>
+                                        <button type="button" class="btn-gold-sm" onclick="orderAddonService('Continental Buffet')">
+                                            <i class="fa-solid fa-plus"></i> Book Now
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- GYM CARD -->
+                            <div class="service-card">
+                                <div class="service-card-header">
+                                    <div class="service-icon"><i class="fa-solid fa-dumbbell"></i></div>
+                                    <h3>Fitness Center & Gym</h3>
+                                </div>
+                                <p class="service-desc">State-of-the-art health club equipment and training assistance.</p>
+                                
+                                <div class="service-item-list">
+                                    <div class="service-item-row">
+                                        <div class="item-info">
+                                            <strong>VIP Gym Pass (Daily)</strong>
+                                            <span class="item-price">৳400</span>
+                                        </div>
+                                        <button type="button" class="btn-gold-sm" onclick="orderAddonService('VIP Gym Pass')">
+                                            <i class="fa-solid fa-plus"></i> Book Now
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- POOL CARD -->
+                            <div class="service-card">
+                                <div class="service-card-header">
+                                    <div class="service-icon"><i class="fa-solid fa-person-swimming"></i></div>
+                                    <h3>Pool & Wellness Spa</h3>
+                                </div>
+                                <p class="service-desc">Temperature-controlled infinity pool access and spa treatments.</p>
+                                
+                                <div class="service-item-list">
+                                    <div class="service-item-row">
+                                        <div class="item-info">
+                                            <strong>Swimming Pool Pass (Daily)</strong>
+                                            <span class="item-price">৳500</span>
+                                        </div>
+                                        <button type="button" class="btn-gold-sm" onclick="orderAddonService('Swimming Pool Pass')">
+                                            <i class="fa-solid fa-plus"></i> Book Now
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -321,23 +377,23 @@
                                 <div class="form-group">
                                     <label>Cuisine & Dining Addons</label>
                                     <label class="checkbox-label">
-                                        <input type="checkbox" name="foodMenu" value="Bengali Traditional Feast" data-price="500" onchange="calculateTotal()"> Bengali Traditional Feast (+৳500)
+                                        <input type="checkbox" name="foodMenu" id="addon-Bengali Traditional Feast" value="Bengali Traditional Feast" data-price="500" onchange="calculateTotal()"> Bengali Traditional Feast (+৳500)
                                     </label>
                                     <label class="checkbox-label">
-                                        <input type="checkbox" name="foodMenu" value="Authentic Thai Gourmet" data-price="750" onchange="calculateTotal()"> Authentic Thai Gourmet (+৳750)
+                                        <input type="checkbox" name="foodMenu" id="addon-Authentic Thai Gourmet" value="Authentic Thai Gourmet" data-price="750" onchange="calculateTotal()"> Authentic Thai Gourmet (+৳750)
                                     </label>
                                     <label class="checkbox-label">
-                                        <input type="checkbox" name="foodMenu" value="Continental Buffet" data-price="1200" onchange="calculateTotal()"> Continental Buffet (+৳1200)
+                                        <input type="checkbox" name="foodMenu" id="addon-Continental Buffet" value="Continental Buffet" data-price="1200" onchange="calculateTotal()"> Continental Buffet (+৳1200)
                                     </label>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Pool & Gym Access</label>
                                     <label class="checkbox-label">
-                                        <input type="checkbox" name="amenities" value="Swimming Pool Pass" data-price="500" onchange="calculateTotal()"> Swimming Pool Pass (+৳500)
+                                        <input type="checkbox" name="amenities" id="addon-Swimming Pool Pass" value="Swimming Pool Pass" data-price="500" onchange="calculateTotal()"> Swimming Pool Pass (+৳500)
                                     </label>
                                     <label class="checkbox-label">
-                                        <input type="checkbox" name="amenities" value="VIP Gym Pass" data-price="400" onchange="calculateTotal()"> VIP Gym Pass (+৳400)
+                                        <input type="checkbox" name="amenities" id="addon-VIP Gym Pass" value="VIP Gym Pass" data-price="400" onchange="calculateTotal()"> VIP Gym Pass (+৳400)
                                     </label>
                                 </div>
 
@@ -428,7 +484,7 @@
                     </div>
                 </section>
 
-                <!-- TAB 5: ROOM MANAGEMENT (ADMIN ONLY - MATCHING IMAGE EXACTLY) -->
+                <!-- TAB 5: ROOM MANAGEMENT (ADMIN ONLY) -->
                 <section id="tabAdminRooms" class="tab-page role-admin-only">
                     <div class="page-header rooms-page-header">
                         <div>
