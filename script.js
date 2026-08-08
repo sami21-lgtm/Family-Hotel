@@ -591,3 +591,106 @@ function handleBookingSubmit(e) {
     setupDefaultDates();
     calculateBilling();
 }
+// ==========================================
+// ADMIN / STAFF PORTAL NAVIGATION & TAB SWITCHER
+// ==========================================
+
+// ১. এডমিন সাইডবার পেজ স্যুইচিং (Tab Switcher)
+function switchTab(tabId) {
+    // সব ট্যাব হাইড করা
+    document.querySelectorAll('.tab-page').forEach(page => {
+        page.classList.remove('active');
+    });
+
+    // সাইডবার বাটনের active ক্লাস রিমুভ করা
+    document.querySelectorAll('.nav-item').forEach(nav => {
+        nav.classList.remove('active');
+    });
+
+    // টার্গেট পেজ শো করা
+    const targetPage = document.getElementById(tabId);
+    if (targetPage) {
+        targetPage.classList.add('active');
+    }
+
+    // সম্পর্কিত নেভিগেশন আইটেম Active করা
+    const activeNav = document.querySelector(`.nav-item[onclick*="${tabId}"]`);
+    if (activeNav) {
+        activeNav.classList.add('active');
+    }
+
+    // মোবাইলে ট্যাব চেঞ্জ হলে সাইডবার বন্ধ করা
+    toggleSidebar(false);
+}
+
+// ২. কাস্টম এডমিন লগইন মডাল হ্যান্ডলার
+function handleStaffLogin(event) {
+    if (event) event.preventDefault();
+    
+    const passInput = document.getElementById('loginPasswordInput')?.value;
+
+    if (passInput === STAFF_DEFAULT_PASS) {
+        isStaffAuthenticated = true;
+        
+        // ড্যাশবোর্ড আনলক করা (Blur প্রভাব সরানো)
+        document.body.classList.remove('logged-out');
+        
+        const loginModal = document.getElementById('loginModal');
+        if (loginModal) loginModal.classList.remove('active');
+
+        alert("✅ Welcome Admin! Portal Unlocked.");
+        setAppMode('staff');
+    } else {
+        alert("❌ Incorrect Password! (Default: admin123)");
+    }
+}
+
+// ৩. মোবাইল সাইডবার টগল
+function toggleSidebar(forceState) {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (!sidebar) return;
+
+    const isOpen = forceState !== undefined ? forceState : !sidebar.classList.contains('open');
+
+    if (isOpen) {
+        sidebar.classList.add('open');
+        if (overlay) overlay.classList.add('active');
+    } else {
+        sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('active');
+    }
+}
+
+// ৪. পোর্টাল মোড চেঞ্জ (আপডেটেড)
+function setAppMode(mode) {
+    if (mode === 'staff' && !isStaffAuthenticated) {
+        const loginModal = document.getElementById('loginModal');
+        if (loginModal) {
+            loginModal.classList.add('active');
+        } else {
+            const pass = prompt("🔒 STAFF PORTAL LOGIN\nEnter Password:");
+            if (pass === STAFF_DEFAULT_PASS) {
+                isStaffAuthenticated = true;
+            } else {
+                alert("❌ Incorrect Password!");
+                return;
+            }
+        }
+    }
+
+    appMode = mode;
+    const guestPortalEl = document.getElementById('guestPortal');
+    const staffPortalEl = document.getElementById('staffPortal');
+
+    if (mode === 'guest') {
+        if (guestPortalEl) guestPortalEl.style.display = 'block';
+        if (staffPortalEl) staffPortalEl.style.display = 'none';
+    } else if (mode === 'staff' && isStaffAuthenticated) {
+        if (guestPortalEl) guestPortalEl.style.display = 'none';
+        if (staffPortalEl) staffPortalEl.style.display = 'block';
+        
+        // ডিফল্ট ফ্রন্টডেস্ক ট্যাবে নিয়ে যাওয়া
+        switchTab('tabFrontDesk');
+    }
+}
